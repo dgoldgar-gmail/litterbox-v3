@@ -1,0 +1,11 @@
+---
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: dgoldgar
+    groups: docker
+    append: yes
+  become: yes
+
+- name: Reset connection to apply group changes
+  ansible.builtin.meta: reset_connection

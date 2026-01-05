@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "title": "Application",
+  "items": {
+    "type": "object",
+    "required": ["name","live","managed", "notify_version" ],
+    "options": {
+      "collapsed": true
+    },
+    "properties": {
+      "hosts": {
+        "type": "array"
+      },
+      "name": {
+        "type": "string"
+      },
+      "live": {
+        "type": "boolean"
+      },
+      "managed": {
+        "type": "boolean"
+      },
+      "notify_version": {
+        "type": "boolean"
+      },
+      "platorm": {
+        "type": "string"
+      },
+      "docker_hub_url": {
+        "type": "string"
+      },
+      "git_hub_url": {
+        "type": "string"
+      },
+      "github_version_field": {
+        "type": "string"
+      },
+      "version_pattern": {
+        "type": "string"
+      },
+      "docker": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string"
+          },
+          "args": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "string"
+            }
+          },
+          "container_args": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "string"
+            }
+          },
+          "entrypoint": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "string"
+            }
+          },
+          "post_startup_cmds": {
+            "type": ["array", "null"]
+          }
+        }
+      }
+    }
+
+  }
+}

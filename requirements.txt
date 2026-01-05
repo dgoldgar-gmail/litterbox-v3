@@ -1,0 +1,13 @@
+ansible
+ansible-runner
+ansible-vault
+apscheduler
+Flask==2.2.5
+gevent
+gunicorn
+Jinja2==3.0.3
+PyYaml
+paramiko
+requests
+scp
+watchdog

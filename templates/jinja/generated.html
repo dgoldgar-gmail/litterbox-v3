@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}JINJA Template Resolver - LITTERBOX Manager{% endblock %}
+
+{% block content %}
+
+<h2>Generated Files Explorer</h2>
+
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div id="file-tree-container" class="border rounded" style="max-height: 60vh; overflow-y: auto;"></div>
+        </div>
+    </div>
+</div>
+
+<div
+    id="preview-box"
+    class="bg-dark text-white border border-secondary rounded p-4 mt-4 overflow-auto font-monospace"
+    style="white-space: pre-wrap; min-height: 200px;">
+</div>
+
+<script>
+    // Pass server-side variables to the client-side
+    const generated_files = {{ generated_files | tojson }};
+    const generateUrl = "{{ url_for('jinja.generate') }}";
+</script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
+<script src="{{ url_for('static', filename='jinja/generated.js') }}"></script>
+{% endblock %}

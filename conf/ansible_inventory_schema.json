@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ansible Inventory Schema",
+  "type": "object",
+  "required": ["all"],
+  "properties": {
+    "all": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "$ref": "#/$defs/hosts"
+        },
+        "children": {
+          "$ref": "#/$defs/groups"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "groups": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/group"
+      }
+    },
+    "group": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "$ref": "#/$defs/hosts"
+        },
+        "children": {
+          "$ref": "#/$defs/groups"
+        },
+        "vars": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "hosts": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/host"
+      }
+    },
+    "host": {
+      "anyOf": [
+        { "type": "object", "additionalProperties": true },
+        { "type": "null" }
+      ],
+      "description": "Ansible host variables or null"
+    }
+  }
+}

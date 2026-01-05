@@ -1,0 +1,131 @@
+{% macro room_card(card_name, card_info, indent_amount) %} 
+{% import 'modules/tap-actions.j2' as tap_actions %} 
+{% import 'modules/simple-thermostat.j2' as simple_thermostat_macros %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{% import 'modules/thermometer.j2' as thermometer_macros %}
+{% set slug_name = card_name.replace(" ","_").replace("'","").lower() %}
+{% set motion_sensor = card_info['motion_sensor'] %}
+{% set hide_title = card_info['hide_title'] %}
+{% set info_entities = card_info['info_entities']  %}
+{% set rows = card_info['rows'] %}
+{% set cards = card_info['cards'] %}
+{% set templates = card_info['templates'] %}
+{% filter indent(width=indent_amount) %}
+- type: custom:room-card
+  {% if hide_title is undefined %} 
+  title: {{ card_name }}
+  {% endif %}
+  {% if info_entities %}
+  info_entities:
+  {% for info_entity in info_entities %}
+  {% if info_entity == "toggles" %}
+  {% for toggle in info_entities['toggles'] %}
+  - entity: {{ toggle }} 
+    show_icon: true
+    state_color: true
+    tap_action:
+      action: toggle
+  {% endfor %}
+  {% endif %}
+  {% if info_entity == "motion-sensor" %}
+  {% if motion_sensor %}
+  - entity: {{ motion_sensor }}
+  {% else %}
+  - entity: binary_sensor.motion_sensor_{{ slug_name }}_presence
+  {% endif %}
+    show_icon: true
+    state_color: true
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if rows %}
+  rows:
+    {% for row_key,row in rows.items() %}
+    {% if row_key == "thermometer" %}
+{{ thermometer_macros.thermometer_entities(slug_name, 2) }}
+  {% elif row_key == "door-monitors" %}
+  - entities:
+    {% for door_key in row %}
+    - entity: binary_sensor.door_sensor_{{ door_key.lower()}}_open
+      name: {{ door_key }}
+      show_icon: true
+      show_state: true
+      icon:
+        state_on: mdi:door-open
+        state_off: mdi:door-closed
+{{ tap_actions.browser_popup_action("double_tap_action", door_key, "binary_sensor.door_settings_popup", door_key.replace("_"," ").title() + " Door", "browser_mod_popup_style", 6)  }}
+              type: vertical-stack
+              cards:
+                - type: custom:room-card
+                  title: Notification Settings
+                  rows:
+                    - entities:
+                        - entity: input_boolean.{{ door_key.lower() }}_door_left_open_notifications
+                          state_color: true
+                          name: Left Open
+                          tap_action:
+                            action: toggle 
+                        - entity: input_boolean.{{ door_key.lower() }}_door_open_close_notifications
+                          state_color: true
+                          name: Open/Close
+                          tap_action:
+                            action: toggle 
+
+    {% endfor %}
+  {% else %}
+  - entities:
+    {% for row_entity_key, row_entity in row.items() %}
+    - entity: {{ row_entity['entity'] }}
+      name: {{ row_entity_key }}
+      {% if row_entity['template'] %}
+      template: {{ row_entity['template'] }}
+      {% endif %}
+      {% if row_entity['icon'] %}
+      icon: {{ row_entity['icon'] }}
+      show_icon: true
+      {% endif %}
+      {%if row['show_state'] == "true" %}
+      show_state: true
+      {% endif %}
+      tap_action:
+        action: toggle
+      hold_action:
+        action: more-info
+      double_tap_action:
+        action: more-info
+    {% endfor %}
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if cards %}
+  cards:
+  {% for card_name, card_info in cards.items() %}
+  {% if card_info['card-type'] == "custom:simple-thermostat" %}
+{{ simple_thermostat_macros.simple_thermostat_card(card_name, card_info, 2) }}
+  {% elif card_info['card-type'] == "custom:room-card" %}
+{{ room_card(card_name, card_info, 2) }} #}
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if templates %}
+  templates:
+    {% for template_key, template in templates.items() %}
+    - name: {{ template_key }}
+      template:
+        show_icon: true
+        icon:
+          template:
+          {% if template['styles'] %}
+            styles: >
+              {{ template['styles'] }}
+          {% endif %}
+          {% if template['icon'] %}
+            icon: >
+              {{ template['icon'] }}
+          {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfilter %}
+{% endmacro -%}
+
+

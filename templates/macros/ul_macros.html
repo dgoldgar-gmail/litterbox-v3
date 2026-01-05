@@ -1,0 +1,53 @@
+{% macro ul_block( name, with_add_delete_buttons=True ) %}
+    {% set listName = name[0]|lower ~ name[1:] + "List" %}
+    <div class="card mb-3">
+        <div class="card mb-0">
+            <div class="card-header">{{ name }}:</div>
+            {%  if with_add_delete_buttons %}
+            <div class="d-flex gap-2 mt-2">
+                <button type="button" class="btn btn-secondary" id="add{{ name }}Button">Add</button>
+                <button type="button" class="btn btn-danger ms-auto" id="deleteSelected{{ name }}sButton">Delete Selected</button>
+            </div>
+            {%  endif %}
+            <ul id="{{ listName }}" class="list-group mb-3">
+                {# rendered here by JavaScript #}
+            </ul>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro ul_expandable_form( name, delete_action ) %}
+    {% set listName = name[0]|lower ~ name[1:] + "List" %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <details class="hover-expand" open>
+                <summary class="h5 mb-0">{{ name }}</summary>
+                <div class="card-body">
+                    <form id="{{ name }}Form" method="post" action="{{ url_for(delete_action) }}">
+                        <div class="d-flex justify-content-between mb-3">
+                            <button type="button" class="btn btn-primary" id="add{{ name }}Button">New</button>
+                            <button type="submit" class="btn btn-danger" id="deleteSelected{{ name }}sButton">Delete Selected</button>
+                        </div>
+                        <ul id="{{ listName }}" class="list-group">
+                            {# Rendered by JS #}
+                        </ul>
+                    </form>
+                </div>
+            </details>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro ul_form( name, delete_action ) %}
+    {% set listName = name[0]|lower ~ name[1:] + "List" %}
+    <p class="form-label text-muted small">{{ name }}</p>
+    <form id="{{ listName }}Form" method="post" action="{{ url_for(delete_action) }}">
+        <div class="d-flex justify-content-between mb-3">
+            <button type="button" class="btn btn-primary" id="add{{ name }}Button">New</button>
+            <button type="submit" class="btn btn-danger" id="deleteSelected{{ name }}Button">Delete Selected</button>
+        </div>
+        <ul id="{{ listName }}" class="list-group">
+            {# Rendered by JS #}
+        </ul>
+    </form>
+{% endmacro %}

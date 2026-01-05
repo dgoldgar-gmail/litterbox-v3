@@ -1,0 +1,12 @@
+{% macro ssh_config_entry(aliases, host, identity_file, allow_rsa2) %}
+# {{ host.replace("_"," ").upper() }}
+Host {{ aliases | join(' ') }}
+HostName {{ host }}
+IdentityFile {{ identity_file }}
+{% if allow_rsa2 -%}
+PubkeyAcceptedKeyTypes=ssh-rsa
+{% endif -%}
+StrictHostKeyChecking=no
+UserKnownHostsFile=/dev/null
+ConnectTimeout=10
+{% endmacro %}

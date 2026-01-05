@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Home View Configuration",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "cards": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "card-type": { "type": "string" },
+              "entity": { "type": "string" },
+              "motion_sensor": { "type": "string" },
+              "info_entities": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "preset": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              },
+              "rows": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "entity": { "type": "string" },
+                      "icon": { "type": "string" },
+                      "template": { "type": "string" },
+                      "name": { "type": "string" }
+                    },
+                    "required": ["entity"]
+                  }
+                }
+              },
+              "cards": {
+                "type": "object",
+                "additionalProperties": { "$ref": "#/properties/view/properties/cards/additionalProperties" }
+              },
+              "templates": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "styles": { "type": "string" },
+                    "icon": { "type": "string" }
+                  }
+                }
+              },
+              "hide_title": { "type": "boolean" },
+              "borderOuterWidth": { "type": "number" },
+              "colorBorderOuter": { "type": "string" },
+              "colorBorderOuterEnd": { "type": "string" },
+              "width": { "type": "string" },
+              "height": { "type": "string" },
+              "minValue": { "type": "string" },
+              "maxValue": { "type": "string" },
+              "majorTicks": { "type": "string" },
+              "minor-ticks": { "type": "string" },
+              "highlights": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "color": { "type": "string" },
+                    "from": { "type": "number" },
+                    "to": { "type": "number" }
+                  }
+                }
+              }
+            },
+            "required": ["card-type"]
+          }
+        }
+      },
+      "required": ["name", "cards"]
+    }
+  },
+  "required": ["view"]
+}

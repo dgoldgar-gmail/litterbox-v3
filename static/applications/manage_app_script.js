@@ -1,0 +1,210 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const hostListElement = document.getElementById('hostList');
+
+    function createListItem(name) {
+        const li = document.createElement('li');
+        li.className = 'list-group-item p-0 border-0';
+
+        const content = document.createElement('div');
+        content.className = 'card mb-3';
+
+        const details = document.createElement("details");
+        details.className = 'w-100';
+        details.setAttribute('open', '');
+        content.appendChild(details);
+
+        const summary = document.createElement("summary");
+        summary.className = 'card-header';
+        summary.textContent = name;
+        details.appendChild(summary);
+
+        const cardBody = document.createElement('div');
+        cardBody.className = 'card-body';
+        details.appendChild(cardBody);
+
+        const textAndButtonsContainer = document.createElement('div');
+        textAndButtonsContainer.className = 'd-flex justify-content-between align-items-center mb-2';
+        cardBody.appendChild(textAndButtonsContainer, name);
+
+        const span = document.createElement('span');
+        span.textContent = "Manage " + application_config['name'] + " on " + name + ".";
+        span.className = 'card-text';
+        textAndButtonsContainer.appendChild(span);
+
+        addMangementButtons(textAndButtonsContainer, name);
+
+        const outputBody = document.createElement('div');
+        outputBody.className = 'card-body border';
+        cardBody.appendChild(outputBody);
+        outputBody.textContent = 'Output...';
+        outputBody.setAttribute('data-host-name', name);
+        outputBody.style.height = '400px';
+        outputBody.style.overflowY = 'scroll';
+        outputBody.style.whiteSpace = 'pre-wrap'
+
+        li.appendChild(content);
+        return li;
+    }
+
+    function addMangementButtons(container, hostName) {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'd-flex gap-2';
+        container.appendChild(buttonContainer);
+
+        const logsButton = document.createElement('button');
+        logsButton.className = 'btn btn-sm btn-outline-info';
+        logsButton.textContent = 'View Logs';
+        logsButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            followLogs(event, app_name, hostName);
+        });
+        buttonContainer.appendChild(logsButton)
+
+        const restartButton = document.createElement('button');
+        restartButton.className = 'btn btn-sm btn-outline-warning';
+        restartButton.textContent = 'Restart';
+        restartButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            restartApplication(event, app_name, hostName);
+        });
+        buttonContainer.appendChild(restartButton);
+
+        const deployButton = document.createElement('button');
+        deployButton.className = 'btn btn-sm btn-outline-danger';
+        deployButton.textContent = 'Deploy';
+        deployButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            upgradeApplication(event, app_name, hostName, application_config);
+        });
+        buttonContainer.appendChild(deployButton);
+    }
+
+
+    function renderHosts() {
+        hostListElement.innerHTML = '';
+        application_config['hosts'].forEach(host => {
+            const li = createListItem(host);
+            hostListElement.appendChild(li);
+        });
+    }
+
+    async function upgradeApplication(event, app_name, hostName, application_config) {
+        console.log("Upgrading " + app_name + " on " + hostName + "...");
+        const getContainerVersionsUrl = `${getContainerVersionsBaseUrl}?app=${encodeURIComponent(app_name)}&url=${encodeURIComponent(application_config.docker_hub_url)}&max_pages=${encodeURIComponent(application_config.max_dockerhub_pages)}&version_pattern=${encodeURIComponent(application_config.version_pattern)}`;
+        fetch(getContainerVersionsUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(optionsList => {
+                console.log("Options list:", optionsList);
+                return showUpgradeVersionSelectionModal(optionsList);
+            })
+            .then(selectedVersion => {
+                console.log("Selected version:", selectedVersion);
+                if (selectedVersion === null) {
+                    return;
+                }
+                const streamUrl = `${deployAppVersionBaseUrl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}&version=${encodeURIComponent(selectedVersion)}`;
+                console.log(streamUrl)
+                fetchStreamedResponse(event, "upgrade", streamUrl)
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+    }
+    
+    function restartApplication(event, app_name, hostName) {
+        let userChoice = confirm("Are you sure you want to restart " + app_name + " on " + hostName + "?");
+        if (userChoice) {
+            console.log("Restarting " + app_name + " on " + hostName + "...");
+            const streamUrl = `${streamRestartBaseUrl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}`;
+            fetchStreamedResponse(event, "restart", streamUrl)
+        } else {
+            console.log("Cancelled restarting " + app_name + " on " + hostName + ".");
+        }
+    }
+    
+    function followLogs(event, app_name, hostName) {
+        const streamUrl = `${streamLogsBaseurl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}`;
+        fetchStreamedResponse(event, "logs", streamUrl)
+    }
+
+    function fetchStreamedResponse(event, type, streamUrl) {
+
+        const cardBody = event.target.closest('.card-body');
+        const outputBody = cardBody.querySelector('.card-body.border');
+        outputBody.textContent = `Streaming ${type}...\n\n`;
+        fetch(streamUrl)
+            .then(response => {
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                function read() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            outputBody.textContent += '\nStream finished.';
+                            return;
+                        }
+
+                        const chunk = decoder.decode(value, { stream: true });
+                        outputBody.textContent += chunk;
+                        outputBody.scrollTop = outputBody.scrollHeight;
+
+                        read();
+                    }).catch(error => {
+                        outputBody.textContent += `\nError: ${error.message}`;
+                    });
+                }
+                read();
+            })
+            .catch(error => {
+                outputBody.textContent = `Error connecting to proxied ${type} command stream: ${error.message}`;
+            });
+    }
+
+    function showUpgradeVersionSelectionModal(optionsList) {
+        return new Promise((resolve, reject) => {
+            const modalElement = document.getElementById('selectModal');
+            const selectElement = document.getElementById('selectOptions');
+            const okButton = document.getElementById('modalOkBtn');
+            const bsModal = new bootstrap.Modal(modalElement);
+
+            console.log("Options list:", optionsList);
+            // Clear previous options and populate the dropdown
+            selectElement.innerHTML = '';
+            optionsList.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                selectElement.appendChild(option);
+            });
+
+            // Event listeners for the buttons
+            okButton.onclick = () => {
+                const selectedValue = selectElement.value;
+                bsModal.hide();
+                resolve(selectedValue);
+            };
+
+            // Handle cancel/dismiss actions
+            modalElement.addEventListener('hidden.bs.modal', function onModalHidden(event) {
+                // Check if the promise has already been resolved by the OK button
+                // If not, it means the user closed the modal via the "Cancel" button or X
+                if (okButton.onclick) {
+                    resolve(null);
+                }
+                // Clean up the event listener to prevent memory leaks
+                modalElement.removeEventListener('hidden.bs.modal', onModalHidden);
+            });
+
+            bsModal.show();
+        });
+    }
+
+    renderHosts();
+    
+
+});

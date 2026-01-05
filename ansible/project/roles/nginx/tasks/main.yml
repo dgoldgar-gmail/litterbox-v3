@@ -1,0 +1,14 @@
+---
+
+- name: Copy sshconfig to nginx sites-enabled
+  ansible.builtin.copy:
+    src: "{{ generated_dir }}/nginx/"
+    dest: "{{ nginx_sites_dir }}"
+    owner: root
+    group: root
+    mode: "0644"
+    directory_mode: '0755'
+
+
+
+

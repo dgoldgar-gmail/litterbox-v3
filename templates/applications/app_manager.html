@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Application Manager:  {{ app_name }}</h1>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <div class="card-body">
+            <ul id="hostList" class="list-group">
+                {# Rendered by JS #}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="selectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pick a version to deploy.</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Please choose an item from the list.</p>
+                <select class="form-select" id="selectOptions"></select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="modalOkBtn">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    app_name = "{{ app_name }}";
+    application_config = JSON.parse('{{ application_config | tojson | safe }}');
+    console.log(application_config)
+    const streamLogsBaseurl = "{{ url_for('applications.stream_log') }}";
+    const streamRestartBaseUrl = "{{ url_for('applications.restart_app')  }}"
+    const getContainerVersionsBaseUrl = "{{ url_for('applications.get_container_versions')  }}"
+    const deployAppVersionBaseUrl = "{{ url_for('applications.deploy_app_version')  }}"
+</script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
+<script src="{{ url_for('static', filename='applications/manage_app_script.js') }}"></script>
+{% endblock %}

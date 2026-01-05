@@ -1,0 +1,58 @@
+###########################
+# SERVICE_INVOKING_ACTION
+###########################
+{% macro service_invoking_action(action_type, service_name, params, confirmation_text, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+{{ action_type }}:
+  action: call-service
+  service: {{ service_name }}
+    {% if params  | length > 0 %}
+  service_data:
+    {% for param in params %}
+    {{ param }}:  {{ params[param] }}
+    {% endfor %}
+  {% if confirmation_text %}
+  confirmation:
+    text: >-
+      {{ confirmation_text }}
+  {% endif %}
+  {% endif %}
+{% endfilter %}
+{% endmacro %}
+###########################
+# BROWSER POPUP ACTION 
+###########################
+{% macro browser_popup_action(action_type, name, popup_entity, title, style, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+{{ action_type }}:
+  name: {{ name }}
+  action: fire-dom-event
+  browser_mod:
+    service: browser_mod.popup
+    target:
+      entity_id: {{ popup_entity }}
+    data:
+      style: |
+        ha-dialog {
+          --mdc-dialog-min-width: {{ style['dialog_min_width'] }} !important;
+          --mdc-dialog-max-width: {{ style['dialog_max_width'] }} !important;
+          --mdc-dialog-min-height: {{ style['dialog_min_height'] }} !important;
+          --mdc-dialog-max-height: {{ style['dialog_max_height'] }} !important;
+        }
+        .content {
+          width: auto !important;
+        }
+      title: {{ title }}
+      content:
+{% endfilter %}
+{% endmacro %}
+###########################
+# URL ACTION
+###########################
+{% macro url_navigate_action(action_type, url, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+{{ action_type }}:
+  action: url
+  url_path: "{{ url }}"
+{% endfilter %}
+{% endmacro %}

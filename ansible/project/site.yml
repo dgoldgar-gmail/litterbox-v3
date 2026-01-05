@@ -1,0 +1,73 @@
+
+- name: Container
+  hosts: container
+  become: false
+  gather_facts: false
+  roles:
+    - { role: container, tags: ["container", "always"] }
+
+- name: Just a test
+  hosts: container,mac,pi,ubuntu
+  gather_facts: false
+  roles:
+    - { role: test, tags: ["test"] }
+
+- name: SSH Config
+  hosts: mac,pi,ubuntu
+  become: false
+  gather_facts: false
+  roles:
+    - { role: ssh_client, tags: ["ssh_client"] }
+
+- name: Camera hosts
+  hosts: thingino
+  become: true
+  gather_facts: false
+  roles:
+    - { role: thingino, tags: ["thingino"] }
+
+- name: Homeassistant
+  hosts: raspberry-slate
+  become: true
+  roles:
+    - { role: homeassistant, tags: [ "homeassistant" ] }
+
+- name: Nginx
+  hosts: raspberry-slate
+  become: true
+  gather_facts: false
+  roles:
+    - { role: nginx, tags: [ "nginx" ] }
+
+- name: DNS Refresh
+  hosts: raspberry-slate
+  become: true
+  gather_facts: false
+  roles:
+    - { role: dns_refresh, tags: [ "dns_refresh" ] }
+
+- name: Secrets
+  hosts: raspberry-slate
+  become: true
+  gather_facts: false
+  roles:
+    - { role: secrets, tags: [ "secrets" ] }
+
+- name: Frigate
+  hosts: ubuntu-main
+  become: true
+  roles:
+    - { role: frigate, tags: [ "frigate" ] }
+
+- name: Hostname
+  hosts: pi,ubuntu
+  become: true
+  roles:
+    - { role: hostname, tags: [ "hostname" ] }
+
+- name: Docker Client
+  hosts: pi,ubuntu
+  become: true
+  roles:
+    - { role: docker_client, tags: [ "docker_client" ] }
+

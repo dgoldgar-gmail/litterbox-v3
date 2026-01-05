@@ -1,0 +1,247 @@
+
+######################################
+kitchen:
+  gestures:
+    SHAKEN:
+      kitchen_and_familyroom: "turn_on_lights" 
+    DROPPED :
+      kitchen_and_familyroom: "turn_off_lights" 
+    DOUBLE_TAPPED:
+      kitchen_and_familyroom: "turn_off_lights"
+    ROTATED_CLOCKWISE:
+      side_1:
+        kitchen_sink_and_island_lights: "turn_off_lights"
+        kitchen_door_and_familyroom_lights: "increase_brightness"
+      side_2_3_4_5:
+        kitchen_and_familyroom: "increase_brightness"
+      side_6:
+        kitchen_familyroom_and_hall: "turn_off_lights"
+        familyroom_only: "increase_brightness"
+    ROTATED_COUNTER_CLOCKWISE:
+      side_1:
+        kitchen_sink_and_island_lights: "turn_off_lights"
+        kitchen_door_and_familyroom_lights: "decrease_brightness"
+      side_2_3_4_5:
+        kitchen_and_familyroom: "decrease_brightness"
+      side_6:
+        kitchen_familyroom_and_hall: "turn_off_lights"
+        familyroom_only: "decrease_brightness"
+    SLID: {} 
+  side_action_map:
+    1: "side_1"
+    2: "side_2_3_4_5"
+    3: "side_2_3_4_5"
+    4: "side_2_3_4_5"
+    5: "side_2_3_4_5"
+    6: "side_6"
+  group_entity_assocations:
+    kitchen_and_familyroom:
+      - light.lights_kitchen_door
+      - light.lights_kitchen_sink
+      - light.lights_kitchen_island 
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+    kitchen_familyroom_and_hall:
+      - light.lights_kitchen_door
+      - light.lights_kitchen_sink
+      - light.lights_kitchen_island 
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+      - light.lights_main_hall
+      - light.lights_staircase
+      - light.lights_stairs_overhead 
+      - light.office_room_lights
+    familyroom_only:
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+    kitchen_sink_and_island_lights:
+      - light.lights_kitchen_sink
+      - light.lights_kitchen_island
+    kitchen_door_and_familyroom_lights:
+      - light.lights_kitchen_door
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+
+######################################
+family_room: 
+  gestures:
+    SHAKEN:
+      kitchen_and_familyroom: "turn_on_lights" 
+    DROPPED :
+      kitchen_and_familyroom: "turn_off_lights" 
+    DOUBLE_TAPPED:
+      kitchen_and_familyroom: "turn_off_lights"
+    ROTATED_CLOCKWISE:
+      side_1:
+        kitchen_sink_and_island_lights: "turn_off_lights"
+        kitchen_door_and_familyroom_lights: "increase_brightness"
+      side_2_3_4_5:
+        kitchen_and_familyroom: "increase_brightness"
+      side_6:
+        kitchen_familyroom_and_hall: "turn_off_lights"
+        familyroom_only: "increase_brightness"
+    ROTATED_COUNTER_CLOCKWISE:
+      side_1:
+        kitchen_sink_and_island_lights: "turn_off_lights"
+        kitchen_door_and_familyroom_lights: "decrease_brightness"
+      side_2_3_4_5:
+        kitchen_and_familyroom: "decrease_brightness"
+      side_6:
+        kitchen_familyroom_and_hall: "turn_off_lights"
+        familyroom_only: "decrease_brightness"
+    SLID: {}
+  side_action_map:
+    1: "side_1"
+    2: "side_2_3_4_5"
+    3: "side_2_3_4_5"
+    4: "side_2_3_4_5"
+    5: "side_2_3_4_5"
+    6: "side_6"
+
+  group_entity_assocations:
+    kitchen_and_familyroom:
+      - light.lights_kitchen_door
+      - light.lights_kitchen_sink
+      - light.lights_kitchen_island
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+    kitchen_familyroom_and_hall:
+      - light.lights_kitchen_door
+      - light.lights_kitchen_sink
+      - light.lights_kitchen_island
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+      - light.lights_main_hall
+      - light.lights_staircase
+      - light.lights_stairs_overhead
+      - light.office_room_lights
+    familyroom_only:
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+    kitchen_sink_and_island_lights:
+      - light.lights_kitchen_sink
+      - light.lights_kitchen_island
+    kitchen_door_and_familyroom_lights:
+      - light.lights_kitchen_door
+      - light.lights_family_room_1
+      - light.lights_family_room_2
+
+#######################################
+game_room: 
+  gestures:
+    SHAKEN:
+      all: "turn_on_lights" 
+    DROPPED:
+      all: "turn_off_lights" 
+    DOUBLE_TAPPED:
+      all: "toggle_lights"
+    ROTATED_CLOCKWISE:
+      primary:
+        desk_and_overhead: "increase_brightness"
+      secondary:
+        aux_lights: "turn_off_lights"
+        overhead: "increase_brightness"
+      red:
+        rgb: "increase_rgb_color"
+      green:
+        rgb: "increase_rgb_color"
+      blue:
+        rgb: "increase_rgb_color"
+    ROTATED_COUNTER_CLOCKWISE:
+      primary:
+        desk_and_overhead: "decrease_brightness"
+      secondary:
+        aux_lights: "turn_off_lights"
+        overhead: "decrease_brightness"
+      red:
+        rgb: "decrease_rgb_color"
+      green:
+        rgb: "decrease_rgb_color"
+      blue:
+        rgb: "decrease_rgb_color"
+    SLID: {}
+  side_action_map:
+    1: "primary"
+    2: "primary"
+    3: "red"
+    4: "green"
+    5: "blue"
+    6: "secondary"
+  group_entity_assocations:
+    all:
+      - light.lights_game_room
+      - light.tasmota_bulb_01_light_light_0
+      - light.tasmota_rgb_game_room
+    aux_lights:
+      - light.tasmota_bulb_01_light_light_0
+      - light.tasmota_rgb_game_room
+    overhead:
+      - light.lights_game_room
+    desk_and_overhead:
+      - light.lights_game_room
+      - light.tasmota_bulb_01_light_light_0
+    rgb:
+      - light.tasmota_rgb_game_room
+      - light.tasmota_bulb_01_light_light_0
+sam_s_room:
+  gestures:
+    SHAKEN:
+      overhead_lights: "toggle_lights"
+    DROPPED:
+      overhead_lights: "turn_off_lights"
+    DOUBLE_TAPPED:
+      overhead_lights: "turn_off_lights"
+    ROTATED_CLOCKWISE:
+      primary:
+        overhead_lights: "increase_brightness"
+    ROTATED_COUNTER_CLOCKWISE:
+      primary:
+        overhead_lights: "decrease_brightness"
+    SLID: {}
+  side_action_map:
+    1: "primary"
+    2: "primary"
+    3: "primary"
+    4: "primary"
+    5: "primary"
+    6: "primary"
+  group_entity_assocations:
+    overhead_lights:
+      - light.lights_sams_room
+master_bedroom:
+  gestures:
+    SHAKEN:
+      erins_lights: "toggle_lights"
+    DROPPED:
+      all: "turn_off_lights"
+    ROTATED_CLOCKWISE:
+      primary:
+        erins_lights: "increase_brightness"
+      secondary:
+        daves_lights: "increase_brightness"
+    ROTATED_COUNTER_CLOCKWISE:
+      primary:
+        erins_lights: "decrease_brightness"
+      secondary:
+        daves_lights: "decrease_brightness"
+    DOUBLE_TAPPED:
+      all: "turn_off_lights"
+    SLID: {}
+  side_action_map:
+    1: "primary"
+    2: "primary"
+    3: "primary"
+    4: "primary"
+    5: "primary"
+    6: "secondary"
+  group_entity_assocations:
+    all:
+      - light.lights_master_bedroom
+      - light.lights_daves_bedroom_light
+      - light.lights_erins_bedroom_light
+    overhead_lights:
+      - light.lights_master_bedroom
+    erins_lights:
+      - light.lights_erins_bedroom_light
+    daves_lights:
+      - light.lights_daves_bedroom_light

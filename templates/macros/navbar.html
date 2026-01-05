@@ -1,0 +1,52 @@
+{% macro dropdown_itemOLD(label, endpoint, prefix=None) %}
+    {# if no prefix is passed, infer it from the endpoint #}
+    {% set prefix = prefix or endpoint.split('.')[0] %}
+    <li>
+        <a class="dropdown-item
+              {% if request.endpoint == endpoint or request.endpoint.startswith(prefix) %}
+                  active
+              {% endif %}"
+           href="{{ url_for(endpoint) }}">
+            {{ label }}
+        </a>
+    </li>
+{% endmacro %}
+
+
+{% macro dropdown_item(label, endpoint, params=None, prefix=None) %}
+{# infer prefix if not provided #}
+{% set prefix = prefix or endpoint.split('.')[0] %}
+
+<li>
+    <a class="dropdown-item
+              {% if request.endpoint == endpoint or request.endpoint.startswith(prefix) %}
+                  active
+              {% endif %}"
+       href="{{ url_for(endpoint, **(params or {})) }}">
+        {{ label }}
+    </a>
+</li>
+{% endmacro %}
+
+
+{% macro nav_item(label, endpoint, prefix=None) %}
+    {% set prefix = prefix or endpoint.split('.')[0] %}
+    <li class="nav-item">
+        <a class="nav-link
+              {% if request.endpoint == endpoint or request.endpoint.startswith(prefix) %}
+                  active
+              {% endif %}"
+           aria-current="page"
+           href="{{ url_for(endpoint) }}">
+            {{ label }}
+        </a>
+    </li>
+{% endmacro %}
+
+
+{% macro dropdown_header(label) %}
+<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ label }}
+</a>
+{% endmacro %}
+

@@ -1,0 +1,20 @@
+{% macro popup_tap_action(long_name, short_name, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+{% import 'modules/button-card.j2' as buttons %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{% import 'modules/slider-control.j2' as slider_control_macros %}
+tap_action:
+  name: {{ long_name }}
+  action: fire-dom-event
+  browser_mod:
+    service: browser_mod.popup
+    target:
+      entity_id: sensor.{{ short_name }}_temp_gv
+    data:
+      title: {{ long_name }} Settings
+      content:
+        type: vertical-stack
+        cards:
+{{ slider_control_macros.slider_control_macro(long_name, 14)  }}
+{% endfilter %}
+{% endmacro %}

@@ -1,0 +1,18 @@
+{% import 'modules/room_card_macro.j2' as room_card_macro %}
+{% import 'modules/gauge.j2' as gauge_macros %}
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control() }}
+{{ headers.comment("THERMOMETERS") }}
+title: Thermometer Gauges
+icon: mdi:thermometer
+path: thermometer
+type: custom:layout-card
+layout_type: grid
+layout:
+  grid-template-columns: 33% 33% 33%
+  grid-template-rows: auto
+cards:
+  {% for device_name in zigbee.device_types.thermometer.devices %}
+{% set card_info = {"suppress_settings":"true", "entity": "sensor.thermometer_" + device_name.replace(" ","_") + "_temperature", "width": "130", "height": "130", "minValue": "40", "maxValue": "110", "minor-ticks": "2", "majorTicks": [40, 50, 60, 70, 80, 90, 100, 110 ], "highlights": [ { "color": "rgba(54, 139, 193, .75)", "from": "40", "to": "55"  }, { "color": "rgba(210, 238, 130, .75)", "from": "55", "to": "68"  }, { "color": "rgba(249, 224, 118, .75)", "from": "68", "to": "82"  }, { "color": "rgba(255, 87, 51, .75)", "from": "82", "to": "92"  }, { "color": "rgba(200, 50, 50, .75)", "from": "92", "to": "110"  }  ] } %}
+{{ gauge_macros.gauge(device_name, card_info, 2)}}
+  {% endfor %}

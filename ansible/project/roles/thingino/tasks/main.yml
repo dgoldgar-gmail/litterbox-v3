@@ -1,0 +1,28 @@
+---
+
+- name: Install camera collector script
+  ansible.builtin.raw: |
+    cat > /sbin/camera_homeassistant_collector.sh <<'EOF'
+    {{ lookup('file', 'files/camera_homeassistant_collector.sh') }}
+    EOF
+    chmod 0755 /sbin/camera_homeassistant_collector.sh
+
+- name: Write Home Assistant API token
+  ansible.builtin.raw: |
+    umask 077
+    printf '%s\n' '{{ api_token }}' > /sbin/.ha_token
+
+- name: Install collector cron
+  ansible.builtin.raw: |
+    crontab -l 2>/dev/null | grep -v 'homeassistant_collector.sh' > /tmp/cron.tmp || true
+    echo "*/5 * * * * /sbin/homeassistant_collector.sh" >> /tmp/cron.tmp
+    crontab /tmp/cron.tmp
+    rm -f /tmp/cron.tmp
+
+- name: Install daily reboot cron
+  ansible.builtin.raw: |
+    crontab -l 2>/dev/null | grep -v '/sbin/reboot' > /tmp/cron.tmp || true
+    echo "0 3 * * * /sbin/reboot" >> /tmp/cron.tmp
+    crontab /tmp/cron.tmp
+    rm -f /tmp/cron.tmp
+

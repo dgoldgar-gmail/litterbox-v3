@@ -1,0 +1,64 @@
+{% macro slider_control_button(button_icon, service_name, name, alertname, state_color,  indent) %}
+{% filter indent(width=indent) %}
+- type: custom:button-card
+  size: 20px
+  styles:
+    card:
+      - height: 30px
+      - width: 30px
+  color_type: card
+  color: rgb(223, 255, 97)
+  icon: mdi:{{ button_icon }}
+  entity: input_boolean.{{ name }}_alerts_enabled
+  show_name: false
+  state:
+    - value: 'off'
+      color: grey
+    - value: 'on'
+      color: {{ state_color }}
+  tap_action:
+    action: call-service
+    service: pyscript.{{ service_name }}
+    service_data:
+      entity_id: input_number.{{ name }}{{ alertname }}
+  hold_action:
+    action: call-service
+    service: pyscript.{{ service_name }}
+    service_data:
+      entity_id: input_number.{{ name }}{{ alertname }}
+    repeat: 100
+{% endfilter %}
+{% endmacro %}
+
+{% macro slider_control_horizontal_stack_macro(name, alert_name, indent) %}
+{% filter indent(width=indent) %}
+{% set entity_name=name.replace(" ","").lower() %}
+{% set alert_title_name=alert_name.replace(" ","").lower() %}
+- type: custom:text-divider-row
+  text: {{ alert_name.replace("_"," ").title() }}
+- type: horizontal-stack
+  cards:
+{{ slider_control_button("minus-circle", "decrement_counter", entity_name, alert_name, "red",  4) }}
+{% filter indent(width=4) %}
+- type: custom:slider-entity-row
+  entity: input_number.{{ entity_name.replace(" ","_") }}{{ short_name }}{{ alert_name }}
+  name: Target Temperature
+  full_row: true
+{% endfilter %}
+{{ slider_control_button("plus-circle", "increment_counter", entity_name, alert_name, "green",  4) }}
+{% endfilter %}
+{% endmacro %}
+
+
+{% macro slider_control_macro(name, indent) %}
+{% filter indent(width=8) %}
+- type: "entities"
+  entities:
+    - entity: input_boolean.{{ name.replace(" ","").lower() }}_alerts_enabled
+      name: {{ name.replace("_"," ").title() }} Alerts Enabled
+{% endfilter %}
+{{ slider_control_horizontal_stack_macro(name, "_set_temp", 8)  }}
+{{ slider_control_horizontal_stack_macro(name, "_min_alert_value", 8)  }}
+{{ slider_control_horizontal_stack_macro(name, "_max_alert_value", 8)  }}
+{% endmacro %}
+

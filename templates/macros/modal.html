@@ -1,0 +1,29 @@
+{% from "macros/common.html" import labeled_input %}
+
+{% macro modal_footer_ok_cancel_buttons( name ) %}
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" form="{{ name }}ModalForm" class="btn btn-primary" id="{{ name }}ModalSubmitButton"></button>
+    </div>
+{% endmacro %}
+
+{% macro form_builder( name, fields ) %}
+<div id="{{ name }}Modal" class="modal fade" tabindex="-1" aria-labelledby="{{ name }}ModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="{{ name }}ModalForm" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{ name }}ModalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="col-md mb-3 border rounded p-2">
+                    {%  for field in fields %}
+                    {{ labeled_input(name, field) }}
+                    {% endfor %}
+                </div>
+            </form>
+            {{  modal_footer_ok_cancel_buttons( name ) }}
+        </div>
+    </div>
+</div>
+{% endmacro %}

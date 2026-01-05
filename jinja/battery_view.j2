@@ -1,0 +1,32 @@
+{% import 'modules/button-card.j2' as buttons %}
+{% import 'modules/headers.j2' as headers %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{{ headers.block_control() }}
+{{ headers.comment("BATTERY LEVELS") }}
+{{ headers.comment("DECONZ")}}
+title: Battery Levels
+icon: mdi:battery-70
+path: battery
+cards:
+  - type: vertical-stack
+    cards:
+      {% for device_type in zigbee.device_types -%}
+      - type: entities
+        title: {{ device_type.replace("_"," ").title() }}
+        state_color: true
+        entities: 
+          {% for device in zigbee.device_types[device_type].devices -%} 
+            - sensor.{{ device_type }}_{{ device.replace(" ","_") }}_battery
+          {% endfor %}
+      {% endfor %}
+{{ headers.comment("GOVEE")}}
+      - type: entities
+        title: GOVEE Thermometers
+        state_color: true
+        entities:
+{% for device in govee.devices -%}
+{% filter indent(width=10) %}
+- sensor.gv_{{device}}_battery
+{% endfilter %}
+{% endfor -%}
+

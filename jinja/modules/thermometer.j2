@@ -1,0 +1,14 @@
+{% macro thermometer_entities(slug_name, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- entities:
+  - entity: sensor.thermometer_{{ slug_name }}_temperature
+    show_state: true
+    show_name: false
+  - entity: sensor.thermometer_{{ slug_name }}_humidity
+    show_state: true
+    show_name: false
+  - entity: sensor.thermometer_{{ slug_name }}_pressure
+    show_state: true
+    show_name: false
+{% endfilter %}
+{% endmacro %}

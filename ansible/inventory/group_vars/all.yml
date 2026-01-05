@@ -1,0 +1,12 @@
+ansible_user: dgoldgar
+ssh_dir: "/home/dgoldgar/.ssh"
+ssh_user: "dgoldgar"
+
+
+generated_dir: "../../generated"
+
+nginx_sites_dir: "/opt/LITTERBOX/apps/nginx/sites-enabled"
+
+
+local_conf_dir: ""
+remote_conf_dir: ""

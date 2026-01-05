@@ -1,0 +1,8 @@
+pi: 
+  - "raspberry-slate"
+  - "raspberry-pearl"
+  - "raspberry-five"
+ubuntu: 
+  - "main"
+
+

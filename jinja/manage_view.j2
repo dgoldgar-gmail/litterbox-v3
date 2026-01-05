@@ -1,0 +1,139 @@
+{% import 'modules/application_tap_action.j2' as application_template %}
+{% import 'modules/button-card.j2' as buttons %}
+{% import 'modules/headers.j2' as headers %}
+{% import 'modules/thingino_template.j2' as thingino_template %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+{{ headers.comment("CONTAINERS") }}
+title: Manage
+icon: mdi:cog
+path: manage
+type: custom:vertical-layout
+cards:
+- type: vertical-stack
+  cards:
+  {% for host in hosts %}
+  {# % if "-" in host.name % #}
+  {% if host.name != "main" %}
+  {% set short_host = host.name.split("-")[1] %}
+  {% else %}
+  {% set short_host = host.name %}
+  {% endif %}
+  - type: custom:room-card
+    title: {{ short_host | capitalize }} Container Versions
+    rows:
+      - entities:
+      {% for container in host.containers %}
+      {% set appname = container['name'] %}
+{% set release_notes_url = container['release_notes'] %}
+        - entity: sensor.{{ short_host }}_{{ appname }}_version_info
+          show_state: true
+          name: {{ appname }}
+{% set action_map = 
+  { 
+    "stop":    {"service": "pyscript.control_containerized_app", "params": { "apphost": host.name, "appname": appname, "command": "shutdown" }}, 
+    "start":   {"service": "pyscript.control_containerized_app", "params": { "apphost": host.name, "appname": appname, "command": "start" }}, 
+    "restart": {"service": "pyscript.control_containerized_app", "params": { "apphost": host.name, "appname": appname, "command": "restart" }}, 
+    "upgrade": {"service": "pyscript.control_containerized_app", "params": { "apphost": host.name, "appname": appname, "command": "upgrade" }}
+  } 
+%}
+{{ application_template.action_popup(appname, host, release_notes_url, action_map, 6) }}
+{{ tap_actions.service_invoking_action("double_tap_action", "pyscript.schedule_containerized_app_update", {"appname": appname, "apphost": host.name }, "Are you sure you want to schedule " +  appname + " for upgrade?", 10 ) }}
+      {% endfor %}
+  {% endfor %}
+{{ headers.comment("AUTHELIA ENDPOINTS") }}
+  - type: custom:room-card
+    title: Authelia URLs
+    entities:
+    {% for endpoint in endpoints %}
+      {% if endpoint.entity %}
+      {% set entity_id_setting = endpoint.entity %}
+      {% else %}
+      {% set entity_id_setting = "sensor." + endpoint.host + "_" + endpoint.name + "_version_info" %}
+      {% endif %}
+      - entity: {{ entity_id_setting }}
+        show_name: true
+        show_icon: true
+        name: {{ endpoint.name }}
+        {% if endpoint.icon %}
+        icon: {{ endpoint.icon }}
+        {% endif %}
+        {% if endpoint.template %}
+        template: {{ endpoint.template }}
+        {% endif %}
+        {% set host_info =  hosts |selectattr( "name", "in", "raspberry-" + endpoint.host)|list | first %}
+        {% if host_info | length > 0  %}
+        {% set local_ip=host_info['ip'] %}
+        {% else %}
+        {% set local_ip = endpoint.host %}
+        {% endif %}
+{{ tap_actions.url_navigate_action("tap_action", "https://" + endpoint.name + ".authabitrail.duckdns.org:51443", 8)  }}
+{% set browser_mod_popup_style = { "icon_size": "15px", "dialog_min_width": "200", "dialog_max_width": "350", "dialog_min_height": "200", "dialog_max_height": "300"  } %}
+{{ tap_actions.browser_popup_action("double_tap_action", endpoint.name.title(), "binary_sensor.authelia_links_popup", endpoint.name.title() + " Links", browser_mod_popup_style, 8)  }}
+                type: horizontal-stack
+                cards:
+{% set url_popup_style = { "icon_size": "15px" } %}
+{{ buttons.url_button_card("Local",    "mdi:home",  "http://" + local_ip + ":" + endpoint.internal_port, url_popup_style, 18)}}
+{{ buttons.url_button_card("Authelia", "mdi:web",   "https://" + endpoint.name + ".authabitrail.duckdns.org:51443", url_popup_style, 18)}}
+    {% endfor %}
+    templates:
+      - name: frigate_template
+        template:
+          icon:
+            template:
+              styles: >
+                if (entity.state == "on") return 'color: gold';   else return
+                'steelblue: gold';
+              icon: |
+                return 'phu:frigate'
+{{ headers.comment("WEBCAM") }}
+  - type: custom:room-card
+    title: Webcams
+    info_entities:
+    {% for detection_type in webcam.detection_types %}
+      - entity: input_boolean.global_{{ detection_type }}_detection_notifications
+        show_name: false
+        show_icon: true
+        state_color: true
+{% if detection_type == "person" %}
+        icon: mdi:human
+{% else %}
+        icon: mdi:{{ detection_type }}
+{% endif %}
+        tap_action:
+          action: toggle
+    {% endfor %}
+    entities:
+        {% for camera in webcam.devices %}
+        - entity: binary_sensor.{{ camera.name }}_camera_all_occupancy
+          show_name: true
+          name: {{ camera.name | replace("_"," ") }}
+          show_icon: true
+          template: camera_state_template
+{% set browser_mod_popup_style = { "icon_size": "15px", "dialog_min_width": "200", "dialog_max_width": "350", "dialog_min_height": "200", "dialog_max_height": "300"  } %}
+{{ tap_actions.browser_popup_action("double_tap_action", camera.name, "binary_sensor.camera_settings_popup", camera.name.replace("_"," ").title() + " Camera Settings", browser_mod_popup_style, 10)  }}
+                  type: vertical-stack
+                  cards:
+{{ thingino_template.camera_details(camera.name, camera.ip, 20) }}
+{{ thingino_template.recording_options(camera.name,  20) }}
+{{ thingino_template.camera_notifications(camera.name,  20) }}
+{% set confirmation_text = "Are you sure you want to reboot " + camera.name + " camera?" %}
+                    - type: horizontal-stack
+                      cards:
+{% set reboot_popup_style = { "icon_size": "15px", "dialog_min_width": "200", "dialog_max_width": "350", "dialog_min_height": "200", "dialog_max_height": "300"  } %}
+{{ buttons.button_card("reboot", "pyscript.thingino_reboot", { "camera_name":  camera.name + "_camera"}, confirmation_text, reboot_popup_style, 24) }}
+{% set closebutton_popup_style = { "icon_size": "15px", "dialog_min_width": "200", "dialog_max_width": "350", "dialog_min_height": "200", "dialog_max_height": "300"  } %}
+{{ buttons.close_popup_button_card(false, closebutton_popup_style, 24) }}
+{{ tap_actions.url_navigate_action("tap_action", "https://webcam-" + camera.name.replace("_","") + ".authabitrail.duckdns.org:51443/mjpeg/1", 10)  }}
+        {% endfor %}
+    templates:
+      - name: camera_state_template
+        template:
+          icon:
+            template:
+              styles: >
+                if (entity.state == "on") return 'color: gold';   else return
+                'color: steelblue';
+              icon: >
+                if (entity.state == "on") return  'mdi:webcam';   else return
+                'mdi:webcam-off'

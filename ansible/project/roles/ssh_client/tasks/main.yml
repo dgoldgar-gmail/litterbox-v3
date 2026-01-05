@@ -1,0 +1,23 @@
+---
+
+- name: Ensure {{ ssh_dir }} directory exists
+  file:
+    path: "{{ ssh_dir }}"
+    state: directory
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: '0700'
+
+- name: Copy sshconfig to {{ ssh_config_dir }}
+  ansible.builtin.copy:
+    src: "{{ generated_dir }}/sshconfig/config"
+    dest: "{{ ssh_dir }}/config"
+    mode: "0644"
+
+
+#- name: Copy ssh key from /root/.ssh/homeassistant to remote host
+#  copy:
+#    content: "/root/.ssh/homeassistant"
+#    dest: "{{ ssh_dir }}/homeassistant"
+#    mode: '0600'
+#

@@ -1,0 +1,444 @@
+webcam:
+  devices:
+    - name: back_door
+      description: BACK DOOR CAMERA IN BASEMENT
+      ip: 192.168.100.150
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: cat_box
+      description: CAT BOX CAMERA
+      ip: 192.168.100.151
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: cat_food
+      description: CAT FOOD
+      ip: 192.168.100.152
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: driveway_1
+      description: DRIVEWAY CAMERA IN BEDROOM
+      ip: 192.168.100.153
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_path
+      description: FRONT DOOR CAMERA IN BEDROOM
+      ip: 192.168.100.155
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_door
+      description: FRONT DOOR
+      ip: 192.168.100.156
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_porch
+      description: FRONT PORCH CAMERA IN FAMILY ROOM
+      ip: 192.168.100.157
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: kitchen_porch
+      description: KITCHEN PORCH CAMERA IN FAMILY ROOM
+      ip: 192.168.100.158
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: wood_stove
+      description: WOOD STOVE CAMERA
+      ip: 192.168.100.159
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_1
+      description: AOQEE CAMERA 1
+      ip: 192.168.100.161
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_2
+      description: AOQEE CAMERA 2
+      ip: 192.168.100.162
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_3
+      description: AOQEE CAMERA 3
+      ip: 192.168.100.163
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_4
+      description: AOQEE CAMERA 4
+      ip: 192.168.100.164
+      rtsp_port: 554
+      rtsp_path: ch0
+endpoints:
+  - name: deconz
+    icon: mdi:zigbee
+    host: slate
+    internal_port: "6080"
+  - name: frigate
+    entity: update.frigate_server
+    template: frigate_template
+    host: main
+    internal_port: "5000"
+  - name: grafana
+    icon: si:grafana
+    host: pearl
+    internal_port: "3000"
+  - name: influxdb
+    icon: si:influxdb
+    host: pearl
+    internal_port: "8086"
+  - name: kibana
+    icon: si:kibana
+    host: five
+    internal_port: "5601"
+  - name: phoscon
+    entity: sensor.slate_deconz_version_info
+    icon: phu:phoscon
+    host: slate
+    internal_port: "9080"
+  - name: photoprism
+    entity: sensor.five_photoprism_version_info
+    icon: mdi:camera-burst
+    host: five
+    internal_port: "2342"
+  - name: router
+    entity: sensor.zenwifi_et9_3300_external_ip
+    icon: mdi:router-network
+    host: 192.168.50.1
+    internal_port: "80"
+  - name: webssh
+    icon: mdi:ssh
+    host: pearl
+    internal_port: "8888"
+govee:
+  devices:
+    woodstove:
+      entities:
+        - name: wood_stove
+          alert_default_state: "on"
+          limits:
+            min_alert_value:
+              initial: "120"
+              min: "0"
+              max: "500"
+              step: "5"
+            max_alert_value:
+              initial: "400"
+              min: "0"
+              max: "500"
+              step: "5"
+            set_temp:
+              initial: "350"
+              min: "0"
+              max: "600"
+              step: "5"
+          alert_types:
+            ABOVE_RANGE:
+              renotify_interval: 120
+            BELOW_RANGE:
+              renotify_interval: -1
+        - name: wood_stove2
+          alert_default_state: "on"
+          limits:
+            min_alert_value:
+              initial: "120"
+              min: "0"
+              max: "500"
+              step: "5"
+            max_alert_value:
+              initial: "400"
+              min: "0"
+              max: "500"
+              step: "5"
+            set_temp:
+              initial: "350"
+              min: "0"
+              max: "600"
+              step: "5"
+            alert_types:
+              ABOVE_RANGE:
+                renotify_interval: 120
+              BELOW_RANGE:
+                renotify_interval: -1
+    grill:
+      entities:
+        - name: grill_dome
+          alert_default_state: "off"
+          limits:
+            min_alert_value:
+              initial: "375"
+              min: "0"
+              max: "500"
+              step: "5"
+            max_alert_value:
+              initial: "425"
+              min: "0"
+              max: "600"
+              step: "5"
+            set_temp:
+              initial: "350"
+              min: "0"
+              max: "600"
+              step: "5"
+          alert_types:
+            ABOVE_RANGE:
+              renotify_interval: 120
+            BELOW_RANGE:
+              renotify_interval: 300
+            SET_TEMP:
+              renotify_interval: -1
+        - name: grill_meat
+          alert_default_state: "off"
+          limits:
+            min_alert_value:
+              initial: "135"
+              min: "0"
+              max: "225"
+              step: "5"
+            max_alert_value:
+              initial: "170"
+              min: "0"
+              max: "250"
+              step: "5"
+            set_temp:
+              initial: "160"
+              min: "0"
+              max: "350"
+              step: "5"
+          alert_types:
+            INSIDE_RANGE:
+              renotify_interval: 120
+            SET_TEMP:
+              renotify_interval: -1
+hosts:
+  - name: raspberry-five
+    collectors:
+    ip: 192.168.50.15
+    type: raspberry-pi
+    crontab:
+      - "*/5 * * * * /usr/bin/vcgencmd measure_temp > /opt/LITTERBOX/apps/homeassistant/config/vcgencmd_temp.out"
+      - "*/5 * * * * /usr/bin/vcgencmd measure_volts > /opt/LITTERBOX/apps/homeassistant/config/vcgencmd_volts.out"
+      - "0 * * * * /opt/LITTERBOX/bin/update_ducks_dns.sh authabitrail"
+      - "0 * * * * /opt/LITTERBOX/bin/update_ducks_dns.sh habitrail"
+      - "0 0 * * * /opt/LITTERBOX/bin/update_containerized_apps.py  >> /var/log/update_containerized_app.log 2>&1"
+      - "*/10 * * * * /usr/bin/python3 /opt/LITTERBOX/bin/ha_assistant.py 2>&1 > /dev/null"
+    containers:
+      - name: pihole
+        release_notes: https://github.com/pi-hole/pi-hole/releases
+      - name: postgres
+        release_notes: https://github.com/postgres/postgres/tags
+      - name: registry
+      - name: tandoor
+        release_notes: https://github.com/TandoorRecipes/recipes/releases
+    mounts:
+      - '/dev/sda'
+  - name: raspberry-pearl
+    ip: 192.168.50.12
+    type: raspberry-pi
+    collectors:
+      - radoneye
+    containers:
+      - name: grafana
+        release_notes: https://grafana.com/docs/grafana/latest/release-notes/
+      - name: influxdb
+        release_notes: https://docs.influxdata.com/influxdb/v2/reference/release-notes/influxdb/ 
+      - name: webssh
+    mounts:
+      - '/dev/sda'
+  - name: raspberry-slate
+    ip: 192.168.50.14
+    type: raspberry-pi
+    collectors:
+      - hosts
+      - containers
+    containers:
+      - name: authelia
+        release_notes: https://github.com/authelia/authelia/releases
+      #- name: certbot
+      #  release_notes: https://github.com/certbot/certbot/releases
+      - name: deconz
+        release_notes: https://github.com/dresden-elektronik/deconz-rest-plugin/releases
+      - name: homeassistant
+        release_notes: https://www.home-assistant.io/blog/categories/release-notes/
+      - name: nginx
+        release_notes: https://github.com/nginx/nginx/tags
+    mounts:
+      - '/dev/sda'
+#  - name: raspberry-three
+#    ip: 192.168.50.180
+#    type: raspberry-pi
+#    collectors:
+#      - radoneye
+#    containers:
+#      #- name: filebeat
+#      #- name: metricbeat
+#    mounts:
+#      - '/dev/sda'
+#    nvme_devices:
+  - name: ubuntu-one
+    ip: 192.168.50.101
+    type: ubuntu
+    containers:
+      - name: mariadb
+        release_notes: https://mariadb.com/kb/en/release-notes/
+      - name: photoprism
+        release_notes: https://docs.photoprism.app/release-notes/
+    mounts:
+    nvme_devices:
+      - '/dev/nvme0n1p1'
+  - name: main
+    ip: 192.168.50.11
+    type: ubuntu
+    collectors:
+    containers:
+      - name: frigate
+        release_notes: https://github.com/blakeblackshear/frigate/releases
+    mounts:
+      - '/dev/sda'
+    nvme_devices: 
+      - /dev/nvme0 
+radoneye:
+  - serial: 000IE08RE349
+    location: game_room
+tasmota:
+  devices: 
+    - name: tasmota_01
+      full_name: Tasmota Switch 01
+      type: switch
+      description: Living Room
+      ip: 192.168.50.231
+    - name: tasmota_02
+      full_name: Tasmota Switch 02
+      type: switch
+      description: Game Room
+      ip: 192.168.50.232
+    - name: tasmota_03
+      type: switch
+      full_name: Tasmota Switch 03
+      description: Washing Machine
+      ip: 192.168.50.233
+    - name: tasmota_04
+      type: switch
+      full_name: Tasmota Switch 04
+      description: Sams Room
+      ip: 192.168.50.234
+    - name: tasmota_05
+      type: switch
+      full_name: Tasmota Switch 05
+      description: Office Lights
+      ip: 192.168.50.235
+    - name: tasmota_06
+      type: switch
+      full_name: Tasmota Switch 06
+      description: Gym
+      ip: 192.168.50.236
+    - name: tasmota_07
+      type: switch
+      full_name: Tasmota Switch 07
+      description: Television
+      ip: 192.168.50.237
+    - name: tasmota_08
+      type: switch
+      full_name: Tasmota Switch 08
+      description: Cat Box
+      ip: 192.168.50.238
+    - name: tasmota_09
+      type: switch
+      full_name: Tasmota Switch 09
+      description: Basement Fridge
+      ip: 192.168.50.239
+    - name: tasmota_10
+      type: switch
+      full_name: Tasmota Switch 10
+      description: Dishwasher
+      ip: 192.168.50.240
+    - name: tasmota_bulb_01
+      type: bulb
+      full_name: Tasmota Bulb 01
+      description: Game Room Desk Lamp
+      ip: 192.168.0.200
+    - name: tasmota_bulb_02
+      type: bulb
+      full_name: Tasmota Bulb 02
+      description: Woodstove Light
+      ip: 192.168.0.3
+    - name: tasmota_rgb_01
+      type: rgb
+      full_name: Tasmota Bulb 01
+      description: Sams Room RGB Lights
+      ip: 192.168.0.144
+    - name: tasmota_rgb_02
+      type: rgb
+      full_name: Tasmota Bulb 02
+      description: Game Room RGB Lights
+      ip: 192.168.0.223
+    - name: tasmota_esp32_01
+      type: esp32
+      full_name: Tasmota ESP32 01
+      description: Game Room ESP32
+      ip: 192.168.0.45
+  entities:
+    switch:
+      - name: Today
+        full_name: energy_today
+        icon: mdi:sun-angle
+      - name: Yesterday
+        full_name: energy_yesterday
+        icon: mdi:moon-waning-crescent
+      - name: Total
+        full_name: energy_total
+        icon: mdi:infinity
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+    bulb:
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+    rgb:
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+    esp32:
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+      - name: Blerry Version
+        full_name: blerry_version
+        icon: mdi:fruit-grapes
+zigbee:
+  device_types:
+    thermometer:
+      devices: 
+        - cat_box_room
+        - basement_vestibule
+        - drum_room
+        - family_room
+        - game room
+        - gym
+        - main_hall
+        - master_bath
+        - master bedroom
+        - sams room
+        - woodstove
+    door_sensor:
+      devices: 
+        - front
+        - kitchen
+        - basement
+    motion_sensor:
+      devices: 
+        - basement vestibule
+        - cat box room
+        - family room
+        - game room
+        - gym 
+        - main hall
+    magic_cube:
+      devices:
+        - family_room
+        - game_room
+        - kitchen
+        - master_bedroom
+        - sams_room
+    button:
+      devices:
+        - drum room 
+        - woodstove
+

@@ -1,0 +1,28 @@
+{% import 'modules/button-card.j2' as buttons %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{% macro action_popup(app_name, host, release_notes, action_map, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+{% set browser_mod_popup_style = { "icon_size": "15px", "dialog_min_width": "200", "dialog_max_width": "350", "dialog_min_height": "200", "dialog_max_height": "300"  } %} 
+{{ tap_actions.browser_popup_action("tap_action", app_name.title(), "binary_sensor.application_actions_popup", app_name.title() + " on " + host.name.title() , browser_mod_popup_style, 4)  }}
+            type: vertical-stack
+            cards:
+              {% set short_host = host.name.replace("raspberry-","") %}
+              - type: entities
+                entities:
+                - entity: sensor.{{ short_host }}_{{ app_name }}_state 
+                  name: state
+                - entity: sensor.{{ short_host }}_{{ app_name }}_status
+                  name: status
+                - entity: sensor.{{ short_host }}_{{ app_name }}_created_at
+                  name: created
+                - entity: sensor.{{ short_host }}_{{ app_name }}_image
+                  name: image
+{{ tap_actions.url_navigate_action("tap_action", release_notes, 18) }}
+              - type: horizontal-stack
+                cards:
+                {% for action_name, action_config in action_map.items() %}
+                {% set confirmation_text = "Are you sure you want to " + action_name + " " + app_name + " on " + host.name + " now?" %}
+{{ buttons.button_card(action_name, action_config.service, action_config.params, confirmation_text, browser_mod_popup_style, 16) }}
+                {% endfor %} 
+{% endfilter %}
+{% endmacro %}

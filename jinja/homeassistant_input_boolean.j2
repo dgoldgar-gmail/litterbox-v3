@@ -1,0 +1,102 @@
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+
+{{ headers.comment("GLOBAL") }}
+global_phone_notifications_enabled_flag:
+  name: Globally enabled/disable phone notifications 
+  initial: on
+  icon: mdi:cog-outline
+global_persistent_notifications_enabled_flag:
+  name: Globally enabled/disable persistent notifications 
+  initial: on
+  icon: mdi:cog-outline
+
+{{ headers.comment("GOVEE") }}
+{% for device in govee.devices %}
+{% for entity in govee.devices[device].entities %}
+##
+#{{ entity['name'].replace("_"," ").title() }}
+{{ entity['name'].replace("_","") }}_phone_notifications_enabled:
+  name: "{{ entity['name'].replace("_"," ").title()}} temperature phone notifications enabled"
+  initial: {{ entity['alert_default_state']}}
+  icon: mdi:alert
+{{ entity['name'].replace("_","") }}_persistent_notifications_enabled:
+  name: "{{ entity['name'].replace("_"," ").title()}} temperature persistent notifications are enabled"
+  initial: {{ entity['alert_default_state']}}
+  icon: mdi:alert
+{% endfor %}
+{% endfor %}
+
+{{ headers.comment("WEBCAM")}}
+{% set cameras = webcam.devices %}
+{% for camera in cameras %}
+##
+# {{ camera.name.upper() }}
+{{ camera.name}}_camera_phone_notifications_enabled:
+  name: "{{ (camera.name).replace("_"," ").title() }} Camera Event Phone Notifications"
+{{ camera.name}}_camera_persistent_notifications_enabled:
+  name: "{{ (camera.name).replace("_"," ").title() }} Camera Event Persistent Notifications"
+{{ camera.name}}_camera_nightvision:
+  name: "{{ (camera.name).replace("_"," ").title() }} Camera Night Vision"
+{{ camera.name}}_camera_blue_led:
+  name: "{{ (camera.name).replace("_"," ").title() }} Camera Blue Led"
+{{ camera.name}}_camera_yellow_led:
+  name: "{{ (camera.name).replace("_"," ").title() }} Camera Yellow Led"
+{{ camera.name}}_camera_ir_cut:
+  name: "{{ (camera.name).replace("_"," ").title() }} Camera IR Cut"
+{{ camera.name}}_camera_ir_led:
+  name: "{{ (camera.name).replace("_"," ").title() }} Camera IR LED"
+{% endfor %}
+
+######
+### DETECTION
+{% set detection_types = webcam.detection_types %}
+{% for detection_type in detection_types %}
+##
+#{{ detection_type.upper() }}
+global_{{ detection_type }}_detection_notifications:
+  name: Globally enabled/disable {{ detection_type.title() }} detection notifications
+  initial: on
+{% endfor %}
+
+{{ headers.comment("DOORS SENSORS") }}
+##
+# Global Flag
+door_open_close_info:
+  name: Globally enabled/disable open/close notifications
+  initial: off
+  icon: mdi:information
+door_left_open_alerts:
+  name: Globally enabled/disable door left-open notifications
+  initial: on
+  icon: mdi:alert
+{% for door in zigbee.device_types.door_sensor.devices %}
+##
+# {{ door.title() }}
+{{ door }}_door_open_close_phone_notifications_enabled: 
+  name: {{ door.title() }} Open/Close Notifications
+  initial: off
+  icon: mdi:phone
+{{ door }}_door_open_close_persistent_notifications_enabled: 
+  name: {{ door.title() }} Open/Close Notifications
+  initial: on
+  icon: mdi:database
+{{ door }}_door_left_open_phone_notifications_enabled:
+  name: {{ door.title() }} Left Open Notifications
+  initial: on
+  icon: mdi:phone
+{{ door }}_door_left_open_persistent_notifications_enabled:
+  name: {{ door.title() }} Left Open Notifications
+  initial: on
+  icon: mdi:database
+{% endfor %}
+
+{{ headers.comment("CERT")}}
+cert_phone_notifications_enabled:
+  name: Certificate Expiry Notifications Enabled
+  initial: on
+  icon: mdi:certificate
+cert_persistent_notifications_enabled:
+  name: Certificate Expiry Notifications Enabled
+  initial: on
+  icon: mdi:certificate

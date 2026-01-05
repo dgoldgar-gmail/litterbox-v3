@@ -1,0 +1,43 @@
+{% macro gauge(card_name, card_info, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+{% import 'modules/button-card.j2' as buttons %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{% import 'modules/thermometer-monitor-popup.j2' as temp_monitor_popup_macros %}
+{% import 'modules/slider-control.j2' as slider_control_macros %}
+- type: vertical-stack
+  cards:
+  {% set suppress_settings = card_info['suppress_settings'] %}
+  {% set shortname = card_name.replace(" ","").lower() %}
+  {% set firstname = card_name.split(" ")[0] %}
+  {% set lastname = card_name.split(" ")[1] %}
+  {% if suppress_settings is undefined %}
+  - type: custom:button-card
+    name: {{ firstname| capitalize }} {{ lastname | capitalize }} Temperature
+{{ temp_monitor_popup_macros.popup_tap_action(firstname + " " + lastname, shortname, 4) }}
+  {% endif %}
+  - type: custom:canvas-gauge-card
+    {% if card_info['entity'] %}
+    entity: {{ card_info['entity' ]}}
+    {% else %}
+    entity: sensor.{{ shortname }}_temp_gv
+    {% endif %}
+    gauge:
+      type: radial-gauge
+      title: {{ firstname | capitalize }} {{ lastname | capitalize }}
+      width: {{ card_info['width'] }}
+      height: {{ card_info['height'] }}
+      minValue: {{ card_info['minValue'] }}
+      maxValue: {{ card_info['maxValue'] }}
+      minor-ticks: {{ card_info['minor-ticks'] }}
+      majorTicks: {{ card_info['majorTicks'] }} 
+      highlights: 
+        {% for highlight in card_info['highlights'] %}
+        - color: {{ highlight['color'] }}
+          from: {{ highlight['from'] }}
+          to: {{ highlight['to'] }}
+        {% endfor %}
+{% endfilter %}
+{% endmacro %}
+
+
+

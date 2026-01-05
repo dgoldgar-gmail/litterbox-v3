@@ -1,0 +1,27 @@
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+## CUBES
+###
+{% for cube in zigbee.device_types.magic_cube.devices %}
+{{ cube }}_cube:
+  name: "{{ cube.replace("_"," ").title()}} Cube"
+  initial: 1
+  icon: mdi:cube
+  min: 1
+  max: 6
+  step: 1
+{% endfor %}
+{{ headers.comment("GOVEE")}}
+{% for device in govee.devices %}
+{% for entity in govee.devices[device].entities %}
+{% set short_name = entity['name'].replace("_", "") %}
+{% for limit in entity.limits %}
+{{ short_name }}_{{ limit }}:
+  name: {{ entity['name']. replace("_"," ").title() }} {{ limit.replace("_"," ").title() }}
+{% for key in entity.limits[limit] %}
+  {{ key }}: {{ entity.limits[limit][key] }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+

@@ -1,0 +1,25 @@
+---
+
+- name: Ensure /root/.ssh directory exists
+  file:
+    path: "{{ ssh_dir }}"
+    state: directory
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+    mode: '0700'
+
+- name: Copy sshconfig to {{ ssh_dir }}
+  ansible.builtin.copy:
+    src: "{{ generated_dir}}/sshconfig/config"
+    dest: "{{ ssh_dir }}/config"
+    mode: "0644"
+
+- name: Decrypt git repo private key to localhost
+  ansible.builtin.copy:
+    src: "files/litterbox_deploy_key"
+    dest: "{{ ssh_dir }}/litterbox_deploy_key"
+    owner: "{{ ssh_user }}"
+    mode: '0600'
+  delegate_to: localhost
+  become: false
+

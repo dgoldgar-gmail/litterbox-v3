@@ -1,0 +1,308 @@
+webcam:
+  devices:
+  - name: cat_box
+    description: CAT BOX CAMERA
+    ip: 192.168.100.151
+    rtsp_port: aaab
+    rtsp_path: bbbc
+  - name: cat_food
+    description: CAT FOOD
+    ip: 192.168.100.152
+    rtsp_port: 554
+    rtsp_path: ch0
+  - name: driveway_1
+    description: DRIVEWAY CAMERA IN BEDROOM
+    ip: 192.168.100.153
+    rtsp_port: 554
+    rtsp_path: ch0
+  - name: front_path
+    description: FRONT DOOR CAMERA IN BEDROOM
+    ip: 192.168.100.155
+    rtsp_port: 554
+    rtsp_path: ch0
+  - name: front_door
+    description: FRONT DOOR
+    ip: 192.168.100.156
+    rtsp_port: undefinedabc
+    rtsp_path: def
+  - name: null
+    description: test
+    ip: test
+    rtsp_port: test
+    rtsp_path: test
+endpoints:
+- name: phoscon
+  icon: abc
+  host: def
+  internal_port: ''
+  entity: jkl
+  template: mnop
+- name: pihole
+  entity: sensor.five_pihole_version_info
+  icon: mdi:pi-hole
+  host: five
+  internal_port: '80'
+- name: photoprism
+  entity: sensor.one_photoprism_version_info
+  icon: mdi:camera-burst
+  host: ubuntu-one
+  internal_port: '2342'
+- name: router
+  entity: sensor.zenwifi_et9_3300_external_ip
+  icon: mdi:router-network
+  host: 192.168.50.1
+  internal_port: '80'
+- name: webssh
+  icon: mdi:ssh
+  host: pearl
+  internal_port: '8888'
+govee:
+  devices:
+    woodstove:
+      entities:
+      - name: wood_stove
+        alert_default_state: 'on'
+        limits:
+          min_alert_value:
+            initial: '120'
+            min: '0'
+            max: '500'
+            step: '5'
+          max_alert_value:
+            initial: '400'
+            min: '0'
+            max: '500'
+            step: '5'
+          set_temp:
+            initial: '350'
+            min: '0'
+            max: '600'
+            step: '5'
+        alert_types:
+          ABOVE_RANGE:
+            renotify_interval: 120
+          BELOW_RANGE:
+            renotify_interval: -1
+      - name: wood_stove2
+        alert_default_state: 'on'
+        limits:
+          min_alert_value:
+            initial: '120'
+            min: '0'
+            max: '500'
+            step: '5'
+          max_alert_value:
+            initial: '400'
+            min: '0'
+            max: '500'
+            step: '5'
+          set_temp:
+            initial: '350'
+            min: '0'
+            max: '600'
+            step: '5'
+          alert_types:
+            ABOVE_RANGE:
+              renotify_interval: 120
+            BELOW_RANGE:
+              renotify_interval: -1
+    grill:
+      entities:
+      - name: grill_dome
+        alert_default_state: 'off'
+        limits:
+          min_alert_value:
+            initial: '375'
+            min: '0'
+            max: '500'
+            step: '5'
+          max_alert_value:
+            initial: '425'
+            min: '0'
+            max: '600'
+            step: '5'
+          set_temp:
+            initial: '350'
+            min: '0'
+            max: '600'
+            step: '5'
+        alert_types:
+          ABOVE_RANGE:
+            renotify_interval: 120
+          BELOW_RANGE:
+            renotify_interval: 300
+          SET_TEMP:
+            renotify_interval: -1
+      - name: grill_meat
+        alert_default_state: 'off'
+        limits:
+          min_alert_value:
+            initial: '135'
+            min: '0'
+            max: '225'
+            step: '5'
+          max_alert_value:
+            initial: '170'
+            min: '0'
+            max: '250'
+            step: '5'
+          set_temp:
+            initial: '160'
+            min: '0'
+            max: '350'
+            step: '5'
+        alert_types:
+          INSIDE_RANGE:
+            renotify_interval: 120
+          SET_TEMP:
+            renotify_interval: -1
+    test:
+      entities: []
+hosts:
+- name: raspberry-pearl
+  ip: 192.168.50.123
+  type: raspberry-pi
+  collectors:
+  - radoneye
+  - abc
+  crontab: []
+  mounts: []
+  nvme_devices: []
+  containers:
+  - name: grafana
+    release_notes: https://grafana.com/docs/grafana/latest/release-notes/
+  - name: influxdb
+    release_notes: https://docs.influxdata.com/influxdb/v2/reference/release-notes/influxdb/
+  - name: radoneye
+    release_notes: ''
+  - name: webssh
+    release_notes: ''
+- name: raspberry-slate
+  ip: 192.168.50.14
+  type: raspberry-pi
+  collectors:
+  - hosts
+  - containers
+  crontab:
+  - xxx
+  mounts:
+  - xxx
+  nvme_devices:
+  - xxx
+  containers:
+  - name: authelia
+    release_notes: https://github.com/authelia/authelia/releasesXX
+  - name: deconz
+    release_notes: https://github.com/dresden-elektronik/deconz-rest-plugin/releases
+  - name: nginx
+    release_notes: https://github.com/nginx/nginx/tags
+- name: ubuntu-one
+  ip: 192.168.50.101
+  type: ubuntu
+  containers:
+  - name: mariadb
+    release_notes: https://mariadb.com/kb/en/release-notes/
+  - name: photoprism
+    release_notes: https://docs.photoprism.app/release-notes/
+  mounts: null
+  nvme_devices:
+  - /dev/nvme0n1p1
+radoneye:
+- name: radoneye1
+  serial: abc
+  location: def
+tasmota:
+  devices:
+  - name: tasmota_07
+    type: switch
+    full_name: Tasmota Switch 07
+    description: Television
+    ip: 192.168.50.237
+  - name: tasmota_08
+    type: switch
+    full_name: Tasmota Switch 08
+    description: Cat Box
+    ip: 192.168.50.238
+  - name: tasmota_09
+    type: switch
+    full_name: Tasmota Switch 09
+    description: Basement Fridge
+    ip: 192.168.50.239
+  - name: tasmota_10
+    type: switch
+    full_name: Tasmota Switch 10
+    description: Dishwasher
+    ip: 192.168.50.240
+  - name: test
+    full_name: x
+    type: switch
+    description: va
+    ip: 192.168.100.131
+  entities:
+    switch:
+    - name: Today
+      full_name: energy_today
+      icon: mdi:sun-angle
+    - name: Yesterday
+      full_name: energy_yesterday
+      icon: mdi:moon-waning-crescent
+    - name: Total
+      full_name: energy_total
+      icon: mdi:infinity
+    - name: Version
+      full_name: version
+      icon: si:tasmota
+    bulb:
+    - name: Version
+      full_name: version
+      icon: si:tasmota
+    rgb:
+    - name: Version
+      full_name: version
+      icon: si:tasmota
+    esp32:
+    - name: Version
+      full_name: version
+      icon: si:tasmota
+    - name: Blerry Version
+      full_name: blerry_version
+      icon: mdi:fruit-grapes
+zigbee:
+  device_types:
+    thermometer:
+      devices:
+      - cat_box_room
+      - basement_vestibule
+      - drum_room
+      - family_room
+      - game room
+      - gym
+      - main_hall
+      - master_bath
+      - master bedroom
+      - sams room
+      - woodstove
+    door_sensor:
+      devices:
+      - front
+      - kitchen
+      - basement
+    motion_sensor:
+      devices:
+      - basement vestibule
+      - cat box room
+      - family room
+      - game room
+      - gym
+      - main hall
+    magic_cube:
+      devices:
+      - family_room
+      - game_room
+      - kitchen
+      - master_bedroom
+      - sams_room
+    button:
+      devices:
+      - drum room
+      - woodstove

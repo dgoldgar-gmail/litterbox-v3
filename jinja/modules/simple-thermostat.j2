@@ -1,0 +1,25 @@
+{% macro simple_thermostat_card(card_name, card_info,indent_amount) %}
+{% filter indent(width=indent_amount) %}
+########### HELLO!
+- type: custom:simple-thermostat
+  entity: {{ card_info['entity'] }}
+  {% if card_info['hide_title'] is undefined %}
+  header:
+    name: {{ card_name }}
+  {% else %}
+  header: false
+  {% endif %}
+  layout:
+    - step: row
+  control:
+    hvac:
+      _name: Manual
+    preset:
+      _name: Auto
+      {% for presetattr in card_info['preset'] %}
+      {{ presetattr }}:
+        icon: {{ card_info['preset'][presetattr] }}
+        name: null
+      {% endfor %}
+{% endfilter %}
+{% endmacro %}

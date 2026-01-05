@@ -1,0 +1,60 @@
+sensor.woodstove_temperature_gv:
+  name: woodstove
+  defaults: 
+    alert_enabled: on
+    min_alert_value: 120
+    max_alert_value: 400
+    set_temp: 220
+  monitor_types: 
+    - ABOVE_RANGE
+    - BELOW_RANGE
+  renotify:
+    ABOVE_RANGE_INTERVAL: 120
+    BELOW_RANGE_INTERVAL: -1
+
+sensor.woodstove_temperature2_gv:
+  name: woodstove2
+  defaults: 
+    alert_enabled: on
+    min_alert_value: 120
+    max_alert_value: 400
+    set_temp: 220
+  monitor_types: 
+    - ABOVE_RANGE
+    - BELOW_RANGE
+  renotify:
+    ABOVE_RANGE_INTERVAL: 120
+    BELOW_RANGE_INTERVAL: -1
+  
+  
+
+sensor.grillmeat_temp_gv:
+  name: grillmeat
+  defaults: 
+    alert_enabled: off
+    min_alert_value: 195
+    max_alert_value: 200
+    set_temp: 198
+  monitor_types: 
+    - INSIDE_RANGE
+    - SET_TEMP
+  renotify:
+    INSIDE_RANGE_INTERVAL: 120
+    SET_TEMP_INTERVAL: -1
+
+sensor.grilldome_temp_gv:
+  name: grilldome
+  defaults: 
+    alert_enabled: off
+    min_alert_value: 195
+    max_alert_value: 215
+    set_temp: 200
+  monitor_types: 
+    - ABOVE_RANGE
+    - BELOW_RANGE
+    - SET_TEMP
+  renotify:
+    ABOVE_RANGE_INTERVAL: 120
+    BELOW_RANGE_INTERVAL: 300
+    SET_TEMP_INTERVAL: -1
+

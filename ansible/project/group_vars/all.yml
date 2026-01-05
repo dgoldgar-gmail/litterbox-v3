@@ -1,0 +1,3 @@
+ansible_user: dgoldgar
+ansible_ssh_private_key_file: /home/dgoldgar/.ssh/homeassistant
+ansible_ssh_common_args: "-o IdentitiesOnly=yes"

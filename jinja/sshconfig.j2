@@ -1,0 +1,12 @@
+{% import 'modules/headers.j2' as headers %}
+{% import 'modules/ssh.j2' as ssh %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+{{ headers.comment("HOSTS") }}
+{% for host in hosts %}
+{{ ssh.ssh_config_entry([host.name.replace("_",""),  host.name.split("-")[1], host.ip ], host.ip, "~/.ssh/homeassistant", false) }}
+{% endfor %}
+{{ headers.comment("WEBCAMS") }}
+{% set cameras = webcam.devices %}
+{% for camera in cameras %}
+{{ ssh.ssh_config_entry(["camera-" + camera.name.replace("_",""), camera.ip], camera.ip, "~/.ssh/homeassistant", true) }}
+{% endfor %}

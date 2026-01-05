@@ -1,0 +1,25 @@
+---
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ remote_conf_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Find all files in conf dir
+  ansible.builtin.find:
+    paths: "{{ local_conf_dir }}"
+    file_type: file
+  delegate_to: localhost
+  run_once: true
+  register: conf_files
+
+- name: Copy files to remote
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{ remote_conf_dir }}/{{ item.path | basename }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ conf_files.files }}"

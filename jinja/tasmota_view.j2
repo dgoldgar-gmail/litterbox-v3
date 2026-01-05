@@ -1,0 +1,46 @@
+{% import 'modules/button-card.j2' as buttons %}
+{% import 'modules/headers.j2' as headers %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{{ headers.block_control() }}
+{{ headers.comment("TASMOTA") }}
+title: Tasmota
+icon: si:tasmota
+path: tasmota
+cards:
+  - type: vertical-stack
+    cards:
+      {% for device in tasmota.devices -%}
+      - type: custom:room-card
+        title:  {{ device.description }}
+        rows: 
+          - entities:
+            {% set entities_for_type = tasmota.entities[device.type] -%}
+            {% for entity in entities_for_type -%}
+            - entity: sensor.{{ device.name }}_{{ entity.full_name }}
+              show_state: true
+              name: {{ entity.name }}
+              show_icon: true
+              icon: {{ entity.icon }}
+{% set browser_mod_popup_style = { "icon_size": "15px", "dialog_min_width": "120", "dialog_max_width": "150", "dialog_min_height": "130", "dialog_max_height": "150"  } %}
+{{ tap_actions.browser_popup_action("tap_action", device.name.title(), "binary_sensor.tasmota_links_popup", device.name.replace("_"," ").title() + " Links", browser_mod_popup_style, 14)  }}
+                      type: horizontal-stack
+                      cards:
+{% set url_popup_style = { "icon_size": "15px" } %}
+{{ buttons.url_button_card("Local",    "mdi:home", "http://" + device.ip, url_popup_style, 24)}}
+{{ buttons.url_button_card("Authelia", "mdi:web",  "https://" + device.name.replace("_","-") + ".authabitrail.duckdns.org:51443", url_popup_style, 24)}}
+              double_tap_action:
+                action: call-service
+                service: pyscript.upgrade_tasmota_device
+                service_data:
+                  {% if device.type == "bulb" %}
+                  entity: light.{{ device.name }}_light_light_0
+                  {% elif device.type == "rgb" %}
+                  entity: light.{{ device.name }}_light_light_0
+                  {% else %}
+                  entity: switch.{{ device.name.replace("_switch","")  }}
+                  {% endif %}
+                confirmation:
+                  text: >-
+                    Are you sure you want to schedule {{ device.full_name}} ({{ device.description }}) for upgrade?
+            {% endfor %}
+      {% endfor %}

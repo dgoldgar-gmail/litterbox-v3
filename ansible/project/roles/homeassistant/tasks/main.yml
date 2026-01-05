@@ -1,0 +1,14 @@
+---
+
+- name: "Provision plain-text secrets.yml to Home Assistant"
+  ansible.builtin.copy:
+    src: "ansible/project/group_vars/all/secrets.yml"
+    dest: "/opt/LITTERBOX/apps/homeassistant/secrets.yaml"
+    mode: '0600'
+    owner: homeassistant
+    backup: true
+
+
+
+# TODO:  Input booleans, inputselects numbers etc...
+# Perhaps certificates...

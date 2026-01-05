@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Provisioner - LITTERBOX Manager{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Ansible Provisioner</h2>
+
+    <form id="provision-form">
+        <div id="host-groups" class="mb-4">
+            <!-- populated by hosts.js -->
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Deploy
+        </button>
+    </form>
+
+</div>
+
+
+<script>
+    const inventory = {{ inventory | tojson }};
+    const provisionBaseUrl = "{{ url_for('ansible.provision') }}";
+</script>
+<script src="{{ url_for('static', filename='ansible/hosts.js') }}"></script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
+{% endblock %}

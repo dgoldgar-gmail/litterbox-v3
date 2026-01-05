@@ -1,0 +1,107 @@
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{% macro api_popup(camera_name, api_name, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: custom:button-card
+  name: {{ api_name.replace("_"," ").title() }}
+  styles:
+    name:
+    - color: '#4682b4'
+{% set browser_mod_popup_style = { "icon_size": "15px", "dialog_min_width": "200", "dialog_max_width": "350", "dialog_min_height": "200", "dialog_max_height": "300"  } %}
+{{ tap_actions.browser_popup_action("tap_action", camera_name.replace("_"," ").title() + " API", "binary_sensor.camera_settings_popup", camera_name.replace("_"," ").title() + " Camera " + api_name.replace("_"," ").title(), browser_mod_popup_style,  2)  }}
+          type: vertical-stack
+          cards:
+            - type: custom:button-card
+              entity: input_boolean.enable_disable
+              show_name: false
+              size: 10%
+              state:
+                - value: 'on'
+                  icon: mdi:toggle-switch
+                - value: 'off'
+                  icon: mdi:toggle-switch-off
+            - type: custom:button-card
+              name: Apply
+{{ tap_actions.service_invoking_action("tap_action", "pyscript.openmiko_camera_api", {"api": api_name, "camera": camera_name + "_camera"}, None, 14) }}
+              {#
+              tap_action:
+                action: call-service
+                service: pyscript.openmiko_camera_api
+                service_data:
+                  api: {{ api_name }}
+                  camera: {{ camera_name }}_camera
+              #}
+{% endfilter %}
+{% endmacro %}
+
+{% macro camera_details(name, localip, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: entities
+  entities:
+{{ entity_stanza("sensor." + name + "_camera_last_updated", "Last Updated", "mdi:timer", Undefined, 4) }}
+{{ entity_stanza("sensor." + name + "_camera_uptime", "Uptime", "mdi:timer", Undefined, 4) }}
+{{ entity_stanza("sensor." + name + "_camera_local_ip", "Local IP", "mdi:ip", Undefined, 4) }}
+      tap_action:
+        action: url
+        url_path: "http://{{ localip }}"
+{{ entity_stanza("sensor." + name + "_camera_version", "Version", "mdi:pound", Undefined, 4) }}
+{% endfilter %}
+{% endmacro %}
+
+{% macro recording_options(name,  indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: custom:room-card
+  title: Recording Options
+  rows:
+    - entities:
+{{ entity_stanza("switch." + name + "_camera_detect", "Detect", Undefined, "on_off_template", 8) }}
+{{ entity_stanza("switch." + name + "_camera_motion", "Motion", Undefined, "on_off_template", 8) }}
+{{ entity_stanza("switch." + name + "_camera_recordings", "Recordings", Undefined, "on_off_template", 8) }}
+{{ entity_stanza("switch." + name + "_camera_snapshots", "Snapshots", Undefined, "on_off_template", 8) }}
+{{ on_off_template(2) }}
+{% endfilter %}
+{% endmacro %}
+
+{% macro camera_notifications(name, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: custom:room-card
+  title: Camera Notifications
+  rows:
+    - entities:
+{{ entity_stanza("input_boolean." + name + "_camera_phone_notifications_enabled", "Phone", "mdi:phone", "on_off_template" ,8) }}
+{{ entity_stanza("input_boolean." + name + "_camera_persistent_notifications_enabled", "Persistent", "mdi:database", "on_off_template" ,8) }}
+{{ on_off_template(2) }}
+{% endfilter %}
+{% endmacro %}
+
+{% macro on_off_template(indent_amount) %}
+{% filter indent(width=indent_amount) %}
+templates:
+  - name: on_off_template
+    show_state: true
+    template:
+      tap_action:
+        action: toggle
+      show_icon: true
+      icon:
+        template:
+          styles: >-
+            if (entity.state == 'on') return 'color:
+            gold';   else return 'color: steelblue';  
+{% endfilter %}
+{% endmacro %}
+
+{% macro entity_stanza(entity_id, name, icon, template , indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- entity: {{ entity_id }}
+  show_icon: true
+  name: {{ name  }}
+{% if icon is not undefined %}
+  icon: {{ icon }}
+{% endif %}
+{% if template is not undefined %}
+  template: {{ template  }}
+{% endif %}
+{% endfilter %}
+{% endmacro %}
+
+

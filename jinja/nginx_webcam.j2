@@ -1,0 +1,22 @@
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+{% set cameras = webcam.devices %}
+{% for camera in cameras -%}
+###########################################
+## {{ camera.name | upper }}
+server {
+        listen 443 ssl;
+        ssl_certificate     ssl/fullchain.pem;
+        ssl_certificate_key ssl/privkey.pem;
+        server_name webcam-{{ camera.name | replace("_","") }}.authabitrail.duckdns.org;
+        include /etc/nginx/snippets/authelia-location.conf;
+        set $upstream_webcam_{{ camera.name }} http://{{ camera.ip }};
+        location /mjpeg/1 {
+            include /etc/nginx/snippets/proxy.conf;
+            include /etc/nginx/snippets/authelia-authrequest.conf;
+            proxy_pass       $upstream_webcam_{{ camera.name }}/mjpeg/1;
+            proxy_buffering    off;
+            proxy_cache        off;
+        }
+}
+{% endfor -%}

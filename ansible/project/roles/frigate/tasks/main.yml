@@ -1,0 +1,16 @@
+---
+
+- name: Ensure /opt/LITTERBOX/apps/frigate/config directory exists
+  file:
+    path: "/opt/LITTERBOX/apps/frigate/config"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: '0700'
+
+- name: Copy frigate config.yml to /opt/LITTERBOX/apps/frigate/config
+  ansible.builtin.copy:
+    src: "{{ generated_dir }}/frigate/config.yml"
+    dest: "/opt/LITTERBOX/apps/frigate/config"
+    mode: "0644"
+    backup: true

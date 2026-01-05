@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}JINJA Template Resolver - LITTERBOX Manager{% endblock %}
+
+{% block content %}
+
+<h2>Jinja Resolver</h2>
+
+<nav>
+    <div class="container">
+    <div class="row align-items-center mb-2 p-2 border rounded">
+
+        <div class="col-md-auto section-container">
+            <label for="resolver-select">Resolver Type:</label>
+            <select id="resolver-select" name="resolver-select" class="form-select">
+                <option disabled selected>Select section</option>
+                <option value="dashboards">dashboards</option>
+                <option value="frigate">frigate</option>
+                <option value="homeassistant">homeassistant</option>
+                <option value="sshconfig">sshconfig</option>
+                <option value="nginx">nginx</option>
+            </select>
+        </div>
+
+        <div id="resolver-option-select-container" class="col-md-auto section-container" style="display: none;">
+            <label for="resolver-option-select">Resolver Option:</label>
+            <select id="resolver-option-select" name="resolver-option-select" class="form-select">
+                <option disabled selected>Select option</option>
+            </select>
+        </div>
+
+        <div class="col-md ms-auto">
+            <form id="template-save-form" method="POST" action="{{ url_for('jinja.save') }}" class="d-flex justify-content-end">
+                <input type="hidden" name="content" id="content-input">
+                <input type="hidden" name="resolverType" id="resolverType-input">
+                <input type="hidden" name="resolverOption" id="resolverOption-input">
+                <button type="button" id="copy-button" class="btn btn-secondary me-2">Copy</button>
+                <button type="button" id="generate-button" class="btn btn-primary me-2">Generate</button>
+                <button type="button" id="save-button" class="btn btn-success">Save</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</nav>
+
+<div
+    id="result-box"
+    class="bg-dark text-white border border-secondary rounded p-4 mt-4 overflow-auto font-monospace"
+    style="white-space: pre-wrap; min-height: 200px;">
+{{ result }}
+</div>
+
+<script>
+    // Pass server-side variables to the client-side
+    const template_files = {{ template_files | tojson }};
+    const generateUrl = "{{ url_for('jinja.generate') }}";
+    resolverType = "{{ resolverType }}";
+    resolverOption = "{{ resolverOption }}";
+
+    window.generated_files = {{ generated_files | tojson | safe if files is defined else '[]' }};
+
+</script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
+<script src="{{ url_for('static', filename='jinja/resolver.js') }}"></script>
+{% endblock %}
