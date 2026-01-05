@@ -1,0 +1,277 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "webcam": {
+      "type": "object",
+      "options": { "collapsed": true },
+      "properties": {
+        "devices": {
+          "type": "array",
+          "title": "Webcam Devices",
+
+          "items": {
+            "type": "object",
+            "options": { "collapsed": true },
+
+            "required": ["name", "ip"],
+
+            "default": {
+              "name": "",
+              "description": "",
+              "ip": "",
+              "rtsp_port": null,
+              "rtsp_path": ""
+            },
+
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description"
+              },
+              "ip": {
+                "type": "string",
+                "title": "IP Address"
+              },
+              "rtsp_port": {
+                "type": ["string", "number", "null"],
+                "title": "RTSP Port"
+              },
+              "rtsp_path": {
+                "type": "string",
+                "title": "RTSP Path"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "endpoints": {
+      "options": { "collapsed": true },
+      "type": "array",
+      "title": "Endpoints",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "options": { "collapsed": true },
+        "properties": {
+          "name": {"type": "string"},
+          "icon": {"type": ["string","null"]},
+          "host": {"type": ["string","null"]},
+          "internal_port": {"type": ["string","null"]},
+          "entity": {"type": ["string","null"]},
+          "template": {"type": ["string","null"]}
+        }
+      }
+    },
+    "govee": {
+      "options": { "collapsed": true },
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "object",
+          "patternProperties": {
+            ".*": {
+              "type": "object",
+              "options": { "collapsed": true },
+              "properties": {
+                "entities": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "alert_default_state", "limits", "alert_types"],
+                    "options": { "collapsed": true },
+                    "properties": {
+                      "name": {"type": "string"},
+                      "alert_default_state": {"type": "string"},
+                      "limits": {
+                        "type": "object",
+                        "options": { "collapsed": true },
+                        "patternProperties": {
+                          ".*": {
+                            "type": "object",
+                            "options": { "collapsed": true },
+                            "properties": {
+                              "initial": {"type": "string"},
+                              "min": {"type": "string"},
+                              "max": {"type": "string"},
+                              "step": {"type": "string"}
+                            }
+                          }
+                        }
+                      },
+                      "alert_types": {
+                        "type": "object",
+                        "options": { "collapsed": true },
+                        "patternProperties": {
+                          ".*": {
+                            "type": "object",
+                            "options": { "collapsed": true },
+                            "properties": {
+                              "renotify_interval": {"type": "number"}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "hosts": {
+      "options": { "collapsed": true },
+      "type": "array",
+      "title": "Hosts",
+      "items": {
+        "type": "object",
+        "required": ["name","ip","type"],
+        "options": { "collapsed": true },
+        "properties": {
+          "name": {"type": "string"},
+          "ip": {"type": "string"},
+          "type": {"type": "string"},
+          "collectors": {"type": "array", "items": {"type": "string"}},
+          "crontab": {"type": "array", "items": {"type": "string"}},
+          "mounts": {"type": ["array","null"], "items": {"type": "string"}},
+          "nvme_devices": {"type": "array", "items": {"type": "string"}},
+          "containers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name"],
+              "options": { "collapsed": true },
+              "properties": {
+                "name": {"type": "string"},
+                "release_notes": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "radoneye": {
+      "options": { "collapsed": true },
+      "type": "array",
+      "title": "RadonEye Devices",
+      "items": {
+        "type": "object",
+        "required": ["name","serial","location"],
+        "options": { "collapsed": true },
+        "properties": {
+          "name": {"type": "string"},
+          "serial": {"type": "string"},
+          "location": {"type": "string"}
+        }
+      }
+    },
+    "tasmota": {
+      "options": { "collapsed": true },
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name","type","full_name","description","ip"],
+            "options": { "collapsed": true },
+            "properties": {
+              "name": {"type": "string"},
+              "type": {"type": "string"},
+              "full_name": {"type": "string"},
+              "description": {"type": "string"},
+              "ip": {"type": "string"}
+            }
+          }
+        },
+        "entities": {
+          "type": "object",
+          "properties": {
+            "switch": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name","full_name","icon"],
+                "options": { "collapsed": true },
+                "properties": {
+                  "name": {"type": "string"},
+                  "full_name": {"type": "string"},
+                  "icon": {"type": "string"}
+                }
+              }
+            },
+            "bulb": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name","full_name","icon"],
+                "options": { "collapsed": true },
+                "properties": {
+                  "name": {"type": "string"},
+                  "full_name": {"type": "string"},
+                  "icon": {"type": "string"}
+                }
+              }
+            },
+            "rgb": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name","full_name","icon"],
+                "options": { "collapsed": true },
+                "properties": {
+                  "name": {"type": "string"},
+                  "full_name": {"type": "string"},
+                  "icon": {"type": "string"}
+                }
+              }
+            },
+            "esp32": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name","full_name","icon"],
+                "options": { "collapsed": true },
+                "properties": {
+                  "name": {"type": "string"},
+                  "full_name": {"type": "string"},
+                  "icon": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "zigbee": {
+      "options": { "collapsed": true },
+      "type": "object",
+      "properties": {
+        "device_types": {
+          "type": "object",
+          "options": { "collapsed": true },
+          "patternProperties": {
+            ".*": {
+              "type": "object",
+              "options": { "collapsed": true },
+              "properties": {
+                "devices": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

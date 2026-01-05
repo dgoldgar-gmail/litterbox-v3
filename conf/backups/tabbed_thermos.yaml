@@ -1,0 +1,3421 @@
+type: vertical-stack
+cards:
+  - type: entity
+    entity: sensor.date_time
+  - type: weather-forecast
+    show_current: true
+    show_forecast: true
+    entity: weather.home_open_meteo
+    forecast_type: daily
+  - type: custom:simple-thermostat
+    entity: climate.my_ecobee
+    header:
+      name: HVAC
+    layout:
+      - step: row
+    control:
+      hvac:
+        _name: Manual
+      preset:
+        _name: Auto
+        schedule IQ:
+          icon: mdi:brain
+          name: null
+        summer:
+          icon: mdi:sun-angle
+          name: null
+        winter:
+          icon: mdi:snowflake
+          name: null
+        spring/fall:
+          icon: mdi:flower
+          name: null
+        save energy:
+          icon: mdi:electron-framework
+          name: null
+        away:
+          icon: mdi:door-closed
+          name: null
+        cancel hold:
+          icon: mdi:timer-cancel
+          name: null
+        cancel away mode:
+          icon: mdi:door-open
+          name: null
+  - type: custom:room-card
+    title: Family Room
+    info_entities:
+      - entity: binary_sensor.motion_sensor_family_room_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: light.lights_family_room_1
+            name: Right
+            icon: phu:double-spot
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_family_room_2
+            name: Left
+            icon: phu:double-spot
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_kitchen_door
+            name: Door
+            icon: phu:double-spot
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_kitchen_island
+            name: Island
+            icon: phu:double-spot
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_kitchen_sink
+            name: Sink
+            icon: phu:double-spot
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_family_room_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_family_room_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_family_room_pressure
+            show_state: true
+            show_name: false
+  - type: media-control
+    entity: media_player.samsung_7_series_49
+  - type: custom:room-card
+    title: Master Bedroom
+    rows:
+      - entities:
+          - entity: light.lights_master_bedroom
+            name: Overhead
+            icon: mdi:chandelier
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_erins_bedroom_light
+            name: Erin's Light
+            icon: mdi:coach-lamp
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_daves_bedroom_light
+            name: Dave's Light
+            icon: mdi:coach-lamp
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_master_bedroom_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_master_bedroom_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_master_bedroom_pressure
+            show_state: true
+            show_name: false
+  - type: custom:room-card
+    title: Master Bath
+    cards:
+      - type: custom:simple-thermostat
+        entity: climate.master_bath
+        header: false
+        layout:
+          - step: row
+        control:
+          hvac:
+            _name: Manual
+          preset:
+            _name: Auto
+      - type: custom:room-card
+        rows:
+          - entities:
+              - entity: sensor.thermometer_master_bath_temperature
+                show_state: true
+                show_name: false
+              - entity: sensor.thermometer_master_bath_humidity
+                show_state: true
+                show_name: false
+              - entity: sensor.thermometer_master_bath_pressure
+                show_state: true
+                show_name: false
+  - type: custom:room-card
+    title: Sam's Room
+    rows:
+      - entities:
+          - entity: light.lights_sams_room
+            name: Overhead
+            icon: mdi:chandelier
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.tasmota_rgb_02
+            name: RGB
+            icon: phu:light-strip
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_sams_room_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_sams_room_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_sams_room_pressure
+            show_state: true
+            show_name: false
+  - type: custom:room-card
+    title: Dining Room
+    rows:
+      - entities:
+          - entity: light.dining_room_lights
+            name: Overhead Lights
+            icon: phu:bulb-group-ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: input_boolean.office_automation_enabled
+            name: Automation
+            template: on_off_template
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: >
+                if (entity.state == 'off') return 'mdi:cog-off';   else return
+                'mdi:cog';
+  - type: custom:room-card
+    title: Main Hall
+    info_entities:
+      - entity: binary_sensor.motion_sensor_main_hall_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: light.lights_main_hall
+            name: Overhead Lights
+            icon: phu:bulb-group-ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_main_hall_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_main_hall_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_main_hall_pressure
+            show_state: true
+            show_name: false
+  - type: custom:room-card
+    title: Stairs
+    rows:
+      - entities:
+          - entity: light.lights_stairs_overhead
+            name: Overhead
+            icon: phu:bulb-group-ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_staircase
+            name: Steps
+            icon: mdi:stairs
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+  - type: custom:room-card
+    title: Basement Vestibule
+    info_entities:
+      - entity: binary_sensor.motion_sensor_basement_vestibule_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: light.lights_basement_vestibule
+            name: Lights
+            icon: phu:bulb-group-ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_basement_vestibule_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_basement_vestibule_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_basement_vestibule_pressure
+            show_state: true
+            show_name: false
+  - type: custom:room-card
+    title: Game Room
+    info_entities:
+      - entity: binary_sensor.motion_sensor_game_room_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: light.lights_game_room
+            name: Overhead
+            icon: phu:bulb-group-ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.tasmota_bulb_01_light_light_0
+            name: Desk
+            icon: mdi:desk-lamp
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.tasmota_rgb_02
+            name: RGB
+            icon: phu:light-strip
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: input_boolean.getting_jiggy
+            name: Getting Jiggy
+            template: on_off_template
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_game_room_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_game_room_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_game_room_pressure
+            show_state: true
+            show_name: false
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: >
+                if (entity.state >= 'on') return 'mdi:dance-pole';   else return
+                'mdi:sign-pole';
+  - type: custom:room-card
+    title: Drums Room
+    rows:
+      - entities:
+          - entity: light.lights_drum_room
+            name: Overhead
+            icon: phu:bulb-group-ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_drums_room_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_drums_room_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_drums_room_pressure
+            show_state: true
+            show_name: false
+  - type: horizontal-stack
+    cards:
+      - type: custom:room-card
+        title: Woodstove
+        rows:
+          - entities:
+              - entity: light.woodstove_light
+                name: Light
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                double_tap_action:
+                  action: more-info
+              - entity: sensor.woodstove_temperature_gv
+                name: Flue
+                template: temp_color_template
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                double_tap_action:
+                  action: more-info
+              - entity: input_boolean.woodstove_alerts_enabled
+                name: Alerts
+                template: on_off_template
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                double_tap_action:
+                  action: more-info
+          - entities:
+              - entity: sensor.thermometer_woodstove_temperature
+                show_state: true
+                show_name: false
+              - entity: sensor.thermometer_woodstove_humidity
+                show_state: true
+                show_name: false
+              - entity: sensor.thermometer_woodstove_pressure
+                show_state: true
+                show_name: false
+        templates:
+          - name: on_off_template
+            template:
+              show_icon: true
+              icon:
+                template:
+                  styles: >
+                    if (entity.state == 'on') return 'color: gold';   else
+                    return 'color: steelblue';
+          - name: temp_color_template
+            template:
+              show_icon: true
+              icon:
+                template:
+                  styles: >
+                    if (entity.state > 500) return 'color: rgba(200, 50, 50,
+                    .75)'; if (entity.state > 400 ) return 'color: rgba( 255,
+                    87, 51, .75)'; if (entity.state > 250 ) return 'color:
+                    rgba(249, 224, 118, .75)'; if (entity.state > 120 ) return '
+                    color: rgba(210, 238, 130, .75)';    return 'color: rgba(54,
+                    139, 193)';
+      - type: vertical-stack
+        cards:
+          - type: custom:button-card
+            name: Wood Stove Temperature
+            tap_action:
+              name: Wood Stove
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                target:
+                  entity_id: sensor.woodstove_temp_gv
+                data:
+                  title: Wood Stove Settings
+                  content:
+                    type: vertical-stack
+                    cards:
+                      - type: entities
+                        entities:
+                          - entity: input_boolean.woodstove_alerts_enabled
+                            name: Wood Stove Alerts Enabled
+                      - type: custom:text-divider-row
+                        text: Set Temp
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            size: 20px
+                            styles:
+                              card:
+                                - height: 30px
+                                - width: 30px
+                            color_type: card
+                            color: rgb(223, 255, 97)
+                            icon: mdi:minus-circle
+                            entity: input_boolean.woodstove_alerts_enabled
+                            show_name: false
+                            state:
+                              - value: "off"
+                                color: grey
+                              - value: "on"
+                                color: red
+                            tap_action:
+                              action: call-service
+                              service: pyscript.decrement_counter
+                              service_data:
+                                entity_id: input_number.woodstove_set_temp
+                            hold_action:
+                              action: call-service
+                              service: pyscript.decrement_counter
+                              service_data:
+                                entity_id: input_number.woodstove_set_temp
+                              repeat: 100
+                          - type: custom:slider-entity-row
+                            entity: input_number.woodstove_set_temp
+                            name: Target Temperature
+                            full_row: true
+                          - type: custom:button-card
+                            size: 20px
+                            styles:
+                              card:
+                                - height: 30px
+                                - width: 30px
+                            color_type: card
+                            color: rgb(223, 255, 97)
+                            icon: mdi:plus-circle
+                            entity: input_boolean.woodstove_alerts_enabled
+                            show_name: false
+                            state:
+                              - value: "off"
+                                color: grey
+                              - value: "on"
+                                color: green
+                            tap_action:
+                              action: call-service
+                              service: pyscript.increment_counter
+                              service_data:
+                                entity_id: input_number.woodstove_set_temp
+                            hold_action:
+                              action: call-service
+                              service: pyscript.increment_counter
+                              service_data:
+                                entity_id: input_number.woodstove_set_temp
+                              repeat: 100
+                      - type: custom:text-divider-row
+                        text: Min Alert Value
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            size: 20px
+                            styles:
+                              card:
+                                - height: 30px
+                                - width: 30px
+                            color_type: card
+                            color: rgb(223, 255, 97)
+                            icon: mdi:minus-circle
+                            entity: input_boolean.woodstove_alerts_enabled
+                            show_name: false
+                            state:
+                              - value: "off"
+                                color: grey
+                              - value: "on"
+                                color: red
+                            tap_action:
+                              action: call-service
+                              service: pyscript.decrement_counter
+                              service_data:
+                                entity_id: input_number.woodstove_min_alert_value
+                            hold_action:
+                              action: call-service
+                              service: pyscript.decrement_counter
+                              service_data:
+                                entity_id: input_number.woodstove_min_alert_value
+                              repeat: 100
+                          - type: custom:slider-entity-row
+                            entity: input_number.woodstove_min_alert_value
+                            name: Target Temperature
+                            full_row: true
+                          - type: custom:button-card
+                            size: 20px
+                            styles:
+                              card:
+                                - height: 30px
+                                - width: 30px
+                            color_type: card
+                            color: rgb(223, 255, 97)
+                            icon: mdi:plus-circle
+                            entity: input_boolean.woodstove_alerts_enabled
+                            show_name: false
+                            state:
+                              - value: "off"
+                                color: grey
+                              - value: "on"
+                                color: green
+                            tap_action:
+                              action: call-service
+                              service: pyscript.increment_counter
+                              service_data:
+                                entity_id: input_number.woodstove_min_alert_value
+                            hold_action:
+                              action: call-service
+                              service: pyscript.increment_counter
+                              service_data:
+                                entity_id: input_number.woodstove_min_alert_value
+                              repeat: 100
+                      - type: custom:text-divider-row
+                        text: Max Alert Value
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            size: 20px
+                            styles:
+                              card:
+                                - height: 30px
+                                - width: 30px
+                            color_type: card
+                            color: rgb(223, 255, 97)
+                            icon: mdi:minus-circle
+                            entity: input_boolean.woodstove_alerts_enabled
+                            show_name: false
+                            state:
+                              - value: "off"
+                                color: grey
+                              - value: "on"
+                                color: red
+                            tap_action:
+                              action: call-service
+                              service: pyscript.decrement_counter
+                              service_data:
+                                entity_id: input_number.woodstove_max_alert_value
+                            hold_action:
+                              action: call-service
+                              service: pyscript.decrement_counter
+                              service_data:
+                                entity_id: input_number.woodstove_max_alert_value
+                              repeat: 100
+                          - type: custom:slider-entity-row
+                            entity: input_number.woodstove_max_alert_value
+                            name: Target Temperature
+                            full_row: true
+                          - type: custom:button-card
+                            size: 20px
+                            styles:
+                              card:
+                                - height: 30px
+                                - width: 30px
+                            color_type: card
+                            color: rgb(223, 255, 97)
+                            icon: mdi:plus-circle
+                            entity: input_boolean.woodstove_alerts_enabled
+                            show_name: false
+                            state:
+                              - value: "off"
+                                color: grey
+                              - value: "on"
+                                color: green
+                            tap_action:
+                              action: call-service
+                              service: pyscript.increment_counter
+                              service_data:
+                                entity_id: input_number.woodstove_max_alert_value
+                            hold_action:
+                              action: call-service
+                              service: pyscript.increment_counter
+                              service_data:
+                                entity_id: input_number.woodstove_max_alert_value
+                              repeat: 100
+          - type: custom:canvas-gauge-card
+            entity: sensor.woodstove_temperature_gv
+            gauge:
+              type: radial-gauge
+              title: Wood Stove
+              width: 150
+              height: 150
+              minValue: 0
+              maxValue: 600
+              minor-ticks: 2
+              majorTicks:
+                - 0
+                - 200
+                - 400
+                - 600
+              highlights:
+                - color: rgba(54, 139, 193, .75)
+                  from: 0
+                  to: 120
+                - color: rgba(210, 238, 130, .75)
+                  from: 120
+                  to: 250
+                - color: rgba(249, 224, 118, .75)
+                  from: 250
+                  to: 400
+                - color: rgba(255, 87, 51, .75)
+                  from: 400
+                  to: 500
+                - color: rgba(200, 50, 50, .75)
+                  from: 500
+                  to: 600
+  - type: custom:room-card
+    title: Gym
+    info_entities:
+      - entity: binary_sensor.motion_sensor_gym_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: input_boolean.gym_automation_enabled
+            name: Automations
+            template: on_off_template
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_gym_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_gym_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_gym_pressure
+            show_state: true
+            show_name: false
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: |
+                return 'mdi:weight-lifter'
+  - type: custom:room-card
+    title: Laundry
+    rows:
+      - entities:
+          - entity: light.laundry_light
+            name: Lights
+            template: on_off_template
+            icon: mdi:lightbulb
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.front_load_washer_remaining_time
+            name: Remaining Time
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.front_load_washer_run_state
+            name: Count Down Time
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.front_load_washer_tub_clean_counter
+            name: Tub Clean Counter
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: |
+                return 'mdi:lightbulb'
+  - type: custom:room-card
+    title: Cat Box Room
+    info_entities:
+      - entity: binary_sensor.motion_sensor_cat_box_room_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: switch.tasmota_08
+            name: Lights
+            template: on_off_template
+            icon: phu:gradient-tube-long
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_cat_box_room_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_cat_box_room_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_cat_box_room_pressure
+            show_state: true
+            show_name: false
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: |
+                return 'phu:gradient-tube-long'
+  - type: custom:room-card
+    title: Outside
+    info_entities:
+      - entity: input_boolean.door_left_open_alerts
+        show_icon: true
+        state_color: true
+        tap_action:
+          action: toggle
+      - entity: input_boolean.door_open_close_info
+        show_icon: true
+        state_color: true
+        tap_action:
+          action: toggle
+    rows:
+      - entities:
+          - entity: light.lights_front_porch
+            name: Front Porch
+            icon: phu:ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_kitchen_porch
+            name: Kitchen
+            icon: phu:ring-floodlight
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_driveway
+            name: Driveway
+            icon: phu:ring-floodlight
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_back_porch
+            name: Back Porch
+            icon: phu:wall-flood
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: null
+            name: show_state
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.harvard_outdoor_temperature
+            name: Temperature
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.outdoor_humidity
+            name: Humidty
+            icon: mdi:water-percent
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.outdoor_pressure
+            name: Pressure
+            icon: mdi:gauge
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: null
+            name: show_state
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.home_wind
+            name: Wind
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.home_uv_index
+            name: UV Index
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.home_precipitation
+            name: Precipitation
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: binary_sensor.door_sensor_front_open
+            name: Front
+            show_icon: true
+            show_state: true
+            icon:
+              state_on: mdi:door-open
+              state_off: mdi:door-closed
+            double_tap_action:
+              name: Front
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                target:
+                  entity_id: binary_sensor.door_settings_popup
+                data:
+                  style: |
+                    ha-dialog {
+                      --mdc-dialog-min-width:  !important;
+                      --mdc-dialog-max-width:  !important;
+                      --mdc-dialog-min-height:  !important;
+                      --mdc-dialog-max-height:  !important;
+                    }
+                    .content {
+                      width: auto !important;
+                    }
+                  title: Front Door
+                  content:
+                    type: vertical-stack
+                    cards:
+                      - type: custom:room-card
+                        title: Notification Settings
+                        rows:
+                          - entities:
+                              - entity: >-
+                                  input_boolean.front_door_left_open_notifications
+                                state_color: true
+                                name: Left Open
+                                tap_action:
+                                  action: toggle
+                              - entity: >-
+                                  input_boolean.front_door_open_close_notifications
+                                state_color: true
+                                name: Open/Close
+                                tap_action:
+                                  action: toggle
+          - entity: binary_sensor.door_sensor_kitchen_open
+            name: Kitchen
+            show_icon: true
+            show_state: true
+            icon:
+              state_on: mdi:door-open
+              state_off: mdi:door-closed
+            double_tap_action:
+              name: Kitchen
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                target:
+                  entity_id: binary_sensor.door_settings_popup
+                data:
+                  style: |
+                    ha-dialog {
+                      --mdc-dialog-min-width:  !important;
+                      --mdc-dialog-max-width:  !important;
+                      --mdc-dialog-min-height:  !important;
+                      --mdc-dialog-max-height:  !important;
+                    }
+                    .content {
+                      width: auto !important;
+                    }
+                  title: Kitchen Door
+                  content:
+                    type: vertical-stack
+                    cards:
+                      - type: custom:room-card
+                        title: Notification Settings
+                        rows:
+                          - entities:
+                              - entity: >-
+                                  input_boolean.kitchen_door_left_open_notifications
+                                state_color: true
+                                name: Left Open
+                                tap_action:
+                                  action: toggle
+                              - entity: >-
+                                  input_boolean.kitchen_door_open_close_notifications
+                                state_color: true
+                                name: Open/Close
+                                tap_action:
+                                  action: toggle
+          - entity: binary_sensor.door_sensor_basement_open
+            name: Basement
+            show_icon: true
+            show_state: true
+            icon:
+              state_on: mdi:door-open
+              state_off: mdi:door-closed
+            double_tap_action:
+              name: Basement
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                target:
+                  entity_id: binary_sensor.door_settings_popup
+                data:
+                  style: |
+                    ha-dialog {
+                      --mdc-dialog-min-width:  !important;
+                      --mdc-dialog-max-width:  !important;
+                      --mdc-dialog-min-height:  !important;
+                      --mdc-dialog-max-height:  !important;
+                    }
+                    .content {
+                      width: auto !important;
+                    }
+                  title: Basement Door
+                  content:
+                    type: vertical-stack
+                    cards:
+                      - type: custom:room-card
+                        title: Notification Settings
+                        rows:
+                          - entities:
+                              - entity: >-
+                                  input_boolean.basement_door_left_open_notifications
+                                state_color: true
+                                name: Left Open
+                                tap_action:
+                                  action: toggle
+                              - entity: >-
+                                  input_boolean.basement_door_open_close_notifications
+                                state_color: true
+                                name: Open/Close
+                                tap_action:
+                                  action: toggle
+  # --- Start of New Custom Tabbed Card Block (Replaces old horizontal-stack at line 984) ---
+  - type: custom:tabbed-card
+    tabs:
+      - title: Blerry
+        icon: mdi:thermometer-alert
+        card:
+          # Duplicated content: Original horizontal-stack with both grills
+          type: horizontal-stack
+          cards:
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Meat Temperature
+                  tap_action:
+                    name: Grill Meat
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grillmeat_temp_gv
+                      data:
+                        title: Grill Meat Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grillmeat_alerts_enabled
+                                  name: Grill Meat Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.govee_bge
+                  gauge:
+                    value: "{{ state_attr('sensor.govee_bge', 'probe_1_temp') }}"
+                    type: radial-gauge
+                    title: Grill Meat
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 250
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 50
+                      - 100
+                      - 150
+                      - 200
+                      - 250
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 125
+                      - color: rgba(210, 238, 130, .75)
+                        from: 125
+                        to: 205
+                      - color: rgba(255, 87, 51, .75)
+                        from: 205
+                        to: 250
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Dome Temperature
+                  tap_action:
+                    name: Grill Dome
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grilldome_temp_gv
+                      data:
+                        title: Grill Dome Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grilldome_alerts_enabled
+                                  name: Grill Dome Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.grilldome_temp_gv
+                  gauge:
+                    type: radial-gauge
+                    title: Grill Dome
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 600
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 200
+                      - 400
+                      - 600
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 185
+                      - color: rgba(210, 238, 130, .75)
+                        from: 185
+                        to: 450
+                      - color: rgba(255, 87, 51, .75)
+                        from: 450
+                        to: 550
+                      - color: rgba(200, 50, 50, .75)
+                        from: 550
+                        to: 700
+      - title: Meatometer
+        icon: mdi:fire
+        card:
+          # Duplicated content: Original horizontal-stack with both grills
+          type: horizontal-stack
+          cards:
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Meat Temperature
+                  tap_action:
+                    name: Grill Meat
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grillmeat_temp_gv
+                      data:
+                        title: Grill Meat Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grillmeat_alerts_enabled
+                                  name: Grill Meat Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.govee_bge
+                  gauge:
+                    value: "{{ state_attr('sensor.govee_bge', 'probe_1_temp') }}"
+                    type: radial-gauge
+                    title: Grill Meat
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 250
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 50
+                      - 100
+                      - 150
+                      - 200
+                      - 250
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 125
+                      - color: rgba(210, 238, 130, .75)
+                        from: 125
+                        to: 205
+                      - color: rgba(255, 87, 51, .75)
+                        from: 205
+                        to: 250
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Dome Temperature
+                  tap_action:
+                    name: Grill Dome
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grilldome_temp_gv
+                      data:
+                        title: Grill Dome Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grilldome_alerts_enabled
+                                  name: Grill Dome Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.grilldome_temp_gv
+                  gauge:
+                    type: radial-gauge
+                    title: Grill Dome
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 600
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 200
+                      - 400
+                      - 600
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 185
+                      - color: rgba(210, 238, 130, .75)
+                        from: 185
+                        to: 450
+                      - color: rgba(255, 87, 51, .75)
+                        from: 450
+                        to: 550
+                      - color: rgba(200, 50, 50, .75)
+                        from: 550
+                        to: 700
+  # --- End of New Custom Tabbed Card Block ---
+  - type: custom:room-card
+    title: Gym
+    info_entities:
+      - entity: binary_sensor.motion_sensor_gym_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: input_boolean.gym_automation_enabled
+            name: Automations
+            template: on_off_template
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_gym_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_gym_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_gym_pressure
+            show_state: true
+            show_name: false
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: |
+                return 'mdi:weight-lifter'
+  - type: custom:room-card
+    title: Laundry
+    rows:
+      - entities:
+          - entity: light.laundry_light
+            name: Lights
+            template: on_off_template
+            icon: mdi:lightbulb
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.front_load_washer_remaining_time
+            name: Remaining Time
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.front_load_washer_run_state
+            name: Count Down Time
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.front_load_washer_tub_clean_counter
+            name: Tub Clean Counter
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: |
+                return 'mdi:lightbulb'
+  - type: custom:room-card
+    title: Cat Box Room
+    info_entities:
+      - entity: binary_sensor.motion_sensor_cat_box_room_presence
+        show_icon: true
+        state_color: true
+    rows:
+      - entities:
+          - entity: switch.tasmota_08
+            name: Lights
+            template: on_off_template
+            icon: phu:gradient-tube-long
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: sensor.thermometer_cat_box_room_temperature
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_cat_box_room_humidity
+            show_state: true
+            show_name: false
+          - entity: sensor.thermometer_cat_box_room_pressure
+            show_state: true
+            show_name: false
+    templates:
+      - name: on_off_template
+        template:
+          show_icon: true
+          icon:
+            template:
+              styles: >
+                if (entity.state == 'on') return 'color: gold';   else return
+                'color: steelblue';
+              icon: |
+                return 'phu:gradient-tube-long'
+  - type: custom:room-card
+    title: Outside
+    info_entities:
+      - entity: input_boolean.door_left_open_alerts
+        show_icon: true
+        state_color: true
+        tap_action:
+          action: toggle
+      - entity: input_boolean.door_open_close_info
+        show_icon: true
+        state_color: true
+        tap_action:
+          action: toggle
+    rows:
+      - entities:
+          - entity: light.lights_front_porch
+            name: Front Porch
+            icon: phu:ceiling-round
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_kitchen_porch
+            name: Kitchen
+            icon: phu:ring-floodlight
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_driveway
+            name: Driveway
+            icon: phu:ring-floodlight
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: light.lights_back_porch
+            name: Back Porch
+            icon: phu:wall-flood
+            show_icon: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: null
+            name: show_state
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.harvard_outdoor_temperature
+            name: Temperature
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.outdoor_humidity
+            name: Humidty
+            icon: mdi:water-percent
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.outdoor_pressure
+            name: Pressure
+            icon: mdi:gauge
+            show_icon: true
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: null
+            name: show_state
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.home_wind
+            name: Wind
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.home_uv_index
+            name: UV Index
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+          - entity: sensor.home_precipitation
+            name: Precipitation
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+      - entities:
+          - entity: binary_sensor.door_sensor_front_open
+            name: Front
+            show_icon: true
+            show_state: true
+            icon:
+              state_on: mdi:door-open
+              state_off: mdi:door-closed
+            double_tap_action:
+              name: Front
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                target:
+                  entity_id: binary_sensor.door_settings_popup
+                data:
+                  style: |
+                    ha-dialog {
+                      --mdc-dialog-min-width:  !important;
+                      --mdc-dialog-max-width:  !important;
+                      --mdc-dialog-min-height:  !important;
+                      --mdc-dialog-max-height:  !important;
+                    }
+                    .content {
+                      width: auto !important;
+                    }
+                  title: Front Door
+                  content:
+                    type: vertical-stack
+                    cards:
+                      - type: custom:room-card
+                        title: Notification Settings
+                        rows:
+                          - entities:
+                              - entity: >-
+                                  input_boolean.front_door_left_open_notifications
+                                state_color: true
+                                name: Left Open
+                                tap_action:
+                                  action: toggle
+                              - entity: >-
+                                  input_boolean.front_door_open_close_notifications
+                                state_color: true
+                                name: Open/Close
+                                tap_action:
+                                  action: toggle
+          - entity: binary_sensor.door_sensor_kitchen_open
+            name: Kitchen
+            show_icon: true
+            show_state: true
+            icon:
+              state_on: mdi:door-open
+              state_off: mdi:door-closed
+            double_tap_action:
+              name: Kitchen
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                target:
+                  entity_id: binary_sensor.door_settings_popup
+                data:
+                  style: |
+                    ha-dialog {
+                      --mdc-dialog-min-width:  !important;
+                      --mdc-dialog-max-width:  !important;
+                      --mdc-dialog-min-height:  !important;
+                      --mdc-dialog-max-height:  !important;
+                    }
+                    .content {
+                      width: auto !important;
+                    }
+                  title: Kitchen Door
+                  content:
+                    type: vertical-stack
+                    cards:
+                      - type: custom:room-card
+                        title: Notification Settings
+                        rows:
+                          - entities:
+                              - entity: >-
+                                  input_boolean.kitchen_door_left_open_notifications
+                                state_color: true
+                                name: Left Open
+                                tap_action:
+                                  action: toggle
+                              - entity: >-
+                                  input_boolean.kitchen_door_open_close_notifications
+                                state_color: true
+                                name: Open/Close
+                                tap_action:
+                                  action: toggle
+          - entity: binary_sensor.door_sensor_basement_open
+            name: Basement
+            show_icon: true
+            show_state: true
+            icon:
+              state_on: mdi:door-open
+              state_off: mdi:door-closed
+            double_tap_action:
+              name: Basement
+              action: fire-dom-event
+              browser_mod:
+                service: browser_mod.popup
+                target:
+                  entity_id: binary_sensor.door_settings_popup
+                data:
+                  style: |
+                    ha-dialog {
+                      --mdc-dialog-min-width:  !important;
+                      --mdc-dialog-max-width:  !important;
+                      --mdc-dialog-min-height:  !important;
+                      --mdc-dialog-max-height:  !important;
+                    }
+                    .content {
+                      width: auto !important;
+                    }
+                  title: Basement Door
+                  content:
+                    type: vertical-stack
+                    cards:
+                      - type: custom:room-card
+                        title: Notification Settings
+                        rows:
+                          - entities:
+                              - entity: >-
+                                  input_boolean.basement_door_left_open_notifications
+                                state_color: true
+                                name: Left Open
+                                tap_action:
+                                  action: toggle
+                              - entity: >-
+                                  input_boolean.basement_door_open_close_notifications
+                                state_color: true
+                                name: Open/Close
+                                tap_action:
+                                  action: toggle
+  - type: custom:tabbed-card
+    tabs:
+      - title: Blerry
+        icon: mdi:thermometer-alert
+        card:
+          # Duplicated content: Original horizontal-stack with both grills
+          type: horizontal-stack
+          cards:
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Meat Temperature
+                  tap_action:
+                    name: Grill Meat
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grillmeat_temp_gv
+                      data:
+                        title: Grill Meat Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grillmeat_alerts_enabled
+                                  name: Grill Meat Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.govee_bge
+                  gauge:
+                    value: "{{ state_attr('sensor.govee_bge', 'probe_1_temp') }}"
+                    type: radial-gauge
+                    title: Grill Meat
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 250
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 50
+                      - 100
+                      - 150
+                      - 200
+                      - 250
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 125
+                      - color: rgba(210, 238, 130, .75)
+                        from: 125
+                        to: 205
+                      - color: rgba(255, 87, 51, .75)
+                        from: 205
+                        to: 250
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Dome Temperature
+                  tap_action:
+                    name: Grill Dome
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grilldome_temp_gv
+                      data:
+                        title: Grill Dome Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grilldome_alerts_enabled
+                                  name: Grill Dome Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.grilldome_temp_gv
+                  gauge:
+                    type: radial-gauge
+                    title: Grill Dome
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 600
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 200
+                      - 400
+                      - 600
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 185
+                      - color: rgba(210, 238, 130, .75)
+                        from: 185
+                        to: 450
+                      - color: rgba(255, 87, 51, .75)
+                        from: 450
+                        to: 550
+                      - color: rgba(200, 50, 50, .75)
+                        from: 550
+                        to: 700
+      - title: Meatometer
+        icon: mdi:fire
+        card:
+          # Duplicated content: Original horizontal-stack with both grills
+          type: horizontal-stack
+          cards:
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Meat Temperature
+                  tap_action:
+                    name: Grill Meat
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grillmeat_temp_gv
+                      data:
+                        title: Grill Meat Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grillmeat_alerts_enabled
+                                  name: Grill Meat Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grillmeat_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grillmeat_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grillmeat_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.govee_bge
+                  gauge:
+                    value: "{{ state_attr('sensor.govee_bge', 'probe_1_temp') }}"
+                    type: radial-gauge
+                    title: Grill Meat
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 250
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 50
+                      - 100
+                      - 150
+                      - 200
+                      - 250
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 125
+                      - color: rgba(210, 238, 130, .75)
+                        from: 125
+                        to: 205
+                      - color: rgba(255, 87, 51, .75)
+                        from: 205
+                        to: 250
+            - type: vertical-stack
+              cards:
+                - type: custom:button-card
+                  name: Grill Dome Temperature
+                  tap_action:
+                    name: Grill Dome
+                    action: fire-dom-event
+                    browser_mod:
+                      service: browser_mod.popup
+                      target:
+                        entity_id: sensor.grilldome_temp_gv
+                      data:
+                        title: Grill Dome Settings
+                        content:
+                          type: vertical-stack
+                          cards:
+                            - type: entities
+                              entities:
+                                - entity: input_boolean.grilldome_alerts_enabled
+                                  name: Grill Dome Alerts Enabled
+                            - type: custom:text-divider-row
+                              text: Set Temp
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_set_temp
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_set_temp
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Min Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_min_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_min_alert_value
+                                    repeat: 100
+                            - type: custom:text-divider-row
+                              text: Max Alert Value
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:minus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: red
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.decrement_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                                - type: custom:slider-entity-row
+                                  entity: input_number.grilldome_max_alert_value
+                                  name: Target Temperature
+                                  full_row: true
+                                - type: custom:button-card
+                                  size: 20px
+                                  styles:
+                                    card:
+                                      - height: 30px
+                                      - width: 30px
+                                  color_type: card
+                                  color: rgb(223, 255, 97)
+                                  icon: mdi:plus-circle
+                                  entity: input_boolean.grilldome_alerts_enabled
+                                  show_name: false
+                                  state:
+                                    - value: "off"
+                                      color: grey
+                                    - value: "on"
+                                      color: green
+                                  tap_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                  hold_action:
+                                    action: call-service
+                                    service: pyscript.increment_counter
+                                    service_data:
+                                      entity_id: input_number.grilldome_max_alert_value
+                                    repeat: 100
+                - type: custom:canvas-gauge-card
+                  entity: sensor.grilldome_temp_gv
+                  gauge:
+                    type: radial-gauge
+                    title: Grill Dome
+                    width: 150
+                    height: 150
+                    minValue: 0
+                    maxValue: 600
+                    minor-ticks: 2
+                    majorTicks:
+                      - 0
+                      - 200
+                      - 400
+                      - 600
+                    highlights:
+                      - color: rgba(54, 139, 193, .75)
+                        from: 0
+                        to: 185
+                      - color: rgba(210, 238, 130, .75)
+                        from: 185
+                        to: 450
+                      - color: rgba(255, 87, 51, .75)
+                        from: 450
+                        to: 550
+                      - color: rgba(200, 50, 50, .75)
+                        from: 550
+                        to: 700

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Applications - LITTERBOX Manager{% endblock %}
+{% block content %}
+
+    <h2>Applications</h2>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="card-body">
+                <form id="hostForm" method="post" action="{{ url_for('applications.delete_app') }}">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <button type="button" class="btn btn-secondary" id="previewButton">Preview</button>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-primary" id="addApplicationButton">New</button>
+                            <button type="submit" class="btn btn-danger" id="deleteSelectedApplicationsButton">Delete Selected</button>
+                        </div>
+                    </div>
+                    <ul id="applicationsList" class="list-group">
+                        {# Rendered by JS #}
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewModalLabel">Current Applications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-dark text-white rounded">
+                    <!-- JSON data will be injected here -->
+                    <pre id="jsonPreview"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    console.log("{{ currentApplications }}")
+    const currentApplications = JSON.parse('{{ currentApplications | tojson | safe }}');
+    console.log( currentApplications )
+    const addApplicationUrlBase = "{{ url_for('applications.add_application', name='__NAME__') }}";
+    const editApplicationUrlBase = "{{ url_for('applications.edit_application', name='__NAME__') }}";
+    const manageApplicationUrlBase = "{{ url_for('applications.manage_application', name='__NAME__') }}";
+    const reorderUrlBase = "{{ url_for('applications.reorder') }}";
+    const indexUrl = "{{ url_for('applications.index') }}";
+</script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
+<script src="{{ url_for('static', filename='applications/index.js') }}"></script>
+{% endblock %}
+
+

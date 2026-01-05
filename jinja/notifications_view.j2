@@ -1,0 +1,78 @@
+{% import 'modules/application_tap_action.j2' as application_template %}
+{% import 'modules/button-card.j2' as buttons %}
+{% import 'modules/headers.j2' as headers %}
+{% import 'modules/thingino_template.j2' as thingino_template %}
+{% import 'modules/tap-actions.j2' as tap_actions %}
+{% import 'modules/input_boolean_entity.j2' as input_boolean %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+{{ headers.comment("CONTAINERS") }}
+title: Notifications
+icon: mdi:alarm-bell
+path: notifications
+type: custom:vertical-layout
+cards:
+- type: vertical-stack
+  cards:
+  - type: custom:room-card
+    title: Door Opened/Closed
+    info_entities:
+      {{ input_boolean.entity_toggle("input_boolean.door_open_close_info", "Global", 6 )  }}
+    rows:
+      - entities:
+      {% for door in zigbee.device_types.door_sensor.devices %}
+        {{ input_boolean.entity_toggle("input_boolean." + door + "_door_open_close_phone_notifications_enabled", door.title(), 8 )  }}
+          icon: mdi:phone
+      {% endfor %}
+      - entities:
+      {% for door in zigbee.device_types.door_sensor.devices %}
+        {{ input_boolean.entity_toggle("input_boolean." + door + "_door_open_close_persistent_notifications_enabled", door.title(), 8 )  }}
+          icon: mdi:database
+      {% endfor %}
+- type: vertical-stack
+  cards:
+  - type: custom:room-card
+    title: Door Left Open
+    info_entities:
+      {{ input_boolean.entity_toggle("input_boolean.door_left_open_alerts", "Global", 6 )  }}
+    rows:
+      - entities:
+      {% for door in zigbee.device_types.door_sensor.devices %}
+        {{ input_boolean.entity_toggle("input_boolean." + door + "_door_left_open_phone_notifications_enabled", door.title(), 8 )  }}
+          icon: mdi:phone
+      {% endfor %}
+      - entities:
+      {% for door in zigbee.device_types.door_sensor.devices %}
+        {{ input_boolean.entity_toggle("input_boolean." + door + "_door_left_open_persistent_notifications_enabled", door.title(), 8 )  }}
+          icon: mdi:database
+      {% endfor %}
+- type: vertical-stack
+  cards:
+  - type: custom:room-card
+    title: Camera Motion Sensor Notifcations
+    {#
+    info_entities:
+      {{ input_boolean.entity_toggle("input_boolean.door_left_open_alerts", "Global", 6 )  }}
+    #}
+    rows:
+      - entities:
+        {% for cam in webcam.devices %}
+        {{ input_boolean.entity_toggle("input_boolean." + cam.name + "_camera_phone_notifications_enabled", cam.name.title().replace("_"," "), 8 )  }} 
+          icon: mdi:phone
+        {% endfor %}
+      - entities:
+        {% for cam in webcam.devices %}
+        {{ input_boolean.entity_toggle("input_boolean." + cam.name + "_camera_persistent_notifications_enabled", cam.name.title().replace("_"," "), 8 )  }} 
+          icon: mdi:database
+        {% endfor %}
+- type: vertical-stack
+  cards:
+  - type: custom:room-card
+    title: Motion Detection Types
+    rows:
+      - entities:
+        {% for type in webcam.detection_types %}
+        {{ input_boolean.entity_toggle("input_boolean.global_" + type + "_detection_notifications", type.title(), 8 )  }}
+        {% endfor %}
+
+
+

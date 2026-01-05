@@ -1,0 +1,45 @@
+{% import 'modules/headers.j2' as headers %}
+{% import 'modules/room_card_macro.j2' as room_card_macro %}
+{% import 'modules/simple-thermostat.j2' as simple_thermostat_macros %}
+{% import 'modules/horizontal-stack.j2' as horizontal_stack_macros %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+title: Overview
+icon: si:homeassistant
+theme: Backend-selected
+type: custom:vertical-layout
+cards:
+- type: vertical-stack
+  cards:
+    {% set cards = view['cards'] %}
+    {% for card_name, card_info in cards.items() recursive %}
+      {% set card_type = card_info['card-type'] %}
+      # {{ card_name }} {{ card_type }}
+      {% set slug_name = card_name.replace(" ","_").replace("'","").lower() %}
+      {% set motion_sensor = card_info['motion_sensor'] %}
+      {% set hide_title = card_info['hide_title'] %}
+      {% set info_entities = card_info['info_entities']  %}
+      {% set rows = card_info['rows'] %}
+      {% set cards = card_info['cards'] %}
+      {% set templates = card_info['templates'] %}
+      {% if card_type == "custom:room-card" %}
+{{ room_card_macro.room_card(card_name, card_info, 2) }}
+      {% elif card_type == "entity" %}
+  - type: entity
+    entity: {{ card_info['entity'] }}
+     {% elif card_type == "weather-forecast" %}
+  - type: weather-forecast
+    show_current: true
+    show_forecast: true
+    entity: weather.home_open_meteo
+    forecast_type: daily
+    {% elif card_type == "custom:simple-thermostat" %}
+{{ simple_thermostat_macros.simple_thermostat_card(card_name, card_info, 2) }}
+    {% elif card_type == "media-control" %}
+  - type: media-control
+    entity: {{ card_info['entity']}}
+    {% elif card_type == "vertical-stack" %}
+{{ horizontal_stack_macros.horizontal_stack_card(cards, 2) }}
+    {% elif card_type == "horizontal-stack" %}
+{{ horizontal_stack_macros.horizontal_stack_card(cards, 2) }}
+    {% endif %}
+    {% endfor %}

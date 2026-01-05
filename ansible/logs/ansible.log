@@ -1,0 +1,1596 @@
+2026-01-03 07:21:26,613 p=94759 u=dgoldgar n=ansible ERROR| [ERROR]: Unable to read source file (/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/group_vars/all/vault.yml): [Errno 2] No such file or directory: '/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/group_vars/all/vault.yml'
+
+2026-01-03 07:21:34,814 p=94783 u=dgoldgar n=ansible WARNING| [WARNING]: ansible/group_vars/all does not exist, creating...
+
+2026-01-03 07:34:16,333 p=97906 u=dgoldgar n=ansible WARNING| [WARNING]: ansible/inventory/group_vars/all does not exist, creating...
+
+2026-01-03 07:45:00,282 p=98673 u=dgoldgar n=ansible ERROR| [ERROR]: the playbook: site.yml could not be found
+
+2026-01-03 07:47:45,351 p=98772 u=dgoldgar n=ansible ERROR| [ERROR]: the playbook: site.yml could not be found
+
+2026-01-03 09:35:00,434 p=2950 u=dgoldgar n=ansible INFO| PLAY [Base system configuration] ***********************************************
+2026-01-03 09:35:00,435 p=2950 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:35:00,436 p=2950 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 09:35:00,436 p=2950 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:35:00,437 p=2950 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 09:35:00,453 p=2950 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 09:35:01,220 p=2950 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 09:35:01,220 p=2950 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:35:01,224 p=2950 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 09:35:02,014 p=2950 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:35:02,016 p=2950 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 09:35:02,602 p=2950 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:35:02,606 p=2950 u=dgoldgar n=ansible INFO| PLAY [Test] ********************************************************************
+2026-01-03 09:35:02,608 p=2950 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 09:35:04,197 p=2950 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:35:04,200 p=2950 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 09:35:04,213 p=2950 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 09:35:04,216 p=2950 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 09:35:04,595 p=2950 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 09:35:04,597 p=2950 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 09:35:04,597 p=2950 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 09:36:22,011 p=3409 u=dgoldgar n=ansible INFO| PLAY [Base system configuration] ***********************************************
+2026-01-03 09:36:22,012 p=3409 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:36:22,013 p=3409 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 09:36:22,014 p=3409 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:36:22,016 p=3409 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 09:36:22,034 p=3409 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 09:36:22,793 p=3409 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 09:36:22,793 p=3409 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:22,796 p=3409 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 09:36:23,569 p=3409 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:23,571 p=3409 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 09:36:24,145 p=3409 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:24,149 p=3409 u=dgoldgar n=ansible INFO| PLAY [Test] ********************************************************************
+2026-01-03 09:36:24,151 p=3409 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 09:36:24,661 p=3409 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:24,663 p=3409 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 09:36:24,675 p=3409 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 09:36:24,677 p=3409 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 09:36:25,016 p=3409 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 09:36:25,018 p=3409 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 09:36:25,018 p=3409 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 09:36:25,580 p=3561 u=dgoldgar n=ansible INFO| PLAY [Base system configuration] ***********************************************
+2026-01-03 09:36:25,581 p=3561 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:36:25,582 p=3561 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 09:36:25,582 p=3561 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:36:25,583 p=3561 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 09:36:25,597 p=3561 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 09:36:26,324 p=3561 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 09:36:26,324 p=3561 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:26,328 p=3561 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 09:36:27,076 p=3561 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:27,078 p=3561 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 09:36:27,640 p=3561 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:27,643 p=3561 u=dgoldgar n=ansible INFO| PLAY [Test] ********************************************************************
+2026-01-03 09:36:27,646 p=3561 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 09:36:28,166 p=3561 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:28,168 p=3561 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 09:36:28,178 p=3561 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 09:36:28,180 p=3561 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 09:36:28,507 p=3561 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 09:36:28,510 p=3561 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 09:36:28,510 p=3561 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 09:36:40,214 p=3722 u=dgoldgar n=ansible INFO| PLAY [Base system configuration] ***********************************************
+2026-01-03 09:36:40,215 p=3722 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:36:40,216 p=3722 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 09:36:40,216 p=3722 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 09:36:40,217 p=3722 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 09:36:40,231 p=3722 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 09:36:43,057 p=3722 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 09:36:43,057 p=3722 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:43,061 p=3722 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 09:36:43,859 p=3722 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:43,861 p=3722 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 09:36:44,443 p=3722 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 09:36:44,446 p=3722 u=dgoldgar n=ansible INFO| PLAY [Test] ********************************************************************
+2026-01-03 09:36:44,449 p=3722 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 10:01:14,082 p=4074 u=dgoldgar n=ansible INFO| PLAY [Base system configuration] ***********************************************
+2026-01-03 10:01:14,083 p=4074 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:01:14,084 p=4074 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 10:01:14,084 p=4074 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:01:14,085 p=4074 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 10:01:14,102 p=4074 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 10:01:14,869 p=4074 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 10:01:14,870 p=4074 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:01:14,871 p=4074 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 10:01:15,502 p=4074 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:01:15,505 p=4074 u=dgoldgar n=ansible INFO| PLAY [Test] ********************************************************************
+2026-01-03 10:01:15,507 p=4074 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 10:01:17,288 p=4074 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:01:17,291 p=4074 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 10:01:17,303 p=4074 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 10:01:17,305 p=4074 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 10:01:17,662 p=4074 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 10:01:17,665 p=4074 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 10:01:17,665 p=4074 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 10:03:53,511 p=4328 u=dgoldgar n=ansible INFO| PLAY [Base system configuration] ***********************************************
+2026-01-03 10:03:53,512 p=4328 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:03:53,512 p=4328 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 10:03:53,513 p=4328 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:03:53,514 p=4328 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 10:03:53,530 p=4328 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 10:03:54,276 p=4328 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 10:03:54,276 p=4328 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:03:54,277 p=4328 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 10:03:54,867 p=4328 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:03:54,870 p=4328 u=dgoldgar n=ansible INFO| PLAY [Test] ********************************************************************
+2026-01-03 10:03:54,872 p=4328 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 10:03:55,623 p=4328 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:03:55,625 p=4328 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 10:03:55,637 p=4328 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 10:03:55,639 p=4328 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 10:03:55,999 p=4328 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 10:03:56,002 p=4328 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 10:03:56,002 p=4328 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 10:06:07,928 p=4664 u=dgoldgar n=ansible INFO| PLAY [Base system configuration] ***********************************************
+2026-01-03 10:06:07,929 p=4664 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:06:07,930 p=4664 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 10:06:07,930 p=4664 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:06:07,931 p=4664 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 10:06:07,946 p=4664 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 10:06:08,740 p=4664 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 10:06:08,741 p=4664 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:06:08,742 p=4664 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 10:06:09,361 p=4664 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:06:09,364 p=4664 u=dgoldgar n=ansible INFO| PLAY [Test] ********************************************************************
+2026-01-03 10:06:09,367 p=4664 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 10:06:11,182 p=4664 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:06:11,184 p=4664 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 10:06:11,195 p=4664 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 10:06:11,198 p=4664 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 10:06:11,564 p=4664 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 10:06:11,567 p=4664 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 10:06:11,567 p=4664 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 10:21:00,106 p=5163 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 10:21:00,121 p=5163 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 10:21:00,920 p=5163 u=dgoldgar n=ansible WARNING| [WARNING]: Host 'dgoldga-ltmpyaj' is using the discovered Python interpreter at '/opt/homebrew/bin/python3.13', but future installation of another Python interpreter could cause a different interpreter to be discovered. See https://docs.ansible.com/ansible-core/2.19/reference_appendices/interpreter_discovery.html for more information.
+
+2026-01-03 10:21:00,920 p=5163 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:21:00,922 p=5163 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 10:21:00,933 p=5163 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 10:21:00,935 p=5163 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 10:21:01,377 p=5163 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 10:21:01,381 p=5163 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 10:21:01,385 p=5163 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 10:21:02,066 p=5163 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:21:02,068 p=5163 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 10:21:02,657 p=5163 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:21:02,660 p=5163 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 10:21:02,661 p=5163 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:21:02,661 p=5163 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 10:21:02,661 p=5163 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 10:24:07,440 p=5485 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 10:24:07,454 p=5485 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 10:24:08,184 p=5485 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:24:08,187 p=5485 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 10:24:08,198 p=5485 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 10:24:08,200 p=5485 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 10:24:08,620 p=5485 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 10:24:08,624 p=5485 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 10:24:08,628 p=5485 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 10:24:09,299 p=5485 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:24:09,302 p=5485 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 10:24:09,905 p=5485 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:24:09,908 p=5485 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 10:24:09,909 p=5485 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:24:09,909 p=5485 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 10:24:09,909 p=5485 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 10:24:36,039 p=5697 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 10:24:36,053 p=5697 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 10:24:36,776 p=5697 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:24:36,778 p=5697 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 10:24:36,789 p=5697 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 10:24:36,791 p=5697 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 10:24:37,228 p=5697 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 10:24:37,232 p=5697 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 10:24:37,236 p=5697 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 10:24:37,890 p=5697 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:24:37,892 p=5697 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 10:24:38,471 p=5697 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 10:24:38,474 p=5697 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 10:24:38,475 p=5697 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 10:24:38,475 p=5697 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 10:24:38,475 p=5697 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 17:05:03,912 p=10867 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 17:05:03,928 p=10867 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 17:05:07,107 p=10867 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:07,111 p=10867 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 17:05:07,130 p=10867 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 17:05:07,133 p=10867 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 17:05:07,602 p=10867 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 17:05:07,606 p=10867 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 17:05:07,609 p=10867 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 17:05:08,306 p=10867 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:08,309 p=10867 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 17:05:10,996 p=10980 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 17:05:11,011 p=10980 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 17:05:11,725 p=10980 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:11,728 p=10980 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 17:05:11,738 p=10980 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 17:05:11,740 p=10980 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 17:05:12,207 p=10980 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 17:05:12,211 p=10980 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 17:05:12,216 p=10980 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 17:05:12,923 p=10980 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:12,926 p=10980 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 17:05:13,518 p=10980 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:13,521 p=10980 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 17:05:13,522 p=10980 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 17:05:13,522 p=10980 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 17:05:13,522 p=10980 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 17:05:45,134 p=11299 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 17:05:45,148 p=11299 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 17:05:45,889 p=11299 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:45,892 p=11299 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 17:05:45,902 p=11299 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 17:05:45,904 p=11299 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 17:05:46,361 p=11299 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 17:05:46,365 p=11299 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 17:05:46,368 p=11299 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 17:05:47,048 p=11299 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:47,050 p=11299 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 17:05:47,671 p=11299 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:05:47,674 p=11299 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 17:05:47,674 p=11299 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 17:05:47,675 p=11299 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 17:05:47,675 p=11299 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 17:06:43,489 p=11489 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 17:06:43,503 p=11489 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 17:06:44,241 p=11489 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:06:44,243 p=11489 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 17:06:44,255 p=11489 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 17:06:44,257 p=11489 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 17:06:44,700 p=11489 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 17:06:44,704 p=11489 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 17:06:44,708 p=11489 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 17:06:45,399 p=11489 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:06:45,402 p=11489 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 17:06:45,991 p=11489 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:06:45,995 p=11489 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 17:06:45,995 p=11489 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 17:06:45,995 p=11489 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 17:06:45,995 p=11489 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 17:09:09,436 p=11731 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 17:09:09,452 p=11731 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 17:09:10,244 p=11731 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:09:10,246 p=11731 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 17:09:10,258 p=11731 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 17:09:10,260 p=11731 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 17:09:10,698 p=11731 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 17:09:10,702 p=11731 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 17:09:10,705 p=11731 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 17:09:11,413 p=11731 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:09:11,416 p=11731 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 17:09:12,028 p=11731 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 17:09:12,032 p=11731 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 17:09:12,032 p=11731 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 17:09:12,032 p=11731 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 17:09:12,032 p=11731 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 21:41:15,738 p=13239 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 21:41:15,752 p=13239 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 21:41:18,854 p=13239 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 21:41:18,857 p=13239 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 21:41:18,869 p=13239 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 21:41:18,872 p=13239 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 21:41:19,343 p=13239 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 21:41:19,347 p=13239 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 21:41:19,350 p=13239 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 21:41:20,035 p=13239 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 21:41:20,037 p=13239 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 21:41:22,889 p=13353 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 21:41:22,906 p=13353 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 21:41:23,625 p=13353 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 21:41:23,627 p=13353 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 21:41:23,639 p=13353 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 21:41:23,641 p=13353 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 21:41:24,112 p=13353 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 21:41:24,115 p=13353 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 21:41:24,119 p=13353 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 21:41:24,819 p=13353 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 21:41:24,822 p=13353 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 21:41:25,467 p=13353 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 21:41:25,470 p=13353 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 21:41:25,471 p=13353 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 21:41:25,471 p=13353 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 21:41:25,471 p=13353 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-03 22:33:38,295 p=19302 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-03 22:33:38,317 p=19302 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-03 22:33:39,164 p=19302 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 22:33:39,167 p=19302 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-03 22:33:39,177 p=19302 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-03 22:33:39,179 p=19302 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-03 22:33:39,549 p=19302 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-03 22:33:39,554 p=19302 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-03 22:33:39,558 p=19302 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-03 22:33:40,118 p=19302 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 22:33:40,121 p=19302 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-03 22:33:40,611 p=19302 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-03 22:33:40,614 p=19302 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-03 22:33:40,614 p=19302 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 22:33:40,615 p=19302 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-03 22:33:40,615 p=19302 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 22:33:40,615 p=19302 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-03 22:33:40,616 p=19302 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 22:33:40,616 p=19302 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-03 22:33:40,616 p=19302 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 22:33:40,617 p=19302 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-03 22:33:40,617 p=19302 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-03 22:33:40,618 p=19302 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-03 22:33:40,618 p=19302 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-04 17:30:58,815 p=53516 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 17:30:58,841 p=53516 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 17:30:59,717 p=53516 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 17:30:59,723 p=53516 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-04 17:30:59,733 p=53516 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-04 17:30:59,735 p=53516 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-04 17:31:00,100 p=53516 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-04 17:31:00,104 p=53516 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-04 17:31:00,108 p=53516 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-04 17:31:00,659 p=53516 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 17:31:00,662 p=53516 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-04 17:31:01,165 p=53516 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 17:31:01,168 p=53516 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-04 17:31:01,168 p=53516 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:31:01,169 p=53516 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-04 17:31:01,169 p=53516 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:31:01,170 p=53516 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-04 17:31:01,170 p=53516 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:31:01,170 p=53516 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-04 17:31:01,171 p=53516 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:31:01,171 p=53516 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-04 17:31:01,171 p=53516 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:31:01,171 p=53516 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-04 17:31:01,171 p=53516 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-04 17:38:25,465 p=56265 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 17:38:25,487 p=56265 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 17:38:26,160 p=56265 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 17:38:26,163 p=56265 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-04 17:38:26,173 p=56265 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-04 17:38:26,175 p=56265 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-04 17:38:26,537 p=56265 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-04 17:38:26,541 p=56265 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-04 17:38:26,545 p=56265 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-04 17:38:27,065 p=56265 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 17:38:27,067 p=56265 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-04 17:38:27,559 p=56265 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 17:38:27,562 p=56265 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-04 17:38:27,562 p=56265 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:38:27,563 p=56265 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-04 17:38:27,563 p=56265 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:38:27,564 p=56265 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-04 17:38:27,564 p=56265 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:38:27,564 p=56265 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-04 17:38:27,565 p=56265 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:38:27,565 p=56265 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-04 17:38:27,565 p=56265 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-04 17:38:27,566 p=56265 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-04 17:38:27,566 p=56265 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-04 22:55:11,281 p=58158 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:11,282 p=58158 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:13,754 p=58162 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:13,754 p=58162 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:16,228 p=58165 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:16,228 p=58165 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:18,695 p=58167 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:18,696 p=58167 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:21,154 p=58168 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:21,154 p=58168 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:24,227 p=58179 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:24,227 p=58179 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:26,690 p=58180 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:26,690 p=58180 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:29,130 p=58184 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:29,130 p=58184 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:31,604 p=58199 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:31,604 p=58199 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:34,089 p=58200 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:34,089 p=58200 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:37,229 p=58211 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:37,229 p=58211 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:39,670 p=58214 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:39,670 p=58214 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:42,146 p=58215 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:42,146 p=58215 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:44,597 p=58216 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:44,597 p=58216 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:47,060 p=58219 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:47,060 p=58219 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:49,686 p=58231 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:49,686 p=58231 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:52,152 p=58233 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:52,153 p=58233 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:54,627 p=58234 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:54,628 p=58234 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:57,088 p=58235 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:57,088 p=58235 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:55:59,549 p=58236 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:55:59,549 p=58236 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:02,674 p=58247 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:02,675 p=58247 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:05,139 p=58248 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:05,139 p=58248 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:07,629 p=58249 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:07,629 p=58249 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:10,100 p=58251 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:10,100 p=58251 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:12,575 p=58258 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:12,575 p=58258 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:15,395 p=58270 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:15,395 p=58270 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:17,855 p=58274 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:17,855 p=58274 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:20,288 p=58281 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:20,288 p=58281 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:22,733 p=58283 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:22,733 p=58283 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:25,166 p=58284 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:25,166 p=58284 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:28,336 p=58295 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:28,336 p=58295 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:30,793 p=58296 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:30,793 p=58296 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:33,261 p=58297 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:33,261 p=58297 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:35,752 p=58298 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:35,752 p=58298 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:38,234 p=58301 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:38,234 p=58301 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:41,053 p=58313 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:41,053 p=58313 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:43,527 p=58314 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:43,527 p=58314 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:45,985 p=58317 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:45,985 p=58317 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:48,456 p=58318 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:48,457 p=58318 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:50,920 p=58320 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:50,921 p=58320 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:54,091 p=58331 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:54,091 p=58331 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:56,585 p=58334 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:56,585 p=58334 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:56:59,069 p=58335 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:56:59,069 p=58335 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:01,543 p=58336 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:01,543 p=58336 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:03,997 p=58341 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:03,997 p=58341 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:07,278 p=58353 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:07,278 p=58353 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:09,709 p=58355 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:09,709 p=58355 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:12,174 p=58356 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:12,174 p=58356 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:14,659 p=58357 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:14,659 p=58357 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:17,172 p=58359 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:17,172 p=58359 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:20,233 p=58370 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:20,233 p=58370 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:22,722 p=58371 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:22,722 p=58371 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:25,190 p=58372 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:25,190 p=58372 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:27,659 p=58374 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:27,659 p=58374 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:30,117 p=58375 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:30,118 p=58375 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:33,238 p=58386 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:33,238 p=58386 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:35,710 p=58387 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:35,710 p=58387 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:38,191 p=58389 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:38,191 p=58389 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:40,653 p=58391 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:40,653 p=58391 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:43,130 p=58392 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:43,130 p=58392 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:45,706 p=58405 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:45,706 p=58405 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:48,206 p=58407 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:48,206 p=58407 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:50,688 p=58410 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:50,688 p=58410 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:53,159 p=58412 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:53,160 p=58412 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:55,628 p=58413 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:55,628 p=58413 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:57:58,682 p=58425 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:57:58,682 p=58425 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:01,150 p=58426 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:58:01,150 p=58426 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:03,631 p=58428 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:58:03,631 p=58428 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:06,095 p=58434 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:58:06,096 p=58434 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:08,584 p=58436 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:58:08,584 p=58436 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:12,522 p=58450 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:58:12,522 p=58450 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:13,046 p=58452 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 22:58:13,071 p=58452 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 22:58:14,764 p=58452 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 22:58:31,468 p=58538 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:58:31,468 p=58538 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:31,984 p=58540 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 22:58:32,009 p=58540 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 22:58:33,684 p=58540 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 22:58:50,706 p=58625 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:58:50,706 p=58625 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:58:51,201 p=58626 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 22:58:51,225 p=58626 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 22:58:51,911 p=58626 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 22:59:09,690 p=58704 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:59:09,690 p=58704 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:59:10,202 p=58705 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 22:59:10,227 p=58705 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 22:59:11,913 p=58705 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 22:59:28,914 p=58784 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:59:28,914 p=58784 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:59:29,429 p=58785 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 22:59:29,455 p=58785 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 22:59:30,137 p=58785 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 22:59:47,907 p=58866 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 22:59:47,907 p=58866 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 22:59:48,404 p=58867 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 22:59:48,427 p=58867 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 22:59:49,113 p=58867 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 23:00:07,885 p=58954 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 23:00:07,885 p=58954 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 23:00:08,375 p=58955 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 23:00:08,400 p=58955 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 23:00:09,095 p=58955 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 23:00:27,060 p=59036 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 23:00:27,060 p=59036 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 23:00:27,545 p=59037 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 23:00:27,569 p=59037 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 23:00:28,210 p=59037 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 23:00:46,243 p=59119 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 23:00:46,243 p=59119 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 23:00:46,730 p=59120 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 23:00:46,754 p=59120 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 23:00:47,450 p=59120 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 23:01:05,403 p=59200 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 23:01:05,403 p=59200 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 23:01:05,885 p=59201 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 23:01:05,909 p=59201 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 23:01:06,637 p=59201 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 23:01:25,095 p=59292 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 23:01:25,095 p=59292 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 23:01:25,584 p=59293 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 23:01:25,609 p=59293 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 23:01:26,259 p=59293 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 23:01:44,296 p=59376 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 23:01:44,296 p=59376 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 23:01:44,789 p=59377 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 23:01:44,813 p=59377 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 23:01:45,504 p=59377 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-04 23:01:54,739 p=59475 u=dgoldgar n=ansible WARNING| [WARNING]: Could not match supplied host pattern, ignoring: application_host
+
+2026-01-04 23:01:54,739 p=59475 u=dgoldgar n=ansible ERROR| ERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.
+2026-01-04 23:01:55,224 p=59484 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-04 23:01:55,249 p=59484 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-04 23:01:56,900 p=59484 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:23:13,929 p=62901 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:23:13,955 p=62901 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:23:15,166 p=62901 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:23:19,041 p=62946 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:23:19,062 p=62946 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:23:19,871 p=62946 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:23:19,874 p=62946 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:23:19,884 p=62946 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:23:19,886 p=62946 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:23:20,230 p=62946 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:23:20,234 p=62946 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:23:20,238 p=62946 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:23:20,805 p=62946 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:23:20,808 p=62946 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:23:21,302 p=62946 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:23:21,305 p=62946 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:23:21,306 p=62946 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:23:21,306 p=62946 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:23:21,306 p=62946 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:23:21,307 p=62946 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:23:21,307 p=62946 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:23:21,308 p=62946 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:23:21,308 p=62946 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:23:21,309 p=62946 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:23:21,309 p=62946 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:23:21,309 p=62946 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:23:21,309 p=62946 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:23:21,807 p=63060 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:23:21,828 p=63060 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:23:22,515 p=63060 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:24:03,968 p=63266 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:24:03,993 p=63266 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:24:04,647 p=63266 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:24:09,112 p=63312 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:24:09,137 p=63312 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:24:09,793 p=63312 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:24:29,715 p=63422 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:24:29,740 p=63422 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:24:31,424 p=63422 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:24:34,865 p=63466 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:24:34,890 p=63466 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:24:35,587 p=63466 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:24:56,137 p=63589 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:24:56,162 p=63589 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:24:56,800 p=63589 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:25:01,294 p=63635 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:25:01,319 p=63635 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:25:01,974 p=63635 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:25:22,561 p=63744 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:25:22,585 p=63744 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:25:23,248 p=63744 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:25:27,726 p=63787 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:25:27,751 p=63787 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:25:28,396 p=63787 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:25:49,049 p=63897 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:25:49,075 p=63897 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:25:50,769 p=63897 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:25:54,168 p=63949 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:25:54,193 p=63949 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:25:54,912 p=63949 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:26:15,525 p=64063 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:26:15,551 p=64063 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:26:16,242 p=64063 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:26:20,662 p=64106 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:26:20,688 p=64106 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:26:22,393 p=64106 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:26:42,023 p=64214 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:26:42,050 p=64214 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:26:42,773 p=64214 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:26:47,133 p=64258 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:26:47,159 p=64258 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:26:47,820 p=64258 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:27:08,459 p=64371 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:27:08,483 p=64371 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:27:09,225 p=64371 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:27:13,613 p=64415 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:27:13,638 p=64415 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:27:15,341 p=64415 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:27:34,919 p=64525 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:27:34,943 p=64525 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:27:36,639 p=64525 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:27:40,069 p=64568 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:27:40,093 p=64568 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:27:40,752 p=64568 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:28:01,358 p=64677 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:28:01,384 p=64677 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:28:04,088 p=64677 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:28:06,501 p=64721 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:28:06,528 p=64721 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:28:07,187 p=64721 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:28:27,846 p=64829 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:28:27,870 p=64829 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:28:28,592 p=64829 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:28:33,016 p=64874 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:28:33,041 p=64874 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:28:33,684 p=64874 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:28:54,330 p=64983 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:28:54,355 p=64983 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:28:55,010 p=64983 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:28:59,512 p=65028 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:28:59,537 p=65028 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:29:01,232 p=65028 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:29:20,776 p=65140 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:29:20,801 p=65140 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:29:22,465 p=65140 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:29:25,923 p=65183 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:29:25,947 p=65183 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:29:26,586 p=65183 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:29:47,244 p=65291 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:29:47,269 p=65291 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:29:47,981 p=65291 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:29:52,383 p=65334 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:29:52,408 p=65334 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:29:53,055 p=65334 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:30:13,652 p=65474 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:30:13,677 p=65474 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:30:16,388 p=65474 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:30:18,795 p=65521 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:30:18,819 p=65521 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:30:20,500 p=65521 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:30:40,131 p=65678 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:30:40,157 p=65678 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:30:40,900 p=65678 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:30:45,282 p=65721 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:30:45,307 p=65721 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:30:46,028 p=65721 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:31:06,574 p=65840 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:31:06,599 p=65840 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:31:08,309 p=65840 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:31:11,729 p=65884 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:31:11,754 p=65884 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:31:13,508 p=65884 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:31:33,069 p=65993 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:31:33,095 p=65993 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:31:33,789 p=65993 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:31:38,220 p=66037 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:31:38,244 p=66037 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:31:38,913 p=66037 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:31:59,540 p=66145 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:31:59,564 p=66145 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:32:00,185 p=66145 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:32:04,725 p=66193 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:32:04,750 p=66193 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:32:05,416 p=66193 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:32:26,000 p=66301 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:32:26,027 p=66301 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:32:27,855 p=66301 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:32:31,148 p=66345 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:32:31,172 p=66345 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:32:31,865 p=66345 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:32:52,469 p=66454 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:32:52,494 p=66454 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:32:53,164 p=66454 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:32:57,617 p=66500 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:32:57,641 p=66500 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:32:58,294 p=66500 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:33:19,200 p=66622 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:33:19,222 p=66622 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:33:19,907 p=66622 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:33:19,910 p=66622 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:33:19,919 p=66622 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:33:19,922 p=66622 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:33:20,267 p=66622 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:33:20,270 p=66622 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:33:20,274 p=66622 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:33:20,825 p=66622 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:33:20,828 p=66622 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:33:21,298 p=66622 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:33:21,301 p=66622 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:33:21,301 p=66622 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:21,302 p=66622 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:33:21,302 p=66622 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:21,302 p=66622 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:33:21,303 p=66622 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:21,303 p=66622 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:33:21,303 p=66622 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:21,304 p=66622 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:33:21,304 p=66622 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:21,304 p=66622 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:33:21,304 p=66622 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:33:23,787 p=66743 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:33:23,811 p=66743 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:33:24,505 p=66743 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:33:24,507 p=66743 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:33:24,518 p=66743 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:33:24,522 p=66743 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:33:24,918 p=66743 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:33:24,922 p=66743 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:33:24,926 p=66743 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:33:25,513 p=66743 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:33:25,516 p=66743 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:33:26,042 p=66743 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:33:26,046 p=66743 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:33:26,046 p=66743 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:26,046 p=66743 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:33:26,047 p=66743 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:26,047 p=66743 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:33:26,048 p=66743 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:26,048 p=66743 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:33:26,049 p=66743 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:26,049 p=66743 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:33:26,050 p=66743 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:33:26,050 p=66743 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:33:26,051 p=66743 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:33:28,613 p=66852 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:33:28,639 p=66852 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:34:18,192 p=67085 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:34:18,214 p=67085 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:34:18,926 p=67085 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:34:18,929 p=67085 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:34:18,940 p=67085 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:34:18,943 p=67085 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:34:19,325 p=67085 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:34:19,330 p=67085 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:34:19,334 p=67085 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:34:19,888 p=67085 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:34:19,891 p=67085 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:34:20,412 p=67085 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:34:20,416 p=67085 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:34:20,416 p=67085 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:20,417 p=67085 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:34:20,417 p=67085 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:20,418 p=67085 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:34:20,418 p=67085 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:20,419 p=67085 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:34:20,419 p=67085 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:20,420 p=67085 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:34:20,420 p=67085 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:20,420 p=67085 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:34:20,420 p=67085 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:34:22,965 p=67202 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:34:22,990 p=67202 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:34:25,758 p=67202 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:34:25,762 p=67202 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:34:25,775 p=67202 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:34:25,778 p=67202 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:34:26,177 p=67202 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:34:26,181 p=67202 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:34:26,185 p=67202 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:34:26,762 p=67202 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:34:26,765 p=67202 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:34:27,266 p=67202 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:34:27,269 p=67202 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:34:27,269 p=67202 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:27,270 p=67202 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:34:27,270 p=67202 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:27,271 p=67202 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:34:27,271 p=67202 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:27,271 p=67202 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:34:27,272 p=67202 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:27,272 p=67202 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:34:27,272 p=67202 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:34:27,273 p=67202 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:34:27,273 p=67202 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:35:12,583 p=67508 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:35:12,607 p=67508 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:35:15,460 p=67508 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:35:15,463 p=67508 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:35:15,476 p=67508 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:35:15,479 p=67508 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:35:15,840 p=67508 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:35:15,844 p=67508 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:35:15,848 p=67508 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:35:16,437 p=67508 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:35:16,439 p=67508 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:35:16,967 p=67508 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:35:16,971 p=67508 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:35:16,971 p=67508 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:16,972 p=67508 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:35:16,972 p=67508 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:16,972 p=67508 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:35:16,973 p=67508 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:16,973 p=67508 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:35:16,973 p=67508 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:16,974 p=67508 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:35:16,974 p=67508 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:16,974 p=67508 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:35:16,974 p=67508 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:35:19,545 p=67627 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:35:19,569 p=67627 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:35:20,260 p=67627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:35:20,263 p=67627 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:35:20,273 p=67627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:35:20,275 p=67627 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:35:20,665 p=67627 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:35:20,669 p=67627 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:35:20,673 p=67627 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:35:21,272 p=67627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:35:21,274 p=67627 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:35:21,796 p=67627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:35:21,801 p=67627 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:35:21,801 p=67627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:21,801 p=67627 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:35:21,802 p=67627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:21,802 p=67627 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:35:21,803 p=67627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:21,803 p=67627 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:35:21,804 p=67627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:21,804 p=67627 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:35:21,805 p=67627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:35:21,805 p=67627 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:35:21,805 p=67627 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:36:06,320 p=67927 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:36:06,345 p=67927 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:36:07,018 p=67927 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:36:07,021 p=67927 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:36:07,031 p=67927 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:36:07,034 p=67927 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:36:07,414 p=67927 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:36:07,418 p=67927 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:36:07,422 p=67927 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:36:07,977 p=67927 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:36:07,979 p=67927 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:36:08,500 p=67927 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:36:08,503 p=67927 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:36:08,503 p=67927 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:08,504 p=67927 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:36:08,504 p=67927 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:08,505 p=67927 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:36:08,505 p=67927 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:08,505 p=67927 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:36:08,506 p=67927 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:08,506 p=67927 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:36:08,506 p=67927 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:08,507 p=67927 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:36:08,507 p=67927 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:36:11,060 p=68047 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:36:11,082 p=68047 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:36:11,744 p=68047 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:36:11,747 p=68047 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:36:11,757 p=68047 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:36:11,764 p=68047 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:36:12,118 p=68047 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:36:12,122 p=68047 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:36:12,126 p=68047 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:36:12,672 p=68047 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:36:12,675 p=68047 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:36:13,178 p=68047 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:36:13,181 p=68047 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:36:13,182 p=68047 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:13,182 p=68047 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:36:13,182 p=68047 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:13,183 p=68047 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:36:13,183 p=68047 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:13,183 p=68047 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:36:13,184 p=68047 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:13,184 p=68047 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:36:13,184 p=68047 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:36:13,185 p=68047 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:36:13,185 p=68047 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:36:15,739 p=68155 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:36:15,763 p=68155 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:36:16,439 p=68155 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:36:16,442 p=68155 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:36:16,453 p=68155 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:39:51,220 p=69247 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:39:51,243 p=69247 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:39:51,924 p=69247 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:39:56,375 p=69295 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:39:56,399 p=69295 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:39:57,053 p=69295 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:16,915 p=69405 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:40:16,940 p=69405 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:40:18,628 p=69405 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:22,048 p=69448 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:40:22,072 p=69448 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:40:22,716 p=69448 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:43,594 p=69584 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:40:43,619 p=69584 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:40:44,290 p=69584 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:48,750 p=69627 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:40:48,774 p=69627 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:40:49,408 p=69627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:49,410 p=69627 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:40:49,420 p=69627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:40:49,423 p=69627 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:40:49,782 p=69627 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:40:49,786 p=69627 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:40:49,790 p=69627 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:40:50,338 p=69627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:50,341 p=69627 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:40:50,858 p=69627 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:50,861 p=69627 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:40:50,861 p=69627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:50,862 p=69627 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:40:50,862 p=69627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:50,863 p=69627 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:40:50,863 p=69627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:50,864 p=69627 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:40:50,864 p=69627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:50,864 p=69627 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:40:50,865 p=69627 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:50,865 p=69627 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:40:50,865 p=69627 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:40:51,382 p=69737 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:40:51,405 p=69737 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:40:52,085 p=69737 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:52,087 p=69737 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:40:52,097 p=69737 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:40:52,100 p=69737 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:40:52,450 p=69737 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:40:52,453 p=69737 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:40:52,457 p=69737 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:40:52,976 p=69737 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:52,979 p=69737 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:40:53,485 p=69737 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:40:53,489 p=69737 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:40:53,489 p=69737 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:53,489 p=69737 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:40:53,490 p=69737 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:53,490 p=69737 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:40:53,490 p=69737 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:53,491 p=69737 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:40:53,491 p=69737 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:53,491 p=69737 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:40:53,492 p=69737 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:40:53,492 p=69737 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:40:53,492 p=69737 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:41:48,593 p=70111 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:41:48,614 p=70111 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:41:51,391 p=70111 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:41:51,394 p=70111 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:41:51,405 p=70111 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:41:51,408 p=70111 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:41:51,772 p=70111 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:41:51,776 p=70111 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:41:51,781 p=70111 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:41:52,321 p=70111 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:41:52,324 p=70111 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:41:52,817 p=70111 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:41:52,821 p=70111 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:41:52,821 p=70111 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:52,822 p=70111 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:41:52,822 p=70111 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:52,822 p=70111 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:41:52,823 p=70111 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:52,823 p=70111 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:41:52,823 p=70111 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:52,824 p=70111 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:41:52,824 p=70111 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:52,824 p=70111 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:41:52,824 p=70111 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:41:55,349 p=70235 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:41:55,372 p=70235 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:41:57,090 p=70235 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:41:57,093 p=70235 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:41:57,103 p=70235 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:41:57,105 p=70235 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:41:57,476 p=70235 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:41:57,481 p=70235 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:41:57,485 p=70235 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:41:58,030 p=70235 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:41:58,033 p=70235 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:41:58,537 p=70235 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:41:58,541 p=70235 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:41:58,541 p=70235 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:58,542 p=70235 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:41:58,542 p=70235 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:58,543 p=70235 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:41:58,543 p=70235 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:58,544 p=70235 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:41:58,545 p=70235 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:58,545 p=70235 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:41:58,545 p=70235 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:41:58,546 p=70235 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:41:58,546 p=70235 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:42:42,435 p=70522 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:42:42,457 p=70522 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:42:43,072 p=70522 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:42:43,074 p=70522 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:42:43,083 p=70522 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:42:43,086 p=70522 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:42:43,431 p=70522 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:42:43,435 p=70522 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:42:43,440 p=70522 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:42:43,980 p=70522 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:42:43,983 p=70522 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:42:44,462 p=70522 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:42:44,466 p=70522 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:42:44,466 p=70522 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:44,466 p=70522 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:42:44,467 p=70522 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:44,467 p=70522 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:42:44,467 p=70522 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:44,468 p=70522 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:42:44,468 p=70522 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:44,469 p=70522 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:42:44,469 p=70522 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:44,469 p=70522 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:42:44,469 p=70522 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:42:46,997 p=70642 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:42:47,022 p=70642 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:42:47,645 p=70642 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:42:47,647 p=70642 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:42:47,656 p=70642 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:42:47,659 p=70642 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:42:48,011 p=70642 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:42:48,015 p=70642 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:42:48,019 p=70642 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:42:48,544 p=70642 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:42:48,547 p=70642 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:42:49,025 p=70642 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:42:49,028 p=70642 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:42:49,028 p=70642 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:49,029 p=70642 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:42:49,029 p=70642 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:49,030 p=70642 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:42:49,030 p=70642 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:49,030 p=70642 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:42:49,031 p=70642 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:49,031 p=70642 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:42:49,031 p=70642 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:42:49,032 p=70642 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:42:49,032 p=70642 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:42:51,578 p=70750 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:42:51,601 p=70750 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:42:52,272 p=70750 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:42:52,274 p=70750 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:42:52,284 p=70750 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:42:52,287 p=70750 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:43:45,671 p=71022 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:43:45,694 p=71022 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:43:46,351 p=71022 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:43:46,354 p=71022 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:43:46,364 p=71022 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:43:46,366 p=71022 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:43:46,730 p=71022 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:43:46,735 p=71022 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:43:46,739 p=71022 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:43:47,283 p=71022 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:43:47,286 p=71022 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:43:47,819 p=71022 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:43:47,822 p=71022 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:43:47,822 p=71022 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:47,823 p=71022 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:43:47,823 p=71022 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:47,824 p=71022 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:43:47,824 p=71022 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:47,825 p=71022 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:43:47,825 p=71022 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:47,826 p=71022 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:43:47,826 p=71022 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:47,826 p=71022 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:43:47,826 p=71022 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:43:50,381 p=71142 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:43:50,403 p=71142 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:43:51,090 p=71142 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:43:51,093 p=71142 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:43:51,103 p=71142 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:43:51,105 p=71142 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:43:51,478 p=71142 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:43:51,482 p=71142 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:43:51,486 p=71142 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:43:52,012 p=71142 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:43:52,014 p=71142 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:43:52,477 p=71142 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:43:52,481 p=71142 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:43:52,481 p=71142 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:52,481 p=71142 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:43:52,482 p=71142 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:52,483 p=71142 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:43:52,483 p=71142 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:52,484 p=71142 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:43:52,484 p=71142 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:52,485 p=71142 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:43:52,485 p=71142 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:43:52,485 p=71142 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:43:52,486 p=71142 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:44:42,403 p=71504 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:44:42,425 p=71504 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:44:43,101 p=71504 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:44:49,570 p=71555 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:44:49,595 p=71555 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:44:50,264 p=71555 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:45:07,851 p=71717 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:45:07,875 p=71717 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:45:08,555 p=71717 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:45:15,010 p=71763 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:45:15,035 p=71763 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:45:16,703 p=71763 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:45:34,333 p=71871 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:45:34,358 p=71871 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:45:35,024 p=71871 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:45:41,422 p=71916 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:45:41,447 p=71916 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:45:42,095 p=71916 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:47:24,281 p=72081 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:47:24,303 p=72081 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:47:24,995 p=72081 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:47:31,478 p=72132 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:47:31,501 p=72132 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:47:32,146 p=72132 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:47:49,768 p=72235 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:47:49,792 p=72235 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:47:50,440 p=72235 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:47:56,916 p=72279 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:47:56,940 p=72279 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:47:57,572 p=72279 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:51:41,701 p=72494 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:51:41,724 p=72494 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:51:43,436 p=72494 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:53:58,404 p=72604 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:53:58,427 p=72604 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:53:59,146 p=72604 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:54:23,880 p=72721 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:54:23,901 p=72721 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:54:24,588 p=72721 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:54:44,920 p=72804 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:54:44,941 p=72804 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:54:45,584 p=72804 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:54:45,586 p=72804 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:54:45,595 p=72804 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:54:45,598 p=72804 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:54:45,954 p=72804 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:54:45,958 p=72804 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:54:45,962 p=72804 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:54:46,559 p=72804 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:54:46,562 p=72804 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:54:47,061 p=72804 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:54:47,065 p=72804 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:54:47,065 p=72804 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:54:47,065 p=72804 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:54:47,066 p=72804 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:54:47,066 p=72804 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:54:47,066 p=72804 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:54:47,067 p=72804 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:54:47,067 p=72804 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:54:47,067 p=72804 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:54:47,068 p=72804 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:54:47,068 p=72804 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:54:47,068 p=72804 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:57:35,110 p=73159 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:57:35,132 p=73159 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:57:35,853 p=73159 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:57:35,856 p=73159 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:57:35,865 p=73159 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:57:35,868 p=73159 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:57:36,219 p=73159 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:57:36,224 p=73159 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:57:36,228 p=73159 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:57:36,770 p=73159 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:57:36,773 p=73159 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:57:37,273 p=73159 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:57:37,277 p=73159 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:57:37,277 p=73159 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:57:37,278 p=73159 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:57:37,278 p=73159 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:57:37,279 p=73159 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:57:37,279 p=73159 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:57:37,280 p=73159 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:57:37,280 p=73159 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:57:37,281 p=73159 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:57:37,281 p=73159 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:57:37,282 p=73159 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:57:37,282 p=73159 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 08:58:08,845 p=73379 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:58:08,867 p=73379 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:58:09,540 p=73379 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:58:42,565 p=73466 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:58:42,587 p=73466 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:58:44,270 p=73466 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:59:15,971 p=73613 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:59:15,994 p=73613 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:59:17,806 p=73613 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:59:48,905 p=73715 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 08:59:48,927 p=73715 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 08:59:50,706 p=73715 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 08:59:50,710 p=73715 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 08:59:50,721 p=73715 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 08:59:50,723 p=73715 u=dgoldgar n=ansible INFO| TASK [test : Touch test file] **************************************************
+2026-01-05 08:59:51,085 p=73715 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:59:51,089 p=73715 u=dgoldgar n=ansible INFO| PLAY [SSH Config] **************************************************************
+2026-01-05 08:59:51,093 p=73715 u=dgoldgar n=ansible INFO| TASK [ssh_client : Copy sshconfig to /Users/dgoldgar/.ssh/] ********************
+2026-01-05 08:59:51,776 p=73715 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:59:51,779 p=73715 u=dgoldgar n=ansible INFO| TASK [ssh_client : Install encrypted key file] *********************************
+2026-01-05 08:59:52,291 p=73715 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj]
+2026-01-05 08:59:52,294 p=73715 u=dgoldgar n=ansible INFO| PLAY [Camera hosts] ************************************************************
+2026-01-05 08:59:52,294 p=73715 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:59:52,295 p=73715 u=dgoldgar n=ansible INFO| PLAY [Homeassistant] ***********************************************************
+2026-01-05 08:59:52,295 p=73715 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:59:52,296 p=73715 u=dgoldgar n=ansible INFO| PLAY [Nginx] *******************************************************************
+2026-01-05 08:59:52,296 p=73715 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:59:52,296 p=73715 u=dgoldgar n=ansible INFO| PLAY [Frigate] *****************************************************************
+2026-01-05 08:59:52,296 p=73715 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:59:52,297 p=73715 u=dgoldgar n=ansible INFO| PLAY [Applications Host] *******************************************************
+2026-01-05 08:59:52,297 p=73715 u=dgoldgar n=ansible INFO| skipping: no hosts matched
+2026-01-05 08:59:52,297 p=73715 u=dgoldgar n=ansible INFO| PLAY RECAP *********************************************************************
+2026-01-05 08:59:52,297 p=73715 u=dgoldgar n=ansible INFO| dgoldga-ltmpyaj            : ok=5    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-01-05 09:02:07,200 p=74507 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 09:02:07,225 p=74507 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 09:02:08,083 p=74507 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 09:05:18,611 p=74672 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 09:05:18,641 p=74672 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 09:05:20,439 p=74672 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 09:07:35,847 p=74839 u=dgoldgar n=ansible ERROR| ERROR! conflicting action statements: ansible.builtin.debug, gather_facts
+
+The error appears to be in '/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/roles/test/tasks/main.yml': line 2, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+---
+- name: DEBUG — prove tasks run
+  ^ here
+
+2026-01-05 09:08:49,973 p=74878 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 09:08:49,994 p=74878 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 09:08:51,722 p=74878 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 09:12:30,300 p=75027 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 09:12:30,322 p=75027 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 09:12:31,032 p=75027 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 09:16:16,999 p=75276 u=dgoldgar n=ansible INFO| ansible-playbook [core 2.18.12]
+  config file = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg
+  configured module search path = ['/Users/dgoldgar/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/lib/python3.11/site-packages/ansible
+  ansible collection location = /Users/dgoldgar/.ansible/collections:/usr/share/ansible/collections
+  executable location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/ansible-playbook
+  python version = 3.11.13 (main, Jun  3 2025, 18:38:25) [Clang 17.0.0 (clang-1700.0.13.3)] (/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/python3.11)
+  jinja version = 3.0.3
+  libyaml = True
+2026-01-05 09:16:16,999 p=75276 u=dgoldgar n=ansible INFO| Using /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg as config file
+2026-01-05 09:16:17,109 p=75276 u=dgoldgar n=ansible INFO| Skipping callback 'awx_display', as we already have a stdout callback.
+2026-01-05 09:16:17,110 p=75276 u=dgoldgar n=ansible INFO| Skipping callback 'default', as we already have a stdout callback.
+2026-01-05 09:16:17,110 p=75276 u=dgoldgar n=ansible INFO| Skipping callback 'minimal', as we already have a stdout callback.
+2026-01-05 09:16:17,110 p=75276 u=dgoldgar n=ansible INFO| Skipping callback 'oneline', as we already have a stdout callback.
+2026-01-05 09:16:17,111 p=75276 u=dgoldgar n=ansible INFO| PLAYBOOK: site.yml *************************************************************
+2026-01-05 09:16:17,111 p=75276 u=dgoldgar n=ansible INFO| 7 plays in site.yml
+2026-01-05 09:16:17,112 p=75276 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 09:16:17,135 p=75276 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 09:16:17,135 p=75276 u=dgoldgar n=ansible INFO| task path: /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/site.yml:3
+2026-01-05 09:16:17,840 p=75276 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 09:19:22,791 p=75442 u=dgoldgar n=ansible INFO| ansible-playbook [core 2.18.12]
+  config file = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg
+  configured module search path = ['/Users/dgoldgar/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/lib/python3.11/site-packages/ansible
+  ansible collection location = /Users/dgoldgar/.ansible/collections:/usr/share/ansible/collections
+  executable location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/ansible-playbook
+  python version = 3.11.13 (main, Jun  3 2025, 18:38:25) [Clang 17.0.0 (clang-1700.0.13.3)] (/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/python3.11)
+  jinja version = 3.0.3
+  libyaml = True
+2026-01-05 09:19:22,791 p=75442 u=dgoldgar n=ansible INFO| Using /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg as config file
+2026-01-05 09:19:22,897 p=75442 u=dgoldgar n=ansible INFO| Skipping callback 'awx_display', as we already have a stdout callback.
+2026-01-05 09:19:22,897 p=75442 u=dgoldgar n=ansible INFO| Skipping callback 'default', as we already have a stdout callback.
+2026-01-05 09:19:22,898 p=75442 u=dgoldgar n=ansible INFO| Skipping callback 'minimal', as we already have a stdout callback.
+2026-01-05 09:19:22,898 p=75442 u=dgoldgar n=ansible INFO| Skipping callback 'oneline', as we already have a stdout callback.
+2026-01-05 09:19:22,898 p=75442 u=dgoldgar n=ansible INFO| PLAYBOOK: site.yml *************************************************************
+2026-01-05 09:19:22,898 p=75442 u=dgoldgar n=ansible INFO| 7 plays in site.yml
+2026-01-05 09:19:22,899 p=75442 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 09:19:22,923 p=75442 u=dgoldgar n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2026-01-05 09:19:22,923 p=75442 u=dgoldgar n=ansible INFO| task path: /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/site.yml:3
+2026-01-05 09:19:23,625 p=75442 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj]
+2026-01-05 09:20:47,287 p=75581 u=dgoldgar n=ansible INFO| ansible-playbook [core 2.18.12]
+  config file = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg
+  configured module search path = ['/Users/dgoldgar/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/lib/python3.11/site-packages/ansible
+  ansible collection location = /Users/dgoldgar/.ansible/collections:/usr/share/ansible/collections
+  executable location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/ansible-playbook
+  python version = 3.11.13 (main, Jun  3 2025, 18:38:25) [Clang 17.0.0 (clang-1700.0.13.3)] (/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/python3.11)
+  jinja version = 3.0.3
+  libyaml = True
+2026-01-05 09:20:47,287 p=75581 u=dgoldgar n=ansible INFO| Using /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg as config file
+2026-01-05 09:20:47,367 p=75581 u=dgoldgar n=ansible ERROR| ERROR! conflicting action statements: hosts, gather_facts
+
+The error appears to be in '/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/roles/test/tasks/main.yml': line 1, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+- name: Global Base Configuration
+  ^ here
+
+2026-01-05 09:22:42,327 p=75653 u=dgoldgar n=ansible INFO| ansible-playbook [core 2.18.12]
+  config file = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg
+  configured module search path = ['/Users/dgoldgar/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/lib/python3.11/site-packages/ansible
+  ansible collection location = /Users/dgoldgar/.ansible/collections:/usr/share/ansible/collections
+  executable location = /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/ansible-playbook
+  python version = 3.11.13 (main, Jun  3 2025, 18:38:25) [Clang 17.0.0 (clang-1700.0.13.3)] (/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/.venv/bin/python3.11)
+  jinja version = 3.0.3
+  libyaml = True
+2026-01-05 09:22:42,327 p=75653 u=dgoldgar n=ansible INFO| Using /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/ansible.cfg as config file
+2026-01-05 09:22:42,434 p=75653 u=dgoldgar n=ansible INFO| Skipping callback 'awx_display', as we already have a stdout callback.
+2026-01-05 09:22:42,434 p=75653 u=dgoldgar n=ansible INFO| Skipping callback 'default', as we already have a stdout callback.
+2026-01-05 09:22:42,435 p=75653 u=dgoldgar n=ansible INFO| Skipping callback 'minimal', as we already have a stdout callback.
+2026-01-05 09:22:42,435 p=75653 u=dgoldgar n=ansible INFO| Skipping callback 'oneline', as we already have a stdout callback.
+2026-01-05 09:22:42,435 p=75653 u=dgoldgar n=ansible INFO| PLAYBOOK: site.yml *************************************************************
+2026-01-05 09:22:42,436 p=75653 u=dgoldgar n=ansible INFO| 7 plays in site.yml
+2026-01-05 09:22:42,436 p=75653 u=dgoldgar n=ansible INFO| PLAY [Global Base Configuration] ***********************************************
+2026-01-05 09:22:42,459 p=75653 u=dgoldgar n=ansible INFO| TASK [test : DEBUG — prove tasks run] ******************************************
+2026-01-05 09:22:42,459 p=75653 u=dgoldgar n=ansible INFO| task path: /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/roles/test/tasks/main.yml:2
+2026-01-05 09:22:42,479 p=75653 u=dgoldgar n=ansible INFO| ok: [dgoldga-ltmpyaj] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,486 p=75653 u=dgoldgar n=ansible INFO| ok: [raspberry-slate] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,492 p=75653 u=dgoldgar n=ansible INFO| ok: [raspberry-pearl] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,499 p=75653 u=dgoldgar n=ansible INFO| ok: [raspberry-five] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,506 p=75653 u=dgoldgar n=ansible INFO| ok: [ubuntu-one] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,511 p=75653 u=dgoldgar n=ansible INFO| ok: [main] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,519 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-backdoor] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,526 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-catbox] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,846 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-catfood] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,860 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-driveway1] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,874 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-frontpath] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,881 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-frontdoor] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,890 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-frontporch] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,900 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-kitchenporch] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,907 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-woodstove] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,914 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-aoqee1] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,920 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-aoqee2] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,921 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-aoqee3] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:42,927 p=75653 u=dgoldgar n=ansible INFO| ok: [camera-aoqee4] => {
+    "msg": "Tasks are executing from /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project"
+}
+2026-01-05 09:22:43,222 p=75653 u=dgoldgar n=ansible INFO| TASK [test : Touch test file /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/ansible_test.touch] ***
+2026-01-05 09:22:43,222 p=75653 u=dgoldgar n=ansible INFO| task path: /Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/roles/test/tasks/main.yml:7
+2026-01-05 09:22:43,657 p=75653 u=dgoldgar n=ansible INFO| changed: [dgoldga-ltmpyaj] => {"ansible_facts": {"discovered_interpreter_python": "/opt/homebrew/bin/python3.13"}, "changed": true, "dest": "/Users/dgoldgar/LITTERBOX/PERSONAL/litterbox-manager/ansible/project/ansible_test.touch", "gid": 20, "group": "staff", "mode": "0644", "owner": "dgoldgar", "size": 0, "state": "file", "uid": 501}

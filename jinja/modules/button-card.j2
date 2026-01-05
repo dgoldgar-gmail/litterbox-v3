@@ -1,0 +1,62 @@
+{% import 'modules/tap-actions.j2' as tap_actions %}
+####################################
+# BLANK BUTTON CARD
+####################################
+{% macro blank_button_card(indent) %}
+- type: custom:button-card
+  color_type: blank-card
+{% endmacro %}
+####################################
+# BUTTON_CARD
+####################################
+{% macro button_card(name, service_name, params, confirmation_text, style, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: custom:button-card
+  size: {{ style['icon_size'] }}
+  name: {{ name }}
+  styles:
+    name:
+      - color: '#4682b4'
+{{ tap_actions.service_invoking_action("tap_action", service_name, params, confirmation_text, 2 ) }}
+{% endfilter %}
+{% endmacro %}
+####################################
+# URL BUTTON_CARD
+####################################
+{% macro url_button_card(name, icon, url, style, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: custom:button-card
+  name: {{ name }}
+  icon: {{ icon }}
+  size: {{ style['icon_size'] }}
+  styles:
+    name:
+      - color: '#4682b4'
+    icon:
+      - color: '#4682b4'
+{{ tap_actions.url_navigate_action("tap_action", url, 2)  }}
+{% endfilter %}
+{% endmacro %}
+####################################
+# CLOSE POPUP BUTTON CARD
+####################################
+{% macro close_popup_button_card(show_icon, style, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: custom:button-card
+  name: close
+  {% if show_icon %}
+  icon: mdi:close
+  size: {{ style['icon_size'] }}
+  {% endif %}
+  styles:
+    name:
+      - color: '#4682b4'
+    {% if show_icon %}
+    icon:
+      - color: '#4682b4'
+  {% endif %}
+  tap_action:
+    action: call-service
+    service: browser_mod.close_popup
+{% endfilter %}
+{% endmacro %}

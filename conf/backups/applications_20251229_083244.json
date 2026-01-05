@@ -1,0 +1,669 @@
+[
+  {
+    "name": "elasticsearch",
+    "hosts": [
+      "raspberry-five",
+      "main"
+    ],
+    "live": false,
+    "managed": false,
+    "notify_version": false,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/arm64v8/elasticsearch/tags",
+    "max_dockerhub_pages": "1",
+    "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
+    "docker": {
+      "image": "elasticsearch",
+      "args": [
+        "--ulimit",
+        "memlock=-1:-1",
+        "-e",
+        "node.name=&get_es_node_name&",
+        "-e",
+        "discovery.type=single-node",
+        "-e",
+        "bootstrap.memory_lock=true",
+        "-e",
+        "ES_JAVA_OPTS=-Xms1024m -Xmx2048m",
+        "-v",
+        "/opt/LITTERBOX/apps/elasticsearch/data:/usr/share/elasticsearch/data",
+        "-v",
+        "/opt/LITTERBOX/apps/elasticsearch/config:/usr/share/elasticsearch/config"
+      ]
+    }
+  },
+  {
+    "platform": "docker",
+    "git_hub_url": "https://api.github.com/repos/dresden-elektronik/deconz-rest-plugin/releases",
+    "github_version_field": "tag_name",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/deconzcommunity/deconz/tags",
+    "version_pattern": "[0-9].[0-9]{2}.[0-9]+",
+    "max_dockerhub_pages": "2",
+    "name": "deconz",
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "hosts": [
+      "raspberry-slate"
+    ],
+    "docker": {
+      "image": "deconzcommunity/deconz",
+      "args": null,
+      "entrypoint": [],
+      "container_args": [],
+      "post_startup_cmds": null
+    }
+  },
+  {
+    "platform": "dockers",
+    "git_hub_url": "",
+    "github_version_field": "name",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/elastic/filebeat/tags",
+    "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
+    "max_dockerhub_pages": "1",
+    "name": "filebeat",
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "hosts": [
+      "raspberry-five",
+      "raspberry-pearl",
+      "raspberry-slate",
+      "main"
+    ],
+    "docker": {
+      "image": "docker.elastic.co/beats/filebeat",
+      "args": null,
+      "entrypoint": [],
+      "container_args": [
+        "-e"
+      ],
+      "post_startup_cmds": null
+    }
+  },
+  {
+    "platform": "",
+    "git_hub_url": "abcdef",
+    "github_version_field": "",
+    "docker_hub_url": "",
+    "version_pattern": "",
+    "max_dockerhub_pages": "",
+    "name": "fred",
+    "live": false,
+    "managed": false,
+    "notify_version": false,
+    "hosts": [],
+    "docker": {
+      "image": "",
+      "args": null,
+      "entrypoint": [],
+      "container_args": [],
+      "post_startup_cmds": null
+    }
+  },
+  {
+    "name": "certbot",
+    "hosts": [
+      "raspberry-slate"
+    ],
+    "live": false,
+    "managed": false,
+    "notify_version": false,
+    "platform": "docker",
+    "git_hub_url": "https://github.com/certbot/certbot/releases",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/certbot/certbot/tags",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "tag_name",
+    "version_pattern": "^v[0-9].[0-9]+.[0-9]+$",
+    "docker": {
+      "entrypoint": [
+        "/usr/bin/tail"
+      ],
+      "image": "certbot/certbot",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/certbot:/etc/letsencrypt/archive"
+      ],
+      "container_args": [
+        "-f",
+        "/dev/null"
+      ],
+      "post-startup-cmds": {
+        "1": [
+          "/usr/local/bin/pip",
+          "install",
+          "certbot_dns_duckdns"
+        ]
+      }
+    }
+  },
+  {
+    "name": "frigate",
+    "hosts": [
+      "main"
+    ],
+    "live": true,
+    "managed": false,
+    "notify_version": false,
+    "platform": "docker",
+    "docker": {
+      "image": "ghcr.io/blakeblackshear/frigate",
+      "args": [
+        "--shm-size=300m",
+        "--mount",
+        "type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000",
+        "--device",
+        "/dev/bus/usb:/dev/bus/usb",
+        "--device",
+        "/dev/dri/renderD128",
+        "-v",
+        "/opt/LITTERBOX/apps/frigate/storage:/media/frigate",
+        "-v",
+        "/opt/LITTERBOX/apps/frigate/config/config.yml:/config/config.yml",
+        "-v",
+        "/etc/localtime:/etc/localtime:ro",
+        "-v",
+        "/etc/timezone:/etc/timezone:ro",
+        "-e",
+        "FRIGATE_RTSP_PASSWORD='password'",
+        "-e",
+        "TZ=America/New_York"
+      ]
+    }
+  },
+  {
+    "name": "grafana",
+    "hosts": [
+      "raspberry-pearl"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "git_hub_url": "https://api.github.com/repos/grafana/grafana/releases",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/grafana/grafana-enterprise/tags?page_size=100",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "tag_name",
+    "version_pattern": "^11.[0-9]{1,2}.[0-9]+$",
+    "docker": {
+      "image": "grafana/grafana-enterprise",
+      "args": [
+        "-v",
+        "/etc/localtime:/etc/localtime:ro",
+        "-v",
+        "/opt/LITTERBOX/apps/grafana:/var/lib/grafana"
+      ]
+    }
+  },
+  {
+    "name": "homeassistant",
+    "hosts": [
+      "raspberry-slate"
+    ],
+    "live": true,
+    "managed": true,
+    "platform": "docker",
+    "notify_version": true,
+    "git_hub_url": "https://api.github.com/repos/home-assistant/core/releases",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/homeassistant/home-assistant/tags?page_size=100",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "tag_name",
+    "version_pattern": "^[0-9]{4}.[0-9]{1,2}.[0-9]{1,2}$",
+    "docker": {
+      "image": "homeassistant/home-assistant",
+      "args": [
+        "-e",
+        "TZ=MY_TIME_ZONE",
+        "-v",
+        "/var/run/docker.sock:/var/run/docker.sock",
+        "-v",
+        "/opt/LITTERBOX/apps/homeassistant/config:/config",
+        "-v",
+        "/usr/bin/docker:/usr/bin/docker",
+        "-v",
+        "/run/dbus:/run/dbus:ro",
+        "-v",
+        "/opt/LITTERBOX/apps/homeassistant/.ssh:/root/.ssh:ro",
+        "--add-host",
+        "main:192.168.50.11",
+        "--add-host",
+        "raspberry-pearl:192.168.50.12",
+        "--add-host",
+        "raspberry-slate:192.168.50.14",
+        "--add-host",
+        "raspberry-five:192.168.50.15"
+      ],
+      "post-startup-cmds": {
+        "1": [
+          "apk",
+          "add",
+          "gcompat"
+        ]
+      }
+    }
+  },
+  {
+    "name": "influxdb",
+    "hosts": [
+      "raspberry-pearl"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "git_hub_url": "https://api.github.com/repos/influxdata/influxdb/releases",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/arm64v8/influxdb/tags?page_size=100",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "name",
+    "version_pattern": "^2.[0-9].[0-9]+$",
+    "docker": {
+      "image": "influxdb",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/influxdb2:/var/lib/influxdb2"
+      ]
+    }
+  },
+  {
+    "name": "kibana",
+    "hosts": [
+      "raspberry-five"
+    ],
+    "live": false,
+    "managed": false,
+    "notify_version": false,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/arm64v8/kibana/tags",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "name",
+    "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
+    "docker": {
+      "image": "library/kibana",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml",
+        "-v",
+        "/opt/LITTERBOX/apps/kibana/certs:/usr/share/kibana/certs",
+        "-v",
+        "/opt/LITTERBOX/apps/kibana/snapshot:/usr/share/kibana/snapshot"
+      ]
+    }
+  },
+  {
+    "name": "logstash",
+    "hosts": [
+      "raspberry-pearl"
+    ],
+    "live": false,
+    "managed": false,
+    "notify_version": false,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/arm64v8/logstash/tags",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "name",
+    "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
+    "docker": {
+      "image": "logstash",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/logstash/certs:/usr/share/logstash/certs",
+        "-v",
+        "/opt/LITTERBOX/apps/logstash/config:/usr/share/logstash/config",
+        "-v",
+        "/opt/LITTERBOX/apps/logstash/pipeline:/usr/share/logstash/pipeline"
+      ]
+    }
+  },
+  {
+    "name": "mariadb",
+    "hosts": [
+      "ubuntu-one"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/library/mariadb/tags?page_size=100",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "name",
+    "version_pattern": "^[0-9][0-9].[0-9]{1,2}(.[0-9]{0,2})?$",
+    "docker": {
+      "image": "mariadb",
+      "args": [
+        "-v",
+        "/var/run/docker.sock:/var/run/docker.sock",
+        "-v",
+        "/opt/LITTERBOX/apps/mariadb:/var/lib/mysql",
+        "-e",
+        "MARIADB_ROOT_PASSWORD=@mariadb_password@"
+      ]
+    }
+  },
+  {
+    "name": "metricbeat",
+    "hosts": [
+      "raspberry-five",
+      "raspberry-slate",
+      "raspberry-pearl",
+      "main"
+    ],
+    "live": false,
+    "managed": false,
+    "notify_version": false,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/elastic/metricbeat/tags",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "name",
+    "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
+    "docker": {
+      "image": "docker.elastic.co/beats/metricbeat",
+      "args": [
+        "--user=root",
+        "-v",
+        "/var/run/docker.sock:/var/run/docker.sock:ro",
+        "-v",
+        "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro",
+        "-v",
+        "/proc:/hostfs/proc:ro",
+        "-v",
+        "/:/hostfs:ro",
+        "-v",
+        "/opt/LITTERBOX/apps/metricbeat/metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml:ro",
+        "-v",
+        "/opt/LITTERBOX/apps/metricbeat/certs:/usr/share/metricbeat/certs",
+        "-e",
+        "ELASTICSEARCH_USERNAME=@elasticsearch_username@",
+        "-e",
+        "ELASTICSEARCH_PASSWORD=@elasticsearch_password@",
+        "-e",
+        "ELASTICSEARCH_HOSTS=@elasticsearch_hosts@"
+      ],
+      "container_args": [
+        "-e"
+      ]
+    }
+  },
+  {
+    "name": "nginx",
+    "hosts": [
+      "raspberry-slate"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "git_hub_url": "https://api.github.com/repos/nginx/nginx/releases",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/arm64v8/nginx/tags?page_size=100",
+    "max_dockerhub_pages": "3",
+    "github_version_field": "name",
+    "version_pattern": "^[0-9].[0-9][0-9](.[0-9])?$",
+    "docker": {
+      "image": "arm64v8/nginx",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/nginx:/etc/nginx",
+        "-v",
+        "/opt/LITTERBOX/apps/nginx/www:/www"
+      ]
+    }
+  },
+  {
+    "name": "photoprism",
+    "hosts": [
+      "ubuntu-one"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "git_hub_url": "https://api.github.com/repos/photoprism/photoprism/tags",
+    "github_version_field": "name",
+    "version_pattern": "[0-9][0-9][0-9][0-9][0-9][0-9]",
+    "docker": {
+      "image": "photoprism/photoprism",
+      "args": [
+        "-e",
+        "PHOTOPRISM_ADMIN_PASSWORD=@photoprism_admin_password@",
+        "-e",
+        "PHOTOPRISM_DATABASE_DRIVER=mysql",
+        "-e",
+        "PHOTOPRISM_DATABASE_SERVER=localhost:3306",
+        "-e",
+        "PHOTOPRISM_DATABASE_NAME=photoprism",
+        "-e",
+        "PHOTOPRISM_DATABASE_USER=photoprism",
+        "-e",
+        "PHOTOPRISM_DATABASE_PASSWORD=@photoprism_admin_password@",
+        "-v",
+        "/opt/LITTERBOX/apps/photoprism/originals:/photoprism/originals",
+        "-v",
+        "/opt/LITTERBOX/apps/photoprism/storage:/photoprism/storage"
+      ]
+    }
+  },
+  {
+    "name": "pihole",
+    "hosts": [
+      "raspberry-five"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/pihole/pihole/tags",
+    "max_dockerhub_pages": "1",
+    "version_pattern": "^[0-9]{4}.[0-9]{1,2}.[0-9]{1,2}$",
+    "docker": {
+      "image": "pihole/pihole",
+      "args": [
+        "-e",
+        "TZ=America/New_York",
+        "-e",
+        "WEBPASSWORD=@pihole_password@",
+        "-v",
+        "/opt/LITTERBOX/apps/pihole/etc-pihole:/etc/pihole",
+        "-v",
+        "/opt/LITTERBOX/apps/pihole/etc-dnsmasq.d:/etc/dnsmasq.d",
+        "--dns=127.0.0.1",
+        "--dns=1.1.1.1",
+        "--cap-add=NET_ADMIN"
+      ]
+    }
+  },
+  {
+    "name": "postgres",
+    "hosts": [
+      "raspberry-five"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/library/postgres/tags/",
+    "max_dockerhub_pages": "3",
+    "version_pattern": "^[0-9]+.[0-9]$",
+    "docker": {
+      "image": "postgres",
+      "args": [
+        "-e",
+        "POSTGRES_DB=djangodb",
+        "-e",
+        "POSTGRES_USER=djangodb",
+        "-e",
+        "POSTGRES_PASSWORD=changeme",
+        "-v",
+        "/opt/LITTERBOX/apps//postgresql:/var/lib/postgresql/data"
+      ]
+    }
+  },
+  {
+    "name": "radoneye",
+    "hosts": [
+      "raspberry-pearl"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "version_pattern": "^[0-9]+.[0-9]$",
+    "docker": {
+      "image": "192.168.50.15:5000/radoneye",
+      "args": [
+        "-v",
+        "/var/run/dbus:/var/run/dbus",
+        "-v",
+        "/var/run/udev:/var/run/udev",
+        "--device",
+        "/dev/ttyS0",
+        "--security-opt",
+        "label=disable"
+      ],
+      "container_args": [
+        "-f",
+        "/dev/null"
+      ],
+      "entrypoint": [
+        "/usr/bin/tail"
+      ]
+    }
+  },
+  {
+    "name": "registry",
+    "hosts": [
+      "raspberry-five"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/arm64v8/registry/tags",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "name",
+    "version_pattern": "^[0-9].[0-9].[0-9]+$",
+    "docker": {
+      "image": "registry",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/registry/certs:/certs",
+        "-v",
+        "/opt/LITTERBOX/apps/registry/storage:/storage",
+        "-e",
+        "REGISTRY_HTTP_SECRET=mysecret",
+        "-e",
+        "REGISTRY_HTTP_ADDR=192.168.50.15:5000",
+        "-e",
+        "REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt",
+        "-e",
+        "REGISTRY_HTTP_TLS_KEY=/certs/domain.key",
+        "-e",
+        "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/storage"
+      ]
+    }
+  },
+  {
+    "name": "tandoor",
+    "hosts": [
+      "raspberry-five"
+    ],
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/vabene1111/recipes/tags/",
+    "max_dockerhub_pages": "3",
+    "github_version_field": "name",
+    "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
+    "docker": {
+      "image": "vabene1111/recipes",
+      "args": [
+        "-e",
+        "DB_ENGINE=django.db.backends.postgresql",
+        "-e",
+        "POSTGRES_HOST=localhost",
+        "-e",
+        "POSTGRES_PORT=5432",
+        "-e",
+        "POSTGRES_USER=djangodb",
+        "-e",
+        "POSTGRES_PASSWORD=changeme",
+        "-e",
+        "POSTGRES_DB=djangodb",
+        "-e",
+        "SECRET_KEY=UKa2Njapzaqn43YJgO99l1VUca8TpaDKKXEDuk0Z9KPhS6fHYzC9dgwcWSaRYksDc4yjUXVib4M7",
+        "-e",
+        "DJANGO_DEBUG=True",
+        "-e",
+        "DEBUG=1",
+        "-e",
+        "FDC_API_KEY=fD7vajFOcwGSrH4swQ1soJOeQMDBmqQun1vj8M74",
+        "-v",
+        "/opt/LITTERBOX/apps/tandoor/mediafiles:/opt/recipes/mediafiles",
+        "-v",
+        "/opt/LITTERBOX/apps/tandoor/data:/opt/recipes/data"
+      ]
+    }
+  },
+  {
+    "name": "tasmota",
+    "live": true,
+    "managed": true,
+    "notify_version": true,
+    "platform": "tasmota",
+    "git_hub_url": "https://api.github.com/repos/arendst/Tasmota/tags",
+    "github_version_field": "name",
+    "version_pattern": "v[0-9]{2}.[0-9]{1,2}.[0-9]+"
+  },
+  {
+    "name": "telegraf",
+    "hosts": [],
+    "live": false,
+    "managed": false,
+    "notify_version": false,
+    "git_hub_url": "",
+    "platform": "docker",
+    "docker_hub_url": "https://hub.docker.com/v2/repositories/arm64v8/telegraf/tags",
+    "max_dockerhub_pages": "1",
+    "github_version_field": "name",
+    "docker": {
+      "image": "arm64v8/telegraf",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro",
+        "-v",
+        "/opt/LITTERBOX/apps/telegraf/payloads:/payloads",
+        "-e",
+        "INFLUX_TOKEN=@influx2_api_token@",
+        "-e",
+        "INFLUX_ORG=@influx2_org@",
+        "-e",
+        "INFLUX_HEALTH_BUCKET=test",
+        "-e",
+        "MQTT_USERNAME=@mqtt_username@",
+        "-e",
+        "MQTT_PASSWORD=@mqtt_password@",
+        "-e",
+        "MQTT_HEALTH_TOPIC=apple_health"
+      ]
+    }
+  },
+  {
+    "name": "webssh",
+    "hosts": [
+      "raspberry-pearl"
+    ],
+    "live": true,
+    "managed": false,
+    "notify_version": false,
+    "platform": "docker",
+    "git_hub_url": "https://api.github.com/repos/huashengdun/webssh/tags",
+    "github_version_field": "name",
+    "version_pattern": "v[0-9].[0-9].[0-9]+",
+    "docker": {
+      "image": "192.168.50.15:5000/webssh",
+      "args": [
+        "-v",
+        "/opt/LITTERBOX/apps/webssh"
+      ]
+    }
+  }
+]

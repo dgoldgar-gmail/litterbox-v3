@@ -1,0 +1,152 @@
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+mqtt:
+  enabled: True
+  host: 192.168.50.14
+  port: 1883
+  topic_prefix: frigate
+  client_id: frigate
+  user: @mqtt_username@
+  password: @mqtt_password@
+
+database:
+  path: /media/frigate/frigate.db
+
+detectors:
+  coral:
+    type: edgetpu
+
+logger:
+  default: info
+  logs:
+    frigate.event: debug
+
+ffmpeg:
+  global_args: -hide_banner -loglevel warning -threads 2
+  hwaccel_args: []
+  input_args:
+    - -avoid_negative_ts
+    - make_zero
+  output_args:
+    detect: -threads 2 -f rawvideo -pix_fmt yuv420p
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime
+      1 -c:v copy -c:a aac -b:a 128k
+
+detect:
+  width: 1920
+  height: 1080
+  fps: 5
+  enabled: True
+  max_disappeared: 25
+  stationary:
+    interval: 1
+    threshold: 50
+    max_frames:
+      default: 3000
+      objects:
+        person: 1000
+        car: 1000
+        cat: 1000
+
+objects:
+  track:
+  - person
+  - car
+  - cat
+  filters:
+    person:
+      min_area: 5000
+      max_area: 100000
+      min_ratio: 0.5
+      max_ratio: 2.0
+      min_score: 0.5
+      threshold: 0.7
+
+motion:
+  threshold: 25
+  contour_area: 30
+  delta_alpha: 0.2
+  frame_alpha: 0.2
+  frame_height: 50
+  improve_contrast: False
+  mqtt_off_delay: 30
+
+record:
+  enabled: True
+  expire_interval: 60
+  retain:
+    days: 3
+    mode: all
+  alerts:
+    retain: {}
+    pre_capture: 5
+    post_capture: 5
+  events:
+    pre_capture: 5
+    post_capture: 5
+    objects:
+      - person
+      - cat
+      - car
+snapshots:
+  enabled: true
+  clean_copy: True
+  timestamp: True
+  bounding_box: True
+  crop: False
+  height: 175
+  required_zones: []
+  retain:
+    default: 10
+    objects:
+      person: 15
+      cat: 15
+      car: 15
+go2rtc:
+  streams:
+    {% for camera in webcam.devices %}
+    {{ camera.name }}_camera:
+      - rtsp://@thingino_username@:@thingino_password@@at_sign@{{ camera.ip }}:{{ camera.rtsp_port }}/{{ camera.rtsp_path }}
+      - ffmpeg:back#audio=aac
+    {% endfor %}
+
+timestamp_style:
+  position: "tl"
+  format: '%m/%d/%Y %H:%M:%S'
+  color:
+    red: 0
+    green: 0
+    blue: 0
+  thickness: 1
+  effect: shadow
+
+ui:
+  time_format: browser
+  timezone: America/New_York
+  date_style: short
+  time_style: medium
+  strftime_fmt: '%Y/%m/%d %H:%M'
+telemetry:
+  version_check: True
+
+cameras:
+  {% for camera in webcam.devices -%}
+  ## {{ (camera.description).upper()}}
+  {{ camera.name }}_camera:
+    enabled: True
+    ffmpeg:
+      inputs:
+        - path: rtsp://@thingino_username@:@thingino_password@@at_sign@{{ camera.ip }}:{{ camera.rtsp_port }}/{{ camera.rtsp_path }}
+          roles:
+            - detect
+            - record
+    best_image_timeout: 60
+    mqtt:
+      enabled: True
+      timestamp: True
+    record:
+      enabled: True
+      retain:
+        days: 3
+        mode: all
+  {% endfor -%}

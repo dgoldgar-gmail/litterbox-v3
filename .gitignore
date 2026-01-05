@@ -1,0 +1,15 @@
+
+.ansible
+*.sh
+library
+litterbox_deploy_key
+__pycache__
+.idea
+.venv
+*.swp
+litterbox_deploy_key.pub
+supervisord.pid 
+litterbox-v3.iml
+ansible/artifacts
+ansible/queue
+ansible/results

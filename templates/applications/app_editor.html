@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% macro list_section(friendlyName) %}
+    {%  set name = friendlyName|replace(" ", "") %}
+    <div class="border mb-2 w-100 border rounded p-2">
+        <h3>Docker {{ friendlyName }}</h3>
+        <ul id="docker{{ name }}List" class="list-group">
+            {# List items will be rendered by JS #}
+        </ul>
+        <div class="d-flex gap-2 mt-2">
+            <button type="button" class="btn btn-secondary" id="add{{ name }}Button">Add</button>
+            <button type="button" class="btn btn-danger" id="deleteSelected{{ name }}sButton">Delete Selected</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block content %}
+
+{% if is_edit_mode %}
+{% set app_name = app.name %}
+{% set title = 'Applications Editor: ' + app_name %}
+{% set docker = app.docker %}
+{% else %}
+{% set title='Applications Editor:  Create New' %}
+{% set app_name = 'New App' %}
+{% set docker = {} %}
+{% endif %}
+
+<h1>{{ title }}</h1>
+
+<div>
+    <div class="d-none">
+        {# Hidden inputs to send structured data back to Flask #}
+        <input type="hidden" id="dockerArgsJsonInput" name="docker_args_json">
+        <input type="hidden" id="dockerEntrypointJsonInput" name="docker_entrypoint_json">
+        <input type="hidden" id="dockerContainerArgsJsonInput" name="docker_container_args_json">
+        <input type="hidden" id="dockerPostStartupCmdsJsonInput" name="docker_post_startup_cmds_json">
+    </div>
+
+    <div class="border mb-2 w-100 border rounded p-2">
+        <h2>Main Configuration</h2>
+
+        <div class="border mb-2 w-100 border rounded p-2">
+            <label for="name">Application Name:</label>
+            <input type="text" id="name" name="name"
+                   value="{% if is_edit_mode %}{{ app_name }}{% endif %}"
+                   placeholder="New App Name"
+                   {% if is_edit_mode %}readonly{% endif %}>
+        </div>
+        <div class="row mb-3 align-items-center">
+            <div class="col-3">
+                <label class="col-form-label">Hosts:</label>
+            </div>
+            <div class="col-9">
+                <div class="d-flex flex-wrap gap-4">
+                    {% for host in all_hosts %}
+                    <div class="border rounded-3 p-3 d-flex align-items-center" >
+                        <input class="me-2" type="checkbox" id="host_{{ host }}" name="hosts" value="{{ host }}"
+                               {% if host in app.hosts %} checked {% endif %}>
+                        <label class="form-check-label" for="host_{{ host }}">
+                            {{ host }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="border mb-2 w-100 border rounded p-2">
+            <div>
+                <input type="checkbox" id="live" name="live" {% if app.live %}checked{% endif %}>
+                <label for="live">Live</label>
+            </div>
+            <div>
+                <input type="checkbox" id="managed" name="managed" {% if app.managed %}checked{% endif %}>
+                <label for="managed">Managed</label>
+            </div>
+            <div>
+                <input type="checkbox" id="notify_version" name="notify_version" {% if app.notify_version %}checked{% endif %}>
+                <label for="notify_version">Notify Version</label>
+            </div>
+        </div>
+        <div>
+            {% set main_fields = {
+                    "platform": "Platform",
+                    "git_hub_url": "Git Hub URL",
+                    "github_version_field": "Version Field",
+                    "docker_hub_url": "Docker Hub Url",
+                    "version_pattern": "Version Pattern",
+                    "max_dockerhub_pages": "Max Dockerhub Pages"
+                }
+
+            %}
+
+            <div class="border mb-2 w-100 border rounded p-2" id="main-fields">
+                <div class="row">
+                    {% for key, label in main_fields.items() %}
+                    <div class="col-md-6 mb-3">
+                        <div class="row">
+                            <div class="col-4 text-end">
+                                <label for="{{ key }}" class="col-form-label">{{ label }}:</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" id="{{ key }}" name="{{ key }}" value="{{ app[key] }}" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="border mb-2 w-100 border rounded p-2">
+        <h2>Docker Configuration</h2>
+        <div class="border mb-2 w-100 border rounded p-2">
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="docker_image" class="col-form-label">Image:</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" id="docker_image" name="docker_image" value="{{ docker.image }}" class="form-control">
+                </div>
+            </div>
+        </div>
+        {{ list_section("Arg") }}
+        {{ list_section("Entrypoint") }}
+        {{ list_section("Container Arg") }}
+        {{ list_section("Post Startup Cmd") }}
+    </div>
+    <div class="d-flex justify-content-end gap-2 mt-2">
+        <button type="button" class="btn btn-info" id="previewButton">Preview JSON</button>
+        <button type="button" class="btn btn-primary" id="saveButton">Save Changes</button>
+    </div>
+</div>
+{# Modals start here #}
+
+{# Add Docker Argument Modal #}
+<div class="modal fade" id="addArgModal" tabindex="-1" aria-labelledby="addArgModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addArgModalLabel">Add</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Argument Type:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="argType" id="argTypeVolume" value="volume" checked>
+                        <label class="form-check-label" for="argTypeVolume">Volume (-v)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="argType" id="argTypeEnv" value="env">
+                        <label class="form-check-label" for="argTypeEnv">Environment (-e)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="argType" id="argTypeAddHost" value="add-host">
+                        <label class="form-check-label" for="argTypeAddHost">Add Host (--add-host)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="argType" id="argTypeDevice" value="device">
+                        <label class="form-check-label" for="argTypeDevice">Device (--device)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="argType" id="argTypeFreeform" value="freeform">
+                        <label class="form-check-label" for="argTypeFreeform">Freeform</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="argValueInput" class="form-label">Value:</label>
+                    <input type="text" class="form-control" id="argValueInput">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addArgModalButton">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Add Docker Entrypoint Modal #}
+<div class="modal fade" id="addEntrypointModal" tabindex="-1" aria-labelledby="addEntrypointModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEntrypointModalLabel">Add Docker Entrypoint</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="entrypointValueInput" class="form-label">Entrypoint Command:</label>
+                    <input type="text" class="form-control" id="entrypointValueInput" placeholder="e.g., /bin/bash">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addEntrypointModalButton">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Add Docker Container Argument Modal #}
+<div class="modal fade" id="addContainerArgModal" tabindex="-1" aria-labelledby="addContainerArgModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContainerArgModalLabel">Add Docker Container Argument</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="containerArgValueInput" class="form-label">Container Argument:</label>
+                    <input type="text" class="form-control" id="containerArgValueInput" placeholder="e.g., --param value">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addContainerArgModalButton">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Add Post-Startup Command Modal #}
+<div class="modal fade" id="addPostStartupCmdModal" tabindex="-1" aria-labelledby="addPostStartupCmdModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPostStartupCmdModalLabel">Add Post-Startup Command</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="postStartupCmdValueInput" class="form-label">Command:</label>
+                    <input type="text" class="form-control" id="postStartupCmdValueInput" placeholder="e.g., apt-get update">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addPostStartupCmdModalButton">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# JSON Preview Modal #}
+<div class="modal fade" id="jsonPreviewModal" tabindex="-1" aria-labelledby="jsonPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="jsonPreviewModalLabel">JSON Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="jsonOutput" class="bg-body-tertiary p-2 rounded"></pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" id="copyJsonButton">Copy to Clipboard</button>
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" id="closeJsonPreviewButton">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const isEditMode = {{ 'true' if is_edit_mode else 'false' }};
+    app = JSON.parse('{{ app | default({"docker": {}}, True) | tojson | safe }}');
+    const indexBaseUrl = "{{ url_for('applications.index') }}";
+    const saveApplicationBaseurl = "{{ url_for('applications.save_application') }}";
+</script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
+<script src="{{ url_for('static', filename='applications/edit_app_script.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+{% for endpoint in endpoints -%}
+###########################################
+## {{ endpoint.name | upper }}
+{%- set ns = namespace(ip=endpoint.host) -%}
+{%- for host in hosts -%}
+  {%- if endpoint.host in host.name -%}
+    {%- set ns.ip = host.ip -%}
+  {%- endif -%}
+{% endfor -%}
+{% set upstream = endpoint.name | replace("-", "_") %}
+server {
+    listen 443 ssl;
+    ssl_certificate ssl/fullchain.pem;
+    ssl_certificate_key ssl/privkey.pem;
+    server_name {{ endpoint.name }}.authabitrail.duckdns.org;
+    include /etc/nginx/snippets/authelia-location.conf;
+    set $upstream_{{ upstream }} http://{{ ns.ip }}:{{ endpoint.internal_port }};
+    location / {
+        include /etc/nginx/snippets/proxy.conf;
+        include /etc/nginx/snippets/authelia-authrequest.conf;
+        proxy_pass $upstream_{{ upstream }};
+        {%- if endpoint.websocket %}
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        {%- elif endpoint.connection_header %}
+        proxy_set_header Connection $http_connection;
+        {% endif %}
+        {%- if endpoint.preserve_host is defined %}
+        proxy_set_header Host {{ endpoint.preserve_host }};
+        {%- endif -%}
+        {%- if endpoint.forward_client_ip %}
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Real-PORT $remote_port;
+        {% endif %}
+        {%- if endpoint.proxy_redirect_off %}
+        proxy_redirect off;
+        {% endif %}
+        {%- if endpoint.origin_header %}
+        proxy_set_header Origin http://$host;
+        {% endif %}
+    }
+    {%- if endpoint.websocket_path %}
+    location {{ endpoint.websocket_path }} {
+        include /etc/nginx/snippets/proxy.conf;
+        include /etc/nginx/snippets/authelia-authrequest.conf;
+        proxy_pass $upstream_{{ upstream }};
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        {%- if endpoint.preserve_host is defined %}
+        proxy_set_header Host {{ endpoint.preserve_host }};
+        {%- endif -%}
+        {%- if endpoint.forward_client_ip %}
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Real-PORT $remote_port;
+        {% endif %}
+        {%- if endpoint.proxy_redirect_off %}
+        proxy_redirect off;
+        {% endif %}
+        {%- if endpoint.origin_header %}
+        proxy_set_header Origin http://$host;
+        {% endif %}
+    }
+    {% endif %}
+    {%- for path in endpoint["extra-paths"] | default([]) %}
+    location {{ path }} {
+        include /etc/nginx/snippets/proxy.conf;
+        include /etc/nginx/snippets/authelia-authrequest.conf;
+        proxy_pass $upstream_{{ upstream }};
+        {%- if endpoint.websocket %}
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        {% endif %}
+        {%- if endpoint.preserve_host is defined %}
+        proxy_set_header Host {{ endpoint.preserve_host }};
+        {%- endif %}
+        {%- if endpoint.forward_client_ip %}
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Real-PORT $remote_port;
+        {% endif %}
+        {%- if endpoint.proxy_redirect_off %}
+        proxy_redirect off;
+        {% endif %}
+        {%- if endpoint.origin_header %}
+        proxy_set_header Origin http://$host;
+        {% endif %}
+    }
+    {% endfor %}
+}
+{% endfor %}

@@ -1,0 +1,13 @@
+##################################
+# INPUT BOOLEAN ENTITY WITH TOGGLE 
+##################################
+{% macro entity_toggle(entity_id, name, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- entity: {{ entity_id }}
+  show_icon: true
+  name: {{ name  }}
+  state_color: true
+  tap_action:
+    action: toggle
+{% endfilter %}
+{% endmacro %}

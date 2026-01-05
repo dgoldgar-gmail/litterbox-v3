@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}JINJA Template Resolver - LITTERBOX Manager{% endblock %}
+
+{% block content %}
+
+<h2>Registry</h2>
+
+
+
+    <div class="row flex-grow-1">
+        <div class="col-sm-4 col-md-3 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header">
+                    Images
+                </div>
+                <ul class="list-group" id="image-list">
+                    <!-- Filled by JavaScript -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-md-9 d-flex">
+            <div class="card flex-fill">
+                <div id="image-name" class="card-header">
+                </div>
+                <ul class="list-group" id="tag-list">
+                    <!-- Filled by JavaScript -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% include "registry/_details_modal.html" %}
+
+
+<script>
+    const images = JSON.parse('{{ images | tojson | safe }}');
+    const getIndexBaseUrl = "{{ url_for('registry.index') }}";
+    const getImageTagsBaseUrl = "{{ url_for('registry.get_image_tags') }}";
+    const deleteTagBaseUrl = "{{ url_for('registry.delete_tag') }}";
+</script>
+<script src="{{ url_for('static', filename='registry/images.js') }}"></script>
+
+<!-- script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script -->
+{% endblock %}

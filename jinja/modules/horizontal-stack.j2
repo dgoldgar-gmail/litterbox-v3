@@ -1,0 +1,15 @@
+{% import 'modules/room_card_macro.j2' as room_card_macro %}
+{% import 'modules/gauge.j2' as gauge_macros %}
+{% macro horizontal_stack_card(cards, indent_amount) %}
+{% filter indent(width=indent_amount) %}
+- type: horizontal-stack
+  cards:
+  {% for card_name, card_info in cards.items() %}
+    {% if card_info['card-type'] == "custom:room-card" %}
+{{ room_card_macro.room_card(card_name, card_info, 2) }} 
+    {% elif card_info['card-type'] == "gauge" %}
+{{ gauge_macros.gauge(card_name, card_info, 2)}}
+    {% endif %}
+  {% endfor %}
+{% endfilter %}
+{% endmacro %}

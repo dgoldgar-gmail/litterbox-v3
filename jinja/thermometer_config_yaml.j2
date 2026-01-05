@@ -1,0 +1,25 @@
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+# Thermometer config
+{% for device in govee.devices %}
+{% for entity in govee.devices[device].entities %}
+{% set name = entity['name'].replace("_","") %}
+{% set limits = entity['limits'] %}
+{% set alert_types = entity['alert_types'] %}
+sensor.{{ name }}_temperature_gv:
+  name: {{ name }}
+  defaults:
+    alerts_enabled: {{ entity['alert_default_state'] }}
+    min_alert_value: {{ limits['min_alert_value']['initial'] }}
+    max_alert_value: {{ limits['max_alert_value']['initial'] }}
+    set_temp: {{ limits['set_temp']['initial'] }}
+  monitor_types:
+{% for alert_type in alert_types %}
+    - {{ alert_type }}
+{% endfor %}
+  renotify:
+{% for alert_type in alert_types %}
+    {{ alert_type }}_INTERVAL: {{ alert_types[alert_type]['renotify_interval']  }}
+{% endfor %}
+{% endfor %}
+{% endfor %}

@@ -1,0 +1,11 @@
+---
+- name: DEBUG — prove tasks run
+  ansible.builtin.debug:
+    msg: "Tasks are executing from {{ playbook_dir }}"
+  tags: [ "test" ]
+
+- name: Touch test file /tmp/ansible_test.touch
+  ansible.builtin.file:
+    path: "/tmp/ansible_test.touch"
+    state: touch
+  tags: [ "test" ]

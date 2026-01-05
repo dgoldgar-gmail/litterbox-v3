@@ -1,0 +1,52 @@
+
+- name: Global Base Configuration
+  hosts: all
+  gather_facts: false
+  roles:
+    - { role: test, tags: ["test"] }
+
+
+- name: Container
+  hosts: container
+  become: false
+  gather_facts: false
+  roles:
+    - { role: container, tags: ["container"] }
+
+- name: SSH Config
+  hosts: mac,pi,ubuntu
+  become: false
+  gather_facts: false
+  roles:
+    - { role: ssh_client, tags: ["ssh_client"] }
+
+- name: Camera hosts
+  hosts: thingino
+  become: true
+  roles:
+    - { role: thingino, tags: ["thingino"] }
+
+
+- name: Homeassistant
+  hosts: raspberry-slate
+  become: true
+  roles:
+    - { role: homeassistant, tags: [ "homeassistant" ] }
+
+- name: Nginx
+  hosts: raspberry-slate
+  become: true
+  roles:
+    - { role: nginx, tags: [ "nginx" ] }
+
+- name: Frigate
+  hosts: main
+  become: true
+  roles:
+    - { role: frigate, tags: [ "frigate" ] }
+
+- name: Applications Host
+  hosts: ubuntu,pi #TODO:  IF we introduce jump host, it needs to be execluded from this
+  become: true
+  roles:
+    - { role: application_host, tags: [ "application_host" ] }

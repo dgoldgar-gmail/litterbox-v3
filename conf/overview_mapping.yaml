@@ -1,0 +1,723 @@
+webcam:
+  devices:
+    - name: back_door
+      description: BACK DOOR CAMERA IN BASEMENT
+      ip: 192.168.100.150
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: cat_box
+      description: CAT BOX CAMERA
+      ip: 192.168.100.151
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: cat_food
+      description: CAT FOOD
+      ip: 192.168.100.152
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: driveway_1
+      description: DRIVEWAY CAMERA IN BEDROOM
+      ip: 192.168.100.153
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_path
+      description: FRONT DOOR CAMERA IN BEDROOM
+      ip: 192.168.100.155
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_door
+      description: FRONT DOOR
+      ip: 192.168.100.156
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_porch
+      description: FRONT PORCH CAMERA IN FAMILY ROOM
+      ip: 192.168.100.157
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: kitchen_porch
+      description: KITCHEN PORCH CAMERA IN FAMILY ROOM
+      ip: 192.168.100.158
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: wood_stove
+      description: WOOD STOVE CAMERA
+      ip: 192.168.100.159
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_1
+      description: AOQEE CAMERA 1
+      ip: 192.168.100.161
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_2
+      description: AOQEE CAMERA 2
+      ip: 192.168.100.162
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_3
+      description: AOQEE CAMERA 3
+      ip: 192.168.100.163
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_4
+      description: AOQEE CAMERA 4
+      ip: 192.168.100.164
+      rtsp_port: 554
+      rtsp_path: ch0
+endpoints:
+  - name: deconz
+    icon: mdi:zigbee
+    host: slate
+    internal_port: "6080"
+  - name: frigate
+    entity: update.frigate_server
+    template: frigate_template
+    host: main
+    internal_port: "5000"
+  - name: grafana
+    icon: si:grafana
+    host: pearl
+    internal_port: "3000"
+  - name: influxdb
+    icon: si:influxdb
+    host: pearl
+    internal_port: "8086"
+  - name: kibana
+    icon: si:kibana
+    host: five
+    internal_port: "5601"
+  - name: litterbox-manager
+    icon: lci:litterbox
+    host: five
+    internal_port: "5555"
+  - name: phoscon
+    entity: sensor.slate_deconz_version_info
+    icon: phu:phoscon
+    host: slate
+    internal_port: "9080"
+  - name: photoprism
+    entity: sensor.one_photoprism_version_info
+    icon: mdi:camera-burst
+    host: ubuntu-one
+    internal_port: "2342"
+  - name: pihole
+    entity: sensor.five_pihole_version_info
+    icon: mdi:pi-hole
+    host: five
+    internal_port: "80"
+  - name: router
+    entity: sensor.zenwifi_et9_3300_external_ip
+    icon: mdi:router-network
+    host: 192.168.50.1
+    internal_port: "80"
+  - name: tandoor
+    entity: sensor.five_tandoor_version_info 
+    icon: lci:tandoor
+    host: 192.168.50.15
+    internal_port: "80"
+  - name: webssh
+    icon: mdi:ssh
+    host: pearl
+    internal_port: "8888"
+inkbird:
+  - name: bge
+    mac: "C5:35:00:00:04:65"
+govee:
+  - name: egg
+    mac: "CE:32:32:36:68:4E"
+  - name: woodstove
+    mac: "D1:35:34:31:20:17"
+  - name: grill
+    mac: "D3:32:37:38:4D:6D"
+hosts:
+- name: raspberry-five
+  collectors:
+  ip: 192.168.50.15
+  type: raspberry-pi
+  crontab:
+    - "*/5 * * * * /usr/bin/vcgencmd measure_temp > /opt/LITTERBOX/apps/homeassistant/config/vcgencmd_temp.out"
+    - "*/5 * * * * /usr/bin/vcgencmd measure_volts > /opt/LITTERBOX/apps/homeassistant/config/vcgencmd_volts.out"
+    - "0 * * * * /opt/LITTERBOX/bin/update_ducks_dns.sh authabitrail"
+    - "0 * * * * /opt/LITTERBOX/bin/update_ducks_dns.sh habitrail"
+    - "0 0 * * * /opt/LITTERBOX/bin/update_containerized_apps.py  >> /var/log/update_containerized_app.log 2>&1"
+    - "*/10 * * * * /usr/bin/python3 /opt/LITTERBOX/bin/ha_assistant.py 2>&1 > /dev/null"
+  containers:
+    - name: litterbox-manager
+    - name: pihole
+      release_notes: https://github.com/pi-hole/pi-hole/releases
+    - name: postgres
+      release_notes: https://github.com/postgres/postgres/tags
+    - name: registry
+    - name: tandoor
+      release_notes: https://github.com/TandoorRecipes/recipes/releases
+  mounts:
+    - '/dev/sda'
+- name: raspberry-pearl
+  ip: 192.168.50.12
+  type: raspberry-pi
+  collectors:
+  #  - radoneye
+  containers:
+    - name: grafana
+      release_notes: https://grafana.com/docs/grafana/latest/release-notes/
+    - name: influxdb
+      release_notes: https://docs.influxdata.com/influxdb/v2/reference/release-notes/influxdb/ 
+    - name: webssh
+  mounts:
+    - '/dev/sda'
+- name: raspberry-slate
+  ip: 192.168.50.14
+  type: raspberry-pi
+  collectors:
+    - hosts
+    - containers
+  containers:
+    - name: authelia
+      release_notes: https://github.com/authelia/authelia/releases
+    #- name: certbot
+    #  release_notes: https://github.com/certbot/certbot/releases
+    - name: deconz
+      release_notes: https://github.com/dresden-elektronik/deconz-rest-plugin/releases
+    - name: homeassistant
+      release_notes: https://www.home-assistant.io/blog/categories/release-notes/
+    - name: nginx
+      release_notes: https://github.com/nginx/nginx/tags
+  mounts:
+    - '/dev/sda'
+#- name: raspberry-three
+#  ip: 192.168.50.13
+#  type: raspberry-pi
+#  collectors:
+#    - radoneye
+#  containers:
+#     #- name: filebeat
+#     #- name: metricbeat
+#  mounts:
+#     - '/dev/sda'
+- name: ubuntu-one
+  ip: 192.168.50.101
+  type: ubuntu
+  containers:
+    - name: mariadb
+      release_notes: https://mariadb.com/kb/en/release-notes/
+    - name: meatometer
+    - name: photoprism
+      release_notes: https://docs.photoprism.app/release-notes/
+    - name: radoneye
+  mounts:
+  nvme_devices:
+    - '/dev/nvme0n1'
+    # this might work with nvme smart ctl
+    #- '/dev/nvme0n1p1'
+- name: main
+  ip: 192.168.50.11
+  type: ubuntu
+  collectors:
+  containers:
+    - name: frigate
+      release_notes: https://github.com/blakeblackshear/frigate/releases
+  mounts:
+    - '/dev/sda'
+  nvme_devices: 
+    - /dev/nvme0 
+radoneye:
+- serial: 000IE08RE349
+  location: game_room
+tasmota:
+  devices: 
+    - name: tasmota_01
+      full_name: Tasmota Switch 01
+      type: switch
+      description: Living Room
+      ip: 192.168.50.231
+    - name: tasmota_02
+      full_name: Tasmota Switch 02
+      type: switch
+      description: Game Room
+      ip: 192.168.50.232
+    - name: tasmota_03
+      type: switch
+      full_name: Tasmota Switch 03
+      description: Washing Machine
+      ip: 192.168.50.233
+    - name: tasmota_04
+      type: switch
+      full_name: Tasmota Switch 04
+      description: Sams Room
+      ip: 192.168.50.234
+    - name: tasmota_05
+      type: switch
+      full_name: Tasmota Switch 05
+      description: Office Lights
+      ip: 192.168.50.235
+    - name: tasmota_06
+      type: switch
+      full_name: Tasmota Switch 06
+      description: Gym
+      ip: 192.168.50.236
+    - name: tasmota_07
+      type: switch
+      full_name: Tasmota Switch 07
+      description: Television
+      ip: 192.168.50.237
+    - name: tasmota_08
+      type: switch
+      full_name: Tasmota Switch 08
+      description: Cat Box
+      ip: 192.168.50.238
+    - name: tasmota_09
+      type: switch
+      full_name: Tasmota Switch 09
+      description: Basement Fridge
+      ip: 192.168.50.239
+    - name: tasmota_10
+      type: switch
+      full_name: Tasmota Switch 10
+      description: Dishwasher
+      ip: 192.168.50.240
+    - name: tasmota_bulb_01
+      type: bulb
+      full_name: Tasmota Bulb 01
+      description: Game Room Desk Lamp
+      ip: 192.168.0.200
+    - name: tasmota_bulb_02
+      type: bulb
+      full_name: Tasmota Bulb 02
+      description: Woodstove Light
+      ip: 192.168.0.3
+    - name: tasmota_rgb_01
+      type: rgb
+      full_name: Tasmota Bulb 01
+      description: Sams Room RGB Lights
+      ip: 192.168.0.144
+    - name: tasmota_rgb_02
+      type: rgb
+      full_name: Tasmota Bulb 02
+      description: Game Room RGB Lights
+      ip: 192.168.0.223
+    - name: tasmota_esp32_01
+      type: esp32
+      full_name: Tasmota ESP32 01
+      description: Game Room ESP32
+      ip: 192.168.0.45
+  entities:
+    switch:
+      - name: Today
+        full_name: energy_today
+        icon: mdi:sun-angle
+      - name: Yesterday
+        full_name: energy_yesterday
+        icon: mdi:moon-waning-crescent
+      - name: Total
+        full_name: energy_total
+        icon: mdi:infinity
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+    bulb:
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+    rgb:
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+    esp32:
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+      - name: Blerry Version
+        full_name: blerry_version
+        icon: mdi:fruit-grapes
+zigbee:
+  device_types:
+    thermometer:
+      devices: 
+        - cat_box_room
+        - basement_vestibule
+        - drum_room
+        - family_room
+        - game room
+        - gym
+        - main_hall
+        - master_bath
+        - master bedroom
+        - sams room
+        - woodstove
+    door_sensor:
+      devices: 
+        - front
+        - kitchen
+        - basement
+    motion_sensor:
+      devices: 
+        - basement vestibule
+        - cat box room
+        - family room
+        - game room
+        - gym 
+        - main hall
+    magic_cube:
+      devices:
+        - family_room
+        - game_room
+        - kitchen
+        - master_bedroom
+        - sams_room
+    button:
+      devices:
+        - drum room 
+        - woodstove
+
+root@raspberry-slate:/opt/LITTERBOX# ^C
+root@raspberry-slate:/opt/LITTERBOX# cat conf/overview_mapping.yaml 
+view:
+  name: Home
+  cards:
+    Date & Time:
+      card-type: entity
+      entity: sensor.date_time
+    Forecast:
+      card-type: weather-forecast
+      entity: weather.home_open_meteo
+    HVAC:
+      card-type: custom:simple-thermostat
+      entity: climate.my_ecobee
+      preset:
+        schedule IQ: mdi:brain
+        summer: mdi:sun-angle
+        winter: mdi:snowflake
+        spring/fall: mdi:flower
+        save energy: mdi:electron-framework
+        away: mdi:door-closed
+        cancel hold: mdi:timer-cancel
+        cancel away mode: mdi:door-open
+    Family Room:
+      card-type: custom:room-card
+      motion_sensor: binary_sensor.motion_sensor_family_room_presence
+      info_entities:
+        - motion-sensor
+      rows:
+        row1:
+          Right:
+            entity: light.lights_family_room_1
+            icon: phu:double-spot
+          Left:
+            entity: light.lights_family_room_2
+            icon: phu:double-spot
+          Door:
+            entity: light.lights_kitchen_door
+            icon: phu:double-spot
+          Island:
+            entity: light.lights_kitchen_island
+            icon: phu:double-spot
+          Sink:
+            entity: light.lights_kitchen_sink
+            icon: phu:double-spot
+        thermometer: {}
+    TV:
+      card-type: media-control
+      entity: media_player.samsung_7_series_49
+    Master Bedroom:
+      card-type: custom:room-card
+      rows:
+        row1:
+          Overhead:
+            entity: light.lights_master_bedroom
+            icon: mdi:chandelier
+          Erin's Light:
+            entity: light.lights_erins_bedroom_light
+            icon: mdi:coach-lamp
+          Dave's Light:
+            entity: light.lights_daves_bedroom_light
+            icon: mdi:coach-lamp
+        thermometer: {}
+    Master Bath:
+      card-type: custom:room-card
+      cards:
+        Master Bath Floor:
+          card-type: custom:simple-thermostat
+          entity: climate.master_bath
+          hide_title: true
+        Master Bath:
+          card-type: custom:room-card
+          hide_title: true
+          rows:
+            thermometer: {}
+    Sam's Room:
+      card-type: custom:room-card
+      rows:
+        row1:
+          Overhead:
+            entity: light.lights_sams_room
+            icon: mdi:chandelier
+          RGB:
+            entity: light.tasmota_rgb_02
+            icon: phu:light-strip
+        thermometer: {}
+    Dining Room:
+      card-type: custom:room-card
+      rows:
+        row1:
+          Overhead Lights:
+            entity: light.dining_room_lights
+            icon: phu:bulb-group-ceiling-round
+          Automation:
+            entity: input_boolean.office_automation_enabled
+            template: on_off_template
+      templates:
+        on_off_template:
+          styles: 'if (entity.state == ''on'') return ''color: gold'';   else return ''color: steelblue'';'
+          icon: if (entity.state == 'off') return 'mdi:cog-off';   else return 'mdi:cog';
+    Main Hall:
+      card-type: custom:room-card
+      motion_sensor: binary_sensor.motion_sensor_main_hall_presence
+      info_entities:
+        - motion-sensor
+      rows:
+        row1:
+          Overhead Lights:
+            entity: light.lights_main_hall
+            icon: phu:bulb-group-ceiling-round
+        thermometer: {}
+    Stairs:
+      card-type: custom:room-card
+      rows:
+        row1:
+          Overhead:
+            entity: light.lights_stairs_overhead
+            icon: phu:bulb-group-ceiling-round
+          Steps:
+            entity: light.lights_staircase
+            icon: mdi:stairs
+    Basement Vestibule:
+      card-type: custom:room-card
+      motion_sensor: binary_sensor.motion_sensor_basement_vestibule_presence
+      info_entities:
+        - motion-sensor
+      rows:
+        row1:
+          Lights:
+            entity: light.lights_basement_vestibule
+            icon: phu:bulb-group-ceiling-round
+        thermometer: {}
+    Game Room:
+      card-type: custom:room-card
+      motion_sensor: binary_sensor.motion_sensor_game_room_presence
+      info_entities:
+        - motion-sensor
+      rows:
+        row1:
+          Overhead:
+            entity: light.lights_game_room
+            icon: phu:bulb-group-ceiling-round
+          Desk:
+            entity: light.tasmota_bulb_01_light_light_0
+            icon: mdi:desk-lamp
+          RGB:
+            entity: light.tasmota_rgb_02
+            icon: phu:light-strip
+          Getting Jiggy:
+            entity: input_boolean.getting_jiggy
+            template: on_off_template
+        thermometer: {}
+      templates:
+        on_off_template:
+          styles: 'if (entity.state == ''on'') return ''color: gold'';   else return ''color: steelblue'';'
+          icon: if (entity.state >= 'on') return 'mdi:dance-pole';   else return 'mdi:sign-pole';
+    Drums Room:
+      card-type: custom:room-card
+      rows:
+        row1:
+          Overhead:
+            entity: light.lights_drum_room
+            icon: phu:bulb-group-ceiling-round
+        thermometer: {}
+    Woodstove:
+      card-type: horizontal-stack
+      cards:
+        Woodstove:
+          card-type: custom:room-card
+          rows:
+            row1:
+              Light:
+                entity: light.woodstove_light
+              Flue:
+                entity: sensor.meatometer_govee_woodstove_probe1
+                name: Flue
+                template: temp_color_template
+              Alerts:
+                entity: input_boolean.woodstove_alerts_enabled
+                template: on_off_template
+            thermometer: {}
+          templates:
+            on_off_template:
+              styles: 'if (entity.state == ''on'') return ''color: gold'';   else return ''color: steelblue''; '
+            temp_color_template:
+              styles: 'if (entity.state > 500) return ''color: rgba(200, 50, 50, .75)''; if (entity.state > 400 ) return ''color: rgba( 255, 87, 51, .75)''; if (entity.state > 250 ) return ''color: rgba(249, 224, 118, .75)''; if (entity.state > 120 ) return '' color: rgba(210, 238, 130, .75)'';    return ''color: rgba(54, 139, 193)'';'
+        Wood Stove:
+          card-type: gauge
+          entity: sensor.meatometer_govee_woodstove_probe1
+          #suppress_settings: "true"
+          borderOuterWidth: 20
+          colorBorderOuter: rgba(31, 31, 31)
+          colorBorderOuterEnd: rgba(31, 31, 31)
+          width: "150"
+          height: "150"
+          minValue: "0"
+          maxValue: "600"
+          majorTicks: '[0, 200, 400, 600 ]'
+          minor-ticks: "2"
+          highlights:
+            - color: rgba(54, 139, 193, .75)
+              from: 0
+              to: 120
+            - color: rgba(210, 238, 130, .75)
+              from: 120
+              to: 250
+            - color: rgba(249, 224, 118, .75)
+              from: 250
+              to: 400
+            - color: rgba(255, 87, 51, .75)
+              from: 400
+              to: 500
+            - color: rgba(200, 50, 50, .75)
+              from: 500
+              to: 600
+    Gym:
+      card-type: custom:room-card
+      motion_sensor: binary_sensor.motion_sensor_gym_presence
+      info_entities:
+        - motion-sensor
+      rows:
+        row1:
+          Automations:
+            entity: input_boolean.gym_automation_enabled
+            template: on_off_template
+        thermometer: {}
+      templates:
+        on_off_template:
+          styles: 'if (entity.state == ''on'') return ''color: gold'';   else return ''color: steelblue'';'
+          icon: return 'mdi:weight-lifter'
+    Laundry:
+      card-type: custom:room-card
+      rows:
+        row1:
+          Lights:
+            entity: light.laundry_light
+            icon: mdi:lightbulb
+            template: on_off_template
+          Remaining Time:
+            entity: sensor.front_load_washer_remaining_time
+          Count Down Time:
+            entity: sensor.front_load_washer_run_state
+          Tub Clean Counter:
+            entity: sensor.front_load_washer_tub_clean_counter
+      templates:
+        on_off_template:
+          styles: 'if (entity.state == ''on'') return ''color: gold'';   else return ''color: steelblue'';'
+          icon: return 'mdi:lightbulb'
+    Cat Box Room:
+      card-type: custom:room-card
+      motion_sensor: binary_sensor.motion_sensor_cat_box_room_presence
+      info_entities:
+        - motion-sensor
+      rows:
+        row1:
+          Lights:
+            entity: switch.tasmota_08
+            icon: phu:gradient-tube-long
+            template: on_off_template
+        thermometer: {}
+      templates:
+        on_off_template:
+          styles: 'if (entity.state == ''on'') return ''color: gold'';   else return ''color: steelblue'';'
+          icon: return 'phu:gradient-tube-long'
+    Outside:
+      card-type: custom:room-card
+      info_entities:
+        toggles:
+          - input_boolean.door_left_open_alerts
+          - input_boolean.door_open_close_info
+      rows:
+        row1:
+          Front Porch:
+            entity: light.lights_front_porch
+            icon: phu:ceiling-round
+          Kitchen:
+            entity: light.lights_kitchen_porch
+            icon: phu:ring-floodlight
+          Driveway:
+            entity: light.lights_driveway
+            icon: phu:ring-floodlight
+          Back Porch:
+            entity: light.lights_back_porch
+            icon: phu:wall-flood
+        row2:
+          show_state: "true"
+          Temperature:
+            entity: sensor.harvard_outdoor_temperature
+          Humidty:
+            entity: sensor.outdoor_humidity
+            icon: mdi:water-percent
+          Pressure:
+            entity: sensor.outdoor_pressure
+            icon: mdi:gauge
+        row3:
+          show_state: "true"
+          Wind:
+            entity: sensor.home_wind
+          UV Index:
+            entity: sensor.home_uv_index
+          Precipitation:
+            entity: sensor.home_precipitation
+        door-monitors:
+          - Front
+          - Kitchen
+          - Basement
+    Big Green Egg:
+      card-type: horizontal-stack
+      cards:
+        Grill Meat:
+          card-type: gauge
+          icon: mdi:food-drumstick
+          width: "150"
+          height: "150"
+          minValue: "0"
+          maxValue: "250"
+          majorTicks: '[0, 50, 100, 150, 200, 250 ]'
+          minor-ticks: "2"
+          highlights:
+            - color: rgba(54, 139, 193, .75)
+              from: 0
+              to: 125
+            - color: rgba(210, 238, 130, .75)
+              from: 125
+              to: 205
+            - color: rgba(255, 87, 51, .75)
+              from: 205
+              to: 250
+        Grill Dome:
+          #macro: gauge.gauge(card_name, card_info, indent_amount)
+          card-type: gauge
+          icon: mdi:grill
+          width: "150"
+          height: "150"
+          minValue: "0"
+          maxValue: "600"
+          majorTicks: '[0, 200, 400, 600]'
+          minor-ticks: "2"
+          highlights:
+            - color: rgba(54, 139, 193, .75)
+              from: 0
+              to: 185
+            - color: rgba(210, 238, 130, .75)
+              from: 185
+              to: 450
+            - color: rgba(255, 87, 51, .75)
+              from: 450
+              to: 550
+            - color: rgba(200, 50, 50, .75)
+              from: 550
+              to: 700

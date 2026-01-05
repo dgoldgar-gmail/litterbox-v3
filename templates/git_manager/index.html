@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Provisioner - LITTERBOX Manager{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Full-width line container */
+    .diff-line {
+        display: block;
+        width: 100%;
+        padding: 0 10px;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        white-space: pre; /* Keeps the git indentation */
+    }
+
+    /* Green lines for additions */
+    .diff-added {
+        background-color: #e6ffec !important;
+        color: #1a7f37 !important;
+    }
+
+    /* Red lines for removals */
+    .diff-removed {
+        background-color: #ffeef0 !important;
+        color: #d73a49 !important;
+    }
+
+    /* Purple lines for hunk headers (@@) */
+    .diff-header {
+        background-color: #f6f8fa !important;
+        color: #6f42c1 !important;
+        font-weight: bold;
+    }
+
+    /* Selection highlight color */
+    #diff-results ::selection {
+        background-color: #b3d4fc;
+    }
+</style>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Manage GIT Repository</h2>
+
+    <form id="git-form">
+        <h3>Repository Status</h3>
+        <div id="git-changes" class="mb-4">
+            <!-- populated by hosts.js -->
+        </div>
+        <button id="commit" type="button" class="btn btn-primary">
+            Commit
+        </button>
+        <button id="push" type="button" class="btn btn-success">
+            Push
+        </button>
+        <button id="diff" type="button" class="btn btn-info">
+            Diff
+        </button>
+        <button id="staged" type="button" class="btn btn-outline-info">
+            Staged
+        </button>
+        <button id="pull" type="button" class="btn btn-light">
+            Pull main/origin
+        </button>
+        <button id="checkout" type="button" class="btn btn-warning">
+            Checkout
+        </button>
+        <button id="reset" type="button" class="btn btn-danger">
+            Reset
+        </button>
+    </form>
+    <div id="staged-changes"></div>
+    <div id="diff-results"></div>
+</div>
+
+<script>
+    const statusData = {{ status_data|tojson }};
+    const diffData = {{ diff_data|tojson if diff_data else [] }};
+</script>
+<script src="{{ url_for('static', filename='git_manager/tools.js') }}"></script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,38 @@
+# Use a slim python base
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    sshpass \
+    openssh-client \
+    supervisor \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+RUN useradd -m -s /bin/bash dgoldgar
+
+RUN mkdir -p /home/dgoldgar/.ssh \
+ && chown -R dgoldgar:dgoldgar /home/dgoldgar \
+ && chown -R dgoldgar:dgoldgar /app
+
+USER dgoldgar
+
+RUN /usr/local/bin/ansible-vault view --vault-password-file .ansible/vault_pass ansible/project/roles/ssh_client/files/homeassistant > /home/dgoldgar/.ssh/homeassistant
+RUN chmod 600 /home/dgoldgar/.ssh/homeassistant
+
+RUN mkdir -p ansible/queue ansible/results logs
+
+RUN chmod +x ansible_worker.py
+
+EXPOSE 5555
+
+CMD ["/usr/bin/supervisord", "-c", "/app/supervisord.conf"]

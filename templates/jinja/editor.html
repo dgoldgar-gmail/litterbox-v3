@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}JINJA Editor - CodeMirror{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Dark Theme Modal */
+    .modal-content { background-color: #1e1e1e; color: #ccc; border: 1px solid #444; }
+    .modal-header { border-bottom: 1px solid #333; border-top-left-radius: 0.3rem; border-top-right-radius: 0.3rem; }
+    .modal-footer { border-top: 1px solid #333; }
+
+    /* The Editor Container */
+    .editor-modal-body {
+        padding: 0 !important;
+        height: 80vh;
+        background: #1e1e1e;
+        overflow: hidden;
+    }
+
+    /* CodeMirror 6 standard sizing */
+    .cm-editor {
+        height: 100%;
+        width: 100%;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+        font-size: 14px !important;
+    }
+    /* Simple fix for active state in tree */
+    .file-item.active { background-color: #0d6efd !important; color: white !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">Template Editor</div>
+        <div class="card-body">
+            <div id="file-tree-container" class="border rounded" style="max-height: 60vh; overflow-y: auto;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="current-filename">Template Editor</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body editor-modal-body">
+                <div id="cm-editor-target"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="save-btn" class="btn btn-success" disabled>Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Inject data into global scope -->
+<script>window.template_files = {{ template_files | tojson | safe if template_files is defined else '[]' }};</script>
+<!-- Module Script -->
+<script type="module" src="{{ url_for('static', filename='jinja/editor.js') }}"></script>
+{% endblock %}

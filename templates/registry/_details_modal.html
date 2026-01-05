@@ -1,0 +1,23 @@
+{% extends "modal_base.html" %}
+{% block content %}
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsTitle">Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            {{  ul_block("Platforms", with_add_delete_buttons=False) }}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="{{ url_for('static', filename='global.js') }}"></script>
+    <script src="{{ url_for('static', filename='registry/details.js') }}"></script>
+<script>
+    const getTagBlobBaseUrl = "{{ url_for('registry.get_blob_info') }}";
+</script>
+
+{% endblock %}

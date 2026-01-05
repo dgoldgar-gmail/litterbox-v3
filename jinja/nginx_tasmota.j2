@@ -1,0 +1,18 @@
+{% import 'modules/headers.j2' as headers %}
+{{ headers.block_control(self._TemplateReference__context.name) }}
+{% set devices = tasmota.devices %}
+{% for device in devices -%}
+server {
+        listen 51443 ssl;
+        ssl_certificate     ssl/fullchain.pem;
+        ssl_certificate_key ssl/privkey.pem;
+        server_name {{ device.name | replace("_","-")}}.authabitrail.duckdns.org tasmota-{{ device.description | replace(" ","-") | lower  }}.authabitrail.duckdns.org;
+        include /etc/nginx/snippets/authelia-location.conf;
+        set $upstream_{{ device.name }} http://{{ device.ip}};
+        location / {
+            include	/etc/nginx/snippets/proxy.conf;
+            include	/etc/nginx/snippets/authelia-authrequest.conf;
+            proxy_pass	$upstream_{{ device.name }};
+        }
+}
+{% endfor %}

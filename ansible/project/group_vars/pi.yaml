@@ -1,0 +1,2 @@
+ssh_config_dir: "/home/dgoldgar/.ssh/config"
+ssh_user: "dgoldgar"
