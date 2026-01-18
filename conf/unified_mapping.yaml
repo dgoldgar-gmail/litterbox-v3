@@ -1,56 +1,125 @@
 webcam:
   devices:
-  - name: cat_box
-    description: CAT BOX CAMERA
-    ip: 192.168.100.151
-    rtsp_port: aaab
-    rtsp_path: bbbc
-  - name: cat_food
-    description: CAT FOOD
-    ip: 192.168.100.152
-    rtsp_port: 554
-    rtsp_path: ch0
-  - name: driveway_1
-    description: DRIVEWAY CAMERA IN BEDROOM
-    ip: 192.168.100.153
-    rtsp_port: 554
-    rtsp_path: ch0
-  - name: front_path
-    description: FRONT DOOR CAMERA IN BEDROOM
-    ip: 192.168.100.155
-    rtsp_port: 554
-    rtsp_path: ch0
-  - name: front_door
-    description: FRONT DOOR
-    ip: 192.168.100.156
-    rtsp_port: undefinedabc
-    rtsp_path: def
+    - name: back_door
+      description: BACK DOOR CAMERA IN BASEMENT
+      ip: 192.168.100.150
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: cat_box
+      description: CAT BOX CAMERA
+      ip: 192.168.100.151
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: cat_food
+      description: CAT FOOD
+      ip: 192.168.100.152
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: driveway_1
+      description: DRIVEWAY CAMERA IN BEDROOM
+      ip: 192.168.100.153
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_path
+      description: FRONT DOOR CAMERA IN BEDROOM
+      ip: 192.168.100.155
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_door
+      description: FRONT DOOR
+      ip: 192.168.100.156
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: front_porch
+      description: FRONT PORCH CAMERA IN FAMILY ROOM
+      ip: 192.168.100.157
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: kitchen_porch
+      description: KITCHEN PORCH CAMERA IN FAMILY ROOM
+      ip: 192.168.100.158
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: wood_stove
+      description: WOOD STOVE CAMERA
+      ip: 192.168.100.159
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_1
+      description: AOQEE CAMERA 1
+      ip: 192.168.100.161
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_2
+      description: AOQEE CAMERA 2
+      ip: 192.168.100.162
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_3
+      description: AOQEE CAMERA 3
+      ip: 192.168.100.163
+      rtsp_port: 554
+      rtsp_path: ch0
+    - name: aoqee_4
+      description: AOQEE CAMERA 4
+      ip: 192.168.100.164
+      rtsp_port: 554
+      rtsp_path: ch0
 endpoints:
-- name: phoscon
-  icon: abc
-  host: def
-  internal_port: ''
-  entity: jkl
-  template: mnop
-- name: pihole
-  entity: sensor.five_pihole_version_info
-  icon: mdi:pi-hole
-  host: five
-  internal_port: '80'
-- name: photoprism
-  entity: sensor.one_photoprism_version_info
-  icon: mdi:camera-burst
-  host: ubuntu-one
-  internal_port: '2342'
-- name: router
-  entity: sensor.zenwifi_et9_3300_external_ip
-  icon: mdi:router-network
-  host: 192.168.50.1
-  internal_port: '80'
-- name: webssh
-  icon: mdi:ssh
-  host: pearl
-  internal_port: '8888'
+  - name: deconz
+    icon: mdi:zigbee
+    host: slate
+    internal_port: "6080"
+  - name: frigate
+    entity: update.frigate_server
+    template: frigate_template
+    host: main
+    internal_port: "5000"
+  - name: grafana
+    icon: si:grafana
+    host: pearl
+    internal_port: "3000"
+  - name: influxdb
+    icon: si:influxdb
+    host: pearl
+    internal_port: "8086"
+  - name: kibana
+    icon: si:kibana
+    host: five
+    internal_port: "5601"
+  - name: litterbox
+    icon: lci:litterbox
+    host: one
+    internal_port: "5555"
+  - name: phoscon
+    entity: sensor.slate_deconz_version_info
+    icon: phu:phoscon
+    host: slate
+    internal_port: "9080"
+  - name: photoprism
+    entity: sensor.one_photoprism_version_info
+    icon: mdi:camera-burst
+    host: ubuntu-one
+    internal_port: "2342"
+  - name: pihole
+    entity: sensor.five_pihole_version_info
+    icon: mdi:pi-hole
+    host: five
+    internal_port: "80"
+  - name: router
+    entity: sensor.zenwifi_et9_3300_external_ip
+    icon: mdi:router-network
+    host: 192.168.50.1
+    internal_port: "80"
+  - name: tandoor
+    entity: sensor.five_tandoor_version_info
+    icon: lci:tandoor
+    host: 192.168.50.15
+    internal_port: "80"
+  - name: webssh
+    icon: mdi:ssh
+    host: pearl
+    internal_port: "8888"
 govee:
   devices:
     woodstove:
@@ -154,54 +223,83 @@ govee:
     test:
       entities: []
 hosts:
-- name: raspberry-pearl
-  ip: 192.168.50.123
-  type: raspberry-pi
-  collectors:
-  - radoneye
-  - abc
-  crontab: []
-  mounts: []
-  nvme_devices: []
-  containers:
-  - name: grafana
-    release_notes: https://grafana.com/docs/grafana/latest/release-notes/
-  - name: influxdb
-    release_notes: https://docs.influxdata.com/influxdb/v2/reference/release-notes/influxdb/
-  - name: radoneye
-    release_notes: ''
-  - name: webssh
-    release_notes: ''
-- name: raspberry-slate
-  ip: 192.168.50.14
-  type: raspberry-pi
-  collectors:
-  - hosts
-  - containers
-  crontab:
-  - xxx
-  mounts:
-  - xxx
-  nvme_devices:
-  - xxx
-  containers:
-  - name: authelia
-    release_notes: https://github.com/authelia/authelia/releasesXX
-  - name: deconz
-    release_notes: https://github.com/dresden-elektronik/deconz-rest-plugin/releases
-  - name: nginx
-    release_notes: https://github.com/nginx/nginx/tags
-- name: ubuntu-one
-  ip: 192.168.50.101
-  type: ubuntu
-  containers:
-  - name: mariadb
-    release_notes: https://mariadb.com/kb/en/release-notes/
-  - name: photoprism
-    release_notes: https://docs.photoprism.app/release-notes/
-  mounts: null
-  nvme_devices:
-  - /dev/nvme0n1p1
+  - name: raspberry-five
+    collectors:
+    ip: 192.168.50.15
+    type: raspberry-pi
+    containers:
+      - name: litterbox
+      - name: pihole
+        release_notes: https://github.com/pi-hole/pi-hole/releases
+      - name: postgres
+        release_notes: https://github.com/postgres/postgres/tags
+      - name: registry
+      - name: tandoor
+        release_notes: https://github.com/TandoorRecipes/recipes/releases
+    mounts:
+      - '/dev/sda'
+    nvme_devices: []
+  - name: raspberry-pearl
+    ip: 192.168.50.123
+    type: raspberry-pi
+    collectors:
+    - radoneye
+    crontab: []
+    mounts:
+      - /dev/sda
+    nvme_devices: []
+    containers:
+    - name: grafana
+      release_notes: https://grafana.com/docs/grafana/latest/release-notes/
+    - name: influxdb
+      release_notes: https://docs.influxdata.com/influxdb/v2/reference/release-notes/influxdb/
+    - name: radoneye
+      release_notes: ''
+    - name: webssh
+      release_notes: ''
+  - name: raspberry-slate
+    ip: 192.168.50.14
+    type: raspberry-pi
+    collectors:
+    - hosts
+    - containers
+    crontab:
+    mounts: []
+    nvme_devices: []
+    containers:
+    - name: authelia
+      release_notes: https://github.com/authelia/authelia/releasesXX
+    - name: deconz
+      release_notes: https://github.com/dresden-elektronik/deconz-rest-plugin/releases
+    - name: homeassistant
+      release_notes: https://www.home-assistant.io/blog/categories/release-notes/
+    - name: nginx
+      release_notes: https://github.com/nginx/nginx/tags
+  - name: ubuntu-one
+    ip: 192.168.50.101
+    type: ubuntu
+    containers:
+      - name: litterbox
+      - name: mariadb
+        release_notes: https://mariadb.com/kb/en/release-notes/
+      - name: photoprism
+        release_notes: https://docs.photoprism.app/release-notes/
+      - name: meatometer
+      - name: radoneye
+    mounts: []
+    nvme_devices:
+    - /dev/nvme0n1p1
+  - name: ubuntu-main
+    ip: 192.168.50.11
+    type: ubuntu
+    collectors:
+    containers:
+      - name: frigate
+        release_notes: https://github.com/blakeblackshear/frigate/releases
+    mounts:
+      - '/dev/sda'
+    nvme_devices:
+      - /dev/nvme0
 radoneye:
 - name: radoneye1
   serial: abc

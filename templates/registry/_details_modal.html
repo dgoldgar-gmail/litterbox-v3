@@ -17,6 +17,8 @@
     <script src="{{ url_for('static', filename='global.js') }}"></script>
     <script src="{{ url_for('static', filename='registry/details.js') }}"></script>
 <script>
+    const getTagManifestsBaseUrl = "{{ url_for('registry.get_tag_manifests') }}";
+
     const getTagBlobBaseUrl = "{{ url_for('registry.get_blob_info') }}";
 </script>
 

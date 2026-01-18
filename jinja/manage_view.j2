@@ -26,7 +26,7 @@ cards:
       {% for container in host.containers %}
       {% set appname = container['name'] %}
 {% set release_notes_url = container['release_notes'] %}
-        - entity: sensor.{{ short_host }}_{{ appname }}_version_info
+        - entity: sensor.{{ short_host }}_{{ appname.replace("-","_") }}_version_info
           show_state: true
           name: {{ appname }}
 {% set action_map = 

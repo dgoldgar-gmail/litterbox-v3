@@ -4,12 +4,14 @@ import os
 import shutil
 import datetime
 import re
+import requests
 import yaml
 
+from datetime import datetime
 from ansible_vault import Vault
 from yaml import SafeLoader, SafeDumper # Specific loaders/dumpers for safety
 from flask import flash, current_app
-from config import BACKUP_DIR,UNIFIED_MAPPING
+from config import BACKUP_DIR,UNIFIED_MAPPING, HOME_ASSISTANT_API_URL
 
 logger = logging.getLogger(__name__)
 
@@ -171,3 +173,29 @@ def resolve_secrets(text):
         logger.info("Replace " + match + " with " + resolved)
         text=text.replace("@" + match + "@", resolved)
     return text
+
+def get_homeassistant_state(name):
+    url=f"{HOME_ASSISTANT_API_URL}/states/{name}"
+    headers = {}
+    headers["Content-Type"] = "application/json"
+    headers["Authorization"] = "Bearer " + get_secret("ha_assistant")
+    logger.info(f"Get state for {name}")
+    logger.info(f"URL: {url}")
+    output=requests.get(url, headers=headers, verify=False)
+    return output.json()
+
+def set_homeassistant_state(name, payload):
+    url=f"{HOME_ASSISTANT_API_URL}/states/{name}"
+    headers = {}
+    headers["Content-Type"] = "application/json"
+    headers["Authorization"] = "Bearer " + get_secret("ha_assistant")
+    logger.info(
+        f"\n<<< {name} >>>\n%s",
+        json.dumps(payload, indent=2, sort_keys=True)
+    )
+    r = requests.post(url , data=json.dumps(payload), headers=headers, verify=False)
+    r.raise_for_status()
+
+def get_timestamp():
+    now = datetime.now()
+    return now.strftime("%Y-%m-%d %H:%M:%S")

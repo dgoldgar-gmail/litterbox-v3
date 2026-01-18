@@ -1,0 +1,30 @@
+woodstove:
+  group_action_map: 
+    LONG_PRESS_HOLD:
+      group_1: "start_adjust_brightness"
+    LONG_PRESS_RELEASE:
+      group_1: "stop_adjust_brightness"
+    SINGLE_CLICK:
+      group_1: "toggle_lights"
+    DOUBLE_CLICK:
+      group_1: "toggle_increase_decrease_brightness"
+  gesture_group_map: 
+    group_1:
+      - light.light_woodstove
+    
+
+
+drum_room:
+  group_action_map: 
+    LONG_PRESS_HOLD:
+      group_1: "start_adjust_brightness"
+    LONG_PRESS_RELEASE:
+      group_1: "stop_adjust_brightness"
+    SINGLE_CLICK:
+      group_1: "toggle_lights"
+    DOUBLE_CLICK:
+      group_1: "toggle_increase_decrease_brightness"
+  gesture_group_map: 
+    group_1:
+      - light.lights_drum_room
+

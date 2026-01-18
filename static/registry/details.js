@@ -9,7 +9,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function renderDetails() {
+
         console.log(detailsInfo)
+        console.log(detailsInfo['tag'])
+
+
+        const manifests = await getData(getTagManifestsBaseUrl, detailsInfo)
+        console.log(manifests)
+
+
         const data = await getData(getTagBlobBaseUrl, detailsInfo)
         const ul = document.getElementById('platformsList');
         while (ul != null && ul.firstChild) {

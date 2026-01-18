@@ -328,7 +328,7 @@
     }
   },
   {
-    "name": "litterbox-v3",
+    "name": "litterbox",
     "hosts": [
       "raspberry-five",
       "ubuntu-one"

@@ -19,7 +19,6 @@ def index():
 @registry_bp.route('/get_image_tags', methods=['GET'])
 def get_image_tags():
     image_name = request.args.get('image_name')
-    logger.info(f"Getting tags for image {image_name}")
     try:
         url = f"https://{REGISTRY}/v2/{image_name}/tags/list"
         resp = requests.get(url, verify=False)
@@ -28,11 +27,23 @@ def get_image_tags():
         tags = process_tags(image_name, tags)
         results = {}
         for tag in tags:
+            logger.info(f"Adding tag {tag.get_json()}")
             results[tag.tag] = tag.get_json()
         return results
     except Exception as e:
         logger.error(f"Error listing tags: {e}")
         return {}
+
+@registry_bp.route('/get_tag_manifests', methods=['POST'])
+def get_tag_manifests():
+    logger.info(request.get_json())
+    image_name = request.get_json() ['image']
+    tag = request.get_json() ['tag']
+    url = f"https://{REGISTRY}/v2/{image_name}/manifests/{tag}"
+    resp = requests.get(url, verify=False)
+    logger.info(resp.json())
+    resp.raise_for_status()
+    return resp.json()
 
 @registry_bp.route('/get_blob_info', methods=['POST'])
 def get_blob_info():
@@ -40,10 +51,9 @@ def get_blob_info():
     if input['type'] == "tag":
         return [get_blob_info_for_config_digest(input['image'], input['content_digest'])]
     else:
-        logger.info(f"Getting blob info for {input}")
         content_data = []
+
         for tag in input['tags']:
-            logger.info(f"Get stuff for {tag['image']} {tag['content_digest']} ")
             content_data.append(get_blob_info_for_config_digest(tag['image'], tag['content_digest']))
         return content_data
 
@@ -53,7 +63,6 @@ def delete_tag():
     tag = request.args.get('tag')
     digest = request.args.get('digest')
     redirect_url = url_for('registry.index')
-    logger.info(f"Digest for {image_name}:{tag} is {digest}")
     url = f"https://{REGISTRY}/v2/{image_name}/manifests/{digest}"
 
     try:
@@ -95,8 +104,8 @@ def process_tags(image, tags):
                     child_digests.append(d)
             tag_obj = Tag(image, "manifest", tag, content_digest, child_digests)
         else:
+            logger.info(f"Processing tag {tag} with no manifests")
             tag_obj = Tag(image, "tag", tag, content_digest, [digest])
-            #logger.info(manifest)
         tag_objects.append(tag_obj)
     return post_process_tag_objects(tag_objects)
 
@@ -105,6 +114,7 @@ def post_process_tag_objects(tag_objects):
     manifests = [obj for obj in tag_objects if obj.type == "manifest"]
     tags = [obj for obj in tag_objects if obj.type == "tag"]
     for tag in tags:
+        logger.info(f"post_process_tag_objects tag {tag.tag}")
         found_tag = False
         for manifest in manifests:
             if tag.digests[0] in manifest.digests:
@@ -112,6 +122,7 @@ def post_process_tag_objects(tag_objects):
                 found_tag = True
             break;
         if not found_tag:
+            logger.info(f"Tag {tag.tag} not found in any manifest")
             return_list.append(tag)
 
     return_list.extend(manifests)
@@ -121,6 +132,7 @@ def post_process_tag_objects(tag_objects):
 def safe_get(url, headers=None):
     """GET that returns Response or None (404 or other errors suppressed)."""
     try:
+        logger.info(f"GET {url}")
         r = requests.get(url, headers=headers or {}, verify=False)
         if r.status_code == 404:
             return None
@@ -128,7 +140,6 @@ def safe_get(url, headers=None):
         return r
     except requests.RequestException:
         return None
-
 
 def get_image_manifest(image, ref):
     url = f"https://{REGISTRY}/v2/{image}/manifests/{ref}"
@@ -152,7 +163,6 @@ def get_image_manifest(image, ref):
     # looking for that elusive created data...
     content_digest = None
     if 'config' in manifest and 'digest' in manifest['config']:
-        logger.info(manifest['config']['digest'])
         content_digest = manifest['config']['digest']
 
     media_type = (manifest.get("mediaType") if isinstance(manifest, dict) else None) or (
@@ -188,10 +198,11 @@ class Tag:
 
 def get_blob_info_for_config_digest(image, config_digest):
     config_url = f"https://{REGISTRY}/v2/{image}/blobs/{config_digest}"
-    config_resp = requests.get(config_url, verify=False)
+
+    config_resp = safe_get(config_url)
+    #config_resp = requests.get(config_url, verify=False)
     config_resp.raise_for_status()
     config_data = config_resp.json()
-    logger.info(config_data)
     created_date = config_data.get("created")
     logger.info(created_date)
     return config_data
@@ -227,3 +238,15 @@ def get_blob_info_for_config_digest(image, config_digest):
 #        registry:2 garbage-collect /etc/distribution/config.yml
 
 
+
+
+#####
+#  get a list of images - https://{REGISTRY}/v2/_catalog
+#  get a list of tags for an image - https://{REGISTRY}/v2/{image_name}/tags/list
+
+
+
+#url = f"https://{REGISTRY}/v2/{image_name}/manifests/{digest}"
+#url = f"https://{REGISTRY}/v2/{image}/manifests/{ref}"
+#self.url = f"https://{REGISTRY}/v2/{image}:{tag}"
+#config_url = f"https://{REGISTRY}/v2/{image}/blobs/{config_digest}"

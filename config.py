@@ -5,10 +5,13 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
-def setup_directory_environment(name):
+def setup_directory_environment(name, default):
     value=os.environ.get(name)
     if value is None:
-        raise ValueError(f"Environment variable {name} is required!")
+        if default is None:
+            raise ValueError(f"Environment variable {name} is required!")
+        else:
+            value=default
     logger.info(f"{name} set to: {value}")
 
     return value
@@ -28,16 +31,23 @@ REGISTRY = "192.168.50.15:5000"
 SSH_USER = os.environ.get("SSH_USER", "dgoldgar")
 logger.info(f"SSH_USER set to: {SSH_USER}")
 
+# home assistant
+HOME_ASSISTANT_API_URL="https://192.168.50.14:8123/api"
+
 KEY_FILE = os.environ.get("KEY_FILE", "/home/dgoldgar/.ssh/homeassistant")
 logger.info(f"KEY_FILE set to: {KEY_FILE}")
 
+COLLECT_APP_INFO_INTERVAL=int(os.environ.get("COLLECT_APP_INFO_INTERVAL",5))
+COLLECT_HOST_INFO_INTERVAL=int(os.environ.get("COLLECT_HOST_INFO_INTERVAL",5))
+UPDATE_DUCK_DNS_INTERVAL=int(os.environ.get("UPDATE_DUCK_DNS_INTERVAL",12))
+
 # Directories...
 
-BACKUP_DIR = setup_directory_environment("BACKUP_DIR")
-CONFIG_DIR = setup_directory_environment("CONFIG_DIR")
-JINJA_TEMPLATES = setup_directory_environment("JINJA_TEMPLATES")
-GENERATED = setup_directory_environment("GENERATED")
-GIT_REPO_PATH = setup_directory_environment("GIT_REPO_PATH")
+BACKUP_DIR = setup_directory_environment("BACKUP_DIR", "/app/backups")
+CONFIG_DIR = setup_directory_environment("CONFIG_DIR", "app/config")
+JINJA_TEMPLATES = setup_directory_environment("JINJA_TEMPLATES", "app/templates")
+GENERATED = setup_directory_environment("GENERATED", "app/generated")
+GIT_REPO_PATH = setup_directory_environment("GIT_REPO_PATH", "/app/git")
 
 # Files
 SECRETS_YAML = load_config_file("SECRETS_YAML", "secrets.yaml")

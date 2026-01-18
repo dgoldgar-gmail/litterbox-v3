@@ -2,11 +2,11 @@
 FROM python:3.11-slim
 
 RUN apt-get update && apt-get install -y \
-    gcc \
-    sshpass \
-    openssh-client \
-    supervisor \
     git \
+    gcc \
+    openssh-client \
+    sshpass \
+    supervisor \
     && rm -rf /var/lib/apt/lists/*
 
 

@@ -15,9 +15,3 @@
     mode: "0644"
 
 
-#- name: Copy ssh key from /root/.ssh/homeassistant to remote host
-#  copy:
-#    content: "/root/.ssh/homeassistant"
-#    dest: "{{ ssh_dir }}/homeassistant"
-#    mode: '0600'
-#
