@@ -14,12 +14,4 @@
     dest: "{{ ssh_dir }}/config"
     mode: "0644"
 
-- name: Decrypt git repo private key to localhost
-  ansible.builtin.copy:
-    src: "files/litterbox_deploy_key"
-    dest: "{{ ssh_dir }}/litterbox_deploy_key"
-    owner: "{{ ssh_user }}"
-    mode: '0600'
-  delegate_to: localhost
-  become: false
 
