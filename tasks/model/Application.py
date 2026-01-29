@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import re
 import requests
@@ -7,10 +8,10 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
 from config import REGISTRY
-from utils import get_secret, get_homeassistant_state
+from utils import configure_logging, get_secret, get_homeassistant_state
 
-import logging
 logger = logging.getLogger(__name__)
+configure_logging()
 
 class Application:
     def __init__(self, app_json):
@@ -23,8 +24,8 @@ class Application:
         self.platform = app_json['platform']
         self.version_pattern = app_json['version_pattern'] if 'version_pattern' in app_json else None
         self.github_version_field = app_json['github_version_field'] if 'github_version_field' in app_json else None
-        self.docker_hub_url = app_json['docker_hub_url'] if 'docker_hub_url' in app_json else None
-        self.max_dockerhub_pages = app_json['max_dockerhub_pages'] if 'max_dockerhub_pages' in app_json else None
+        self.docker_url = app_json['docker_url'] if 'docker_url' in app_json else None
+        self.max_version_query_pages = app_json['max_version_query_pages'] if 'max_version_query_pages' in app_json else None
         self.git_hub_url = app_json['git_hub_url'] if 'git_hub_url' in app_json else None
         self.docker = app_json['docker']
         self.image = self.docker['image'] if self.docker != None else None
@@ -50,9 +51,9 @@ class Application:
                 self.latest_version = "NOT SET"
         elif REGISTRY in self.image:
             self.latest_version=self.get_latest_local_image_tag()
-        elif self.docker_hub_url:
+        elif self.docker_url:
             try:
-                self.latest_version=self.get_latest_dockerhub_release_version(self.docker_hub_url)
+                self.latest_version=self.get_latest_dockerhub_release_version(self.docker_url)
             except:
                 self.latest_version="Unknown"
         else:
@@ -85,7 +86,7 @@ class Application:
         pattern = re.compile(self.version_pattern)
         all_images=[]
         curl_count=0
-        while url != None and curl_count < int(self.max_dockerhub_pages):
+        while url != None and curl_count < int(self.max_version_query_pages):
             curl_count = curl_count+1
             resp = requests.get(url)
             data = resp.json()

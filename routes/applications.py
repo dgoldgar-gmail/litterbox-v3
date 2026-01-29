@@ -35,11 +35,6 @@ def stream_log():
     logger.info(command)
     return generate_response(host, command)
 
-    #command = f"docker logs --tail 10 -f {container_name}"
-    #resp =  Response(generate_response(host, command), mimetype='text/plain')
-    #resp.headers['X-Accel-Buffering'] = 'no'
-    #return resp
-
 @applications_bp.route('/restart_app', methods=['GET'])
 def restart_app():
     host = request.args.get('host')
@@ -104,12 +99,12 @@ def generate_responses( host, commands):
     except RuntimeError:
         return
 
-def query_docker_hub(url,  max_dockerhub_pages, version_pattern):
+def query_docker_hub(url,  max_version_query_pages, version_pattern):
     pattern = re.compile(version_pattern)
     all_images=[]
     curl_count=0
     logger.info(f"Querying Docker Hub...{url}")
-    while url != None and curl_count < int(max_dockerhub_pages):
+    while url != None and curl_count < int(max_version_query_pages):
         curl_count = curl_count+1
         resp = requests.get(url)
         data = resp.json()

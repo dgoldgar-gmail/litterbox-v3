@@ -14,14 +14,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.
 
 from config import UNIFIED_MAPPING
 from ssh import get_ssh_client
-from utils import load_yaml_data, get_timestamp, set_homeassistant_state
+from utils import configure_logging, load_yaml_data, get_timestamp, get_homeassistant_state, set_homeassistant_state, send_homeassistant_notification, dismiss_homeassistant_notification
 
 logger = logging.getLogger(__name__)
-
-# TODO:  Fix logging setup...
-#paramiko_level = logging.DEBUG if debug else logging.WARNING
-paramiko_level = logging.WARNING
-logging.getLogger("paramiko.transport").setLevel(paramiko_level)
+configure_logging()
 
 mapping_data = load_yaml_data(UNIFIED_MAPPING)
 
@@ -104,7 +100,9 @@ class Host:
         try:
             with socket.create_connection((self.name, 22), timeout=2):
                 self.status = "up"
+                dismiss_homeassistant_notification(id=f"Host {self.name} is down!")
         except (socket.timeout, ConnectionRefusedError, OSError):
+            send_homeassistant_notification("persistent_notification", message=f"Host {self.name} is down!")
             self.status = "down"
         logger.debug(f"ping_host: {self.name} is {self.status}")
 

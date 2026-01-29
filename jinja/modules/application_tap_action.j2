@@ -9,6 +9,8 @@
               {% set short_host = host.name.replace("raspberry-","") %}
               - type: entities
                 entities:
+                - entity: sensor.{{ short_host }}_{{ app_name }}_collection_timestamp
+                  name: collection_timestamp
                 - entity: sensor.{{ short_host }}_{{ app_name }}_state 
                   name: state
                 - entity: sensor.{{ short_host }}_{{ app_name }}_status

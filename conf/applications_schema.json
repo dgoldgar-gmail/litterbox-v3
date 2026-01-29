@@ -27,7 +27,7 @@
       "platorm": {
         "type": "string"
       },
-      "docker_hub_url": {
+      "docker_url": {
         "type": "string"
       },
       "git_hub_url": {

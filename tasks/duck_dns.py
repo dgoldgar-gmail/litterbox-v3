@@ -6,14 +6,10 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
+from utils import configure_logging, get_secret
 
 logger = logging.getLogger(__name__)
-
-from utils import get_secret
+configure_logging()
 
 def update_dns_info():
     token=get_secret("habitrail_token")

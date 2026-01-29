@@ -5,6 +5,7 @@ litterbox_deploy_key
 __pycache__
 .idea
 .venv
+venv
 *.swp
 litterbox_deploy_key.pub
 supervisord.pid 
@@ -21,6 +22,6 @@ sc.sh
 scheduler.sh
 test.sh
 bin/bootstrap_hosts.sh
-conf/backups
+conf/backups/**/*
 
 

@@ -37,10 +37,6 @@ HOME_ASSISTANT_API_URL="https://192.168.50.14:8123/api"
 KEY_FILE = os.environ.get("KEY_FILE", "/home/dgoldgar/.ssh/homeassistant")
 logger.info(f"KEY_FILE set to: {KEY_FILE}")
 
-COLLECT_APP_INFO_INTERVAL=int(os.environ.get("COLLECT_APP_INFO_INTERVAL",5))
-COLLECT_HOST_INFO_INTERVAL=int(os.environ.get("COLLECT_HOST_INFO_INTERVAL",5))
-UPDATE_DUCK_DNS_INTERVAL=int(os.environ.get("UPDATE_DUCK_DNS_INTERVAL",12))
-
 # Directories...
 
 BACKUP_DIR = setup_directory_environment("BACKUP_DIR", "/app/backups")
@@ -63,3 +59,15 @@ OVERVIEW_MAPPING_SCHEMA = load_config_file("OVERVIEW_MAPPING_SCHEMA", "overview_
 APPLICATIONS_CONFIG_SCHEMA = load_config_file("APPLICATIONS_CONFIG_SCHEMA", "applications_schema.json")
 ANSIBLE_INVENTORY_SCHEMA = load_config_file("ANSIBLE_INVENTORY_SCHEMA", "ansible_inventory_schema.json")
 ANSIBLE_SITE_SCHEMA = load_config_file("ANSIBLE_SITE_SCHEMA", "ansible_site_schema.json")
+
+# Scheduler Configuration
+
+COLLECT_APP_INFO_INTERVAL=int(os.environ.get("COLLECT_APP_INFO_INTERVAL",5))
+COLLECT_HOST_INFO_INTERVAL=int(os.environ.get("COLLECT_HOST_INFO_INTERVAL",5))
+COLLECT_CERTIFICATE_INFO_INTERVAL=int(os.environ.get("COLLECT_CERTIFICATE_INFO_INTERVAL",12))
+UPDATE_DUCK_DNS_INTERVAL=int(os.environ.get("UPDATE_DUCK_DNS_INTERVAL",12))
+
+
+LEADER_TTL=int(os.environ.get("LEADER_TTL",240))
+LEADER_WATCHDOG_INTERVAL=int(os.environ.get("LEADER_TTL",60))
+LEADER_HEARTBEAT_INTERVAL=int(os.environ.get("LEADER_TTL",60))

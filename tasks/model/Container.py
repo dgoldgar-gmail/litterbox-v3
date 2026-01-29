@@ -1,21 +1,16 @@
 import json
+import logging
 import os
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
-
-import logging
-logger = logging.getLogger(__name__)
-
-#paramiko_level = logging.DEBUG if debug else logging.WARNING
-paramiko_level = logging.WARNING
-logging.getLogger("paramiko.transport").setLevel(paramiko_level)
-
 from config import REGISTRY
 from ssh import get_ssh_client
-from utils import set_homeassistant_state, get_timestamp
+from utils import configure_logging, set_homeassistant_state, get_timestamp, dismiss_homeassistant_notification, send_homeassistant_notification
 
+logger = logging.getLogger(__name__)
+configure_logging()
 
 class Container:
     def __init__(self, host, app):
@@ -53,20 +48,30 @@ class Container:
             else:
                 self.current_version = self.get_current_version_by_docker_tag()
         except Exception as e:
-            logging.error(e)
+            logging.error(f"Error collecting current_version_info for {self.app} on {self.host}", e)
             self.current_version = None
 
     def get_current_version_by_docker_tag(self):
         client = get_ssh_client(self.host)
-        command="/usr/bin/docker ps --format '{{json .Image}}' -f " +  f"name={self.app}"
+        command = (
+            "/usr/bin/docker ps "
+            "--format '{{json .Image}}' "
+            f"-f name={self.app}"
+        )
         logger.debug(f"Executing command: {command} on {self.host}")
         stdin, stdout, stderr = client.exec_command(command)
-        output = stdout.read().decode("utf-8")
-        if REGISTRY in output:
-            output=output.split(":")[2].split('"')[0]
-        else:
-            output=output.split(":")[1].split('"')[0]
-        return output.strip()
+        stdout_output = stdout.read().decode("utf-8").strip()
+        stderr_output = stderr.read().decode("utf-8").strip()
+        exit_status = stdout.channel.recv_exit_status()
+        if exit_status != 0:
+            logger.warning(f"Docker command failed: {stderr_output}")
+            return "UNKNOWN"
+        if not stdout_output:
+            logger.warning(f"No running container found for {self.app} on {self.host}")
+            return "UNKNOWN"
+        image = json.loads(stdout_output)
+        _, _, tag = image.rpartition(":")
+        return tag
 
     def get_frigate_current_version(host):
         sensor_value=get_state("update.frigate_server")
@@ -116,24 +121,46 @@ class Container:
         payload['state'] = data
         if sensor_attributes is None:
             sensor_attributes = {}
-            sensor_attributes['collection_timestamp'] = self.collection_timestamp
-            payload['attributes'] = sensor_attributes
-        else:
-            payload['attributes'] = sensor_attributes
+
+        sensor_attributes['collection_timestamp'] = self.collection_timestamp
+        payload['attributes'] = sensor_attributes
         set_homeassistant_state(sensor_name, payload)
 
     def send_state_data(self):
-        logger.info(f"Sending state data for {self.app} on {self.host}")
+        logger.debug(f"Sending state data for {self.app} on {self.host}")
         self.send_single_state("current_version", self.current_version)
-        self.send_single_state("collection_timestamp", self.collection_timestamp)
-        self.send_single_state("created_at", self.container_created_at)
-        self.send_single_state("state", self.container_state)
-        self.send_single_state("status", self.container_status)
-        self.send_single_state("image", self.container_image)
+        self.send_single_state("collection_timestamp", self.collection_timestamp, { "icon": "mdi:timer" } )
+        self.send_single_state("created_at", self.container_created_at, { "icon": "mdi:baby-carriage" })
+        icon = "mdi:run" if self.container_state == "running" else "mdi:sleep"
+        self.send_single_state("state", self.container_state, { "icon": icon } )
+        self.send_single_state("status", self.container_status, { "icon": "mdi:calendar-clock" } )
+        self.send_single_state("image", self.container_image, { "icon": "mdi:image" } )
 
         version_info = self.current_version if self.current_version == self.latest_version else f"( ↑ {self.latest_version} ↑ ) {self.current_version}"
-        icon = "mdi:check" if self.current_version == self.latest_version else "mdi:package-down"
-        attributes = {}
-        attributes['icon'] = icon
-        attributes['collection_timestamp'] = self.collection_timestamp
-        self.send_single_state("version_info", version_info, attributes)
+        icon = "mdi:check" if self.current_version == self.latest_version else "mdi:package-up"
+
+        self.notify()
+
+        icon = icon if self.current_version != "UNKNOWN" else "mdi:alert-box-outline"
+        self.send_single_state("version_info", version_info, { "icon": icon } )
+
+
+    def notify(self):
+        unknown_version_id = f"Unknown version for {self.app} on {self.host}"
+        update_version_id = f"Update available for {self.app} on {self.host}"
+
+        if self.current_version == "UNKNOWN":
+            send_homeassistant_notification(
+                service="persistent_notification",
+                message=unknown_version_id,
+                title=unknown_version_id
+            )
+        elif self.current_version != self.latest_version:
+            send_homeassistant_notification(
+                service="persistent_notification",
+                message=f"New version available for {self.app} on {self.host} - {self.latest_version}",
+                title=update_version_id
+            )
+        else:
+            dismiss_homeassistant_notification(id=unknown_version_id)
+            dismiss_homeassistant_notification(id=update_version_id)

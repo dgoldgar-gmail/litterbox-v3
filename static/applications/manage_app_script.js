@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function upgradeApplication(event, app_name, hostName, application_config) {
         console.log("Upgrading " + app_name + " on " + hostName + "...");
-        const getContainerVersionsUrl = `${getContainerVersionsBaseUrl}?app=${encodeURIComponent(app_name)}&url=${encodeURIComponent(application_config.docker_hub_url)}&max_pages=${encodeURIComponent(application_config.max_dockerhub_pages)}&version_pattern=${encodeURIComponent(application_config.version_pattern)}`;
+        const getContainerVersionsUrl = `${getContainerVersionsBaseUrl}?app=${encodeURIComponent(app_name)}&url=${encodeURIComponent(application_config.docker_url)}&max_pages=${encodeURIComponent(application_config.max_version_query_pages)}&version_pattern=${encodeURIComponent(application_config.version_pattern)}`;
         fetch(getContainerVersionsUrl)
             .then(response => {
                 if (!response.ok) {
