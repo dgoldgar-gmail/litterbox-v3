@@ -8,7 +8,7 @@ import time
 
 from config import APPLICATIONS_CONFIG, REGISTRY
 from flask import Blueprint, flash, render_template, redirect, request, url_for, jsonify, Response
-from utils import load_json_data, resolve_secrets
+from utils import load_json_data, resolve_secrets, get_dockerhub_release_versions, get_local_registry_image_versions
 from ssh import get_ssh_client
 
 applications_bp = Blueprint('applications', __name__, template_folder='../../templates')
@@ -30,8 +30,23 @@ def manage_application(name):
 def stream_log():
     host = request.args.get('host')
     container_name = request.args.get('container')
-    logger.info(f"Streaming log for {container_name} on {host}")
+    logger.info(f"Toggling log level for {container_name} on {host}")
     command = f"docker logs --tail 10 -f {container_name}"
+    logger.info(command)
+    return generate_response(host, command)
+
+@applications_bp.route('/toggle_log_level', methods=['GET'])
+def toggle_log_level():
+    host = request.args.get('host')
+    container_name = request.args.get('container')
+    process_name = request.args.get('process')
+    command = f"docker kill -s SIGUSR1 {container_name}"
+    if process_name:
+        logger.info(f"Streaming log for {container_name}/{process_name} on {host}")
+        command = f"docker exec {container_name} supervisorctl signal SIGUSR1 {process_name}"
+    else:
+        logger.info(f"Streaming log for {container_name} on {host}")
+
     logger.info(command)
     return generate_response(host, command)
 
@@ -76,9 +91,9 @@ def get_container_versions():
     max_pages = request.args.get('max_pages')
     version_pattern = request.args.get('version_pattern')
     if REGISTRY in url:
-        return query_local_registry(url, version_pattern)
+        return get_local_registry_image_versions(url, version_pattern)
     else:
-        return query_docker_hub(url, max_pages, version_pattern)
+        return get_dockerhub_release_versions(url, version_pattern)
 
 def generate_response(host, command):
 
@@ -99,34 +114,7 @@ def generate_responses( host, commands):
     except RuntimeError:
         return
 
-def query_docker_hub(url,  max_version_query_pages, version_pattern):
-    pattern = re.compile(version_pattern)
-    all_images=[]
-    curl_count=0
-    logger.info(f"Querying Docker Hub...{url}")
-    while url != None and curl_count < int(max_version_query_pages):
-        curl_count = curl_count+1
-        resp = requests.get(url)
-        data = resp.json()
-        images=data['results']
-        images = [e['name'] for e in images]
-        all_images.extend([ s for s in images if pattern.match(s) ])
-        url = data['next']
-    all_images.sort(reverse=True)
-    return all_images
-
-
-def query_local_registry(url, version_pattern):
-    pattern = re.compile(version_pattern)
-    logger.info(f"Querying Docker Hub...{url}")
-    resp = requests.get(url, verify='/etc/docker/certs.d/192.168.50.15:5000/ca.crt')
-    data = resp.json()
-    images=data['tags']
-    images.sort(reverse=True)
-    return images
-
 def pull_container_version(container_name, version, host):
-
     logger.info(f"Running upgrade of {container_name} to {version} on {host}")
     command = f"docker pull {container_name}:{version}"
     return Response(generate_response(host, command), mimetype='text/plain')

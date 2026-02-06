@@ -25,6 +25,7 @@ def load_config_file(variable_name, file_name, full_path=False):
     logger.info(f"{variable_name} set to: {config_file}")
     return config_file
 
+UNKNOWN="UNKNOWN"
 
 REGISTRY = "192.168.50.15:5000"
 
@@ -50,15 +51,16 @@ SECRETS_YAML = load_config_file("SECRETS_YAML", "secrets.yaml")
 OVERVIEW_MAPPING = load_config_file("OVERVIEW_MAPPING", "overview_mapping.yaml")
 UNIFIED_MAPPING = load_config_file("UNIFIED_MAPPING", "unified_mapping.yaml")
 APPLICATIONS_CONFIG = load_config_file("APPLICATIONS_CONFIG", "applications.json")
-ANSIBLE_INVENTORY = load_config_file("ANSIBLE_CONFIG", "ansible/inventory/hosts.yml", True)
-ANSIBLE_SITE = load_config_file("ANSIBLE_SITE", "ansible/project/site.yml", True)
-
 
 UNIFIED_MAPPING_SCHEMA = load_config_file("UNIFIED_MAPPING_SCHEMA", "unified_mapping_schema.json")
 OVERVIEW_MAPPING_SCHEMA = load_config_file("OVERVIEW_MAPPING_SCHEMA", "overview_mapping_schema.json")
 APPLICATIONS_CONFIG_SCHEMA = load_config_file("APPLICATIONS_CONFIG_SCHEMA", "applications_schema.json")
 ANSIBLE_INVENTORY_SCHEMA = load_config_file("ANSIBLE_INVENTORY_SCHEMA", "ansible_inventory_schema.json")
 ANSIBLE_SITE_SCHEMA = load_config_file("ANSIBLE_SITE_SCHEMA", "ansible_site_schema.json")
+
+ANSIBLE_VAULT_PASS_PATH=os.environ.get("ANSIBLE_VAULT_PASS_PATH", "/app/.ansible/vault_pass")
+ANSIBLE_INVENTORY = load_config_file("ANSIBLE_CONFIG", "ansible/inventory/hosts.yml", True)
+ANSIBLE_SITE = load_config_file("ANSIBLE_SITE", "ansible/project/site.yml", True)
 
 # Scheduler Configuration
 

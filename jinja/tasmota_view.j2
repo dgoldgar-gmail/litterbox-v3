@@ -27,7 +27,7 @@ cards:
                       cards:
 {% set url_popup_style = { "icon_size": "15px" } %}
 {{ buttons.url_button_card("Local",    "mdi:home", "http://" + device.ip, url_popup_style, 24)}}
-{{ buttons.url_button_card("Authelia", "mdi:web",  "https://" + device.name.replace("_","-") + ".authabitrail.duckdns.org:51443", url_popup_style, 24)}}
+{{ buttons.url_button_card("Authelia", "mdi:web",  "https://" + device.name.replace("_","-") + ".authabitrail.duckdns.org", url_popup_style, 24)}}
               double_tap_action:
                 action: call-service
                 service: pyscript.upgrade_tasmota_device

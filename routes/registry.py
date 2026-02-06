@@ -1,8 +1,10 @@
 import logging
+import re
 import requests
 import urllib3
 
 from config import REGISTRY
+from utils import get_local_registry_image_versions
 from flask import Blueprint, flash, render_template, redirect, request, url_for, jsonify
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -13,49 +15,28 @@ logger.propagate = True
 
 @registry_bp.route('/')
 def index():
-    return render_template('registry/index.html',
-                           images=get_image_list())
+    return render_template('registry/index.html', images=get_image_list())
 
 @registry_bp.route('/get_image_tags', methods=['GET'])
 def get_image_tags():
     image_name = request.args.get('image_name')
-    try:
-        url = f"https://{REGISTRY}/v2/{image_name}/tags/list"
-        resp = requests.get(url, verify=False)
-        resp.raise_for_status()
-        tags = resp.json().get("tags", [])
-        tags = process_tags(image_name, tags)
-        results = {}
-        for tag in tags:
-            logger.info(f"Adding tag {tag.get_json()}")
-            results[tag.tag] = tag.get_json()
-        return results
-    except Exception as e:
-        logger.error(f"Error listing tags: {e}")
-        return {}
+    url = f"https://{REGISTRY}/v2/{image_name}/tags/list"
+    tags=get_local_registry_image_versions(url, ".*")
+    logger.info(tags)
+    return tags
 
-@registry_bp.route('/get_tag_manifests', methods=['POST'])
-def get_tag_manifests():
-    logger.info(request.get_json())
-    image_name = request.get_json() ['image']
-    tag = request.get_json() ['tag']
-    url = f"https://{REGISTRY}/v2/{image_name}/manifests/{tag}"
-    resp = requests.get(url, verify=False)
-    logger.info(resp.json())
-    resp.raise_for_status()
-    return resp.json()
+@registry_bp.route('/get_tag_details', methods=['GET'])
+def get_tag_details():
+    image_name = request.args.get('image_name')
+    tag = request.args.get('tag')
+    return get_tag_details(image_name, tag)
 
-@registry_bp.route('/get_blob_info', methods=['POST'])
-def get_blob_info():
-    input=request.get_json()
-    if input['type'] == "tag":
-        return [get_blob_info_for_config_digest(input['image'], input['content_digest'])]
-    else:
-        content_data = []
-
-        for tag in input['tags']:
-            content_data.append(get_blob_info_for_config_digest(tag['image'], tag['content_digest']))
-        return content_data
+@registry_bp.route('/get_architecture_manifest_details', methods=['GET'])
+def get_architecture_manifest_details():
+    image_name = request.args.get('image_name')
+    tag = request.args.get('tag')
+    manifest = request.args.get('manifest')
+    return get_blob(image_name, manifest)
 
 @registry_bp.route('/delete_tag', methods=['DELETE'])
 def delete_tag():
@@ -91,44 +72,6 @@ def get_image_list():
         logger.error(f"Error listing images: {e}")
         return []
 
-def process_tags(image, tags):
-    tag_objects = []
-    for tag in tags:
-        manifest, digest, content_digest, media_type = get_image_manifest(image, tag)
-        tag_obj = None
-        if 'manifests' in manifest:
-            child_digests = []
-            for m in manifest.get("manifests", []):
-                d = m.get("digest")
-                if d:
-                    child_digests.append(d)
-            tag_obj = Tag(image, "manifest", tag, content_digest, child_digests)
-        else:
-            logger.info(f"Processing tag {tag} with no manifests")
-            tag_obj = Tag(image, "tag", tag, content_digest, [digest])
-        tag_objects.append(tag_obj)
-    return post_process_tag_objects(tag_objects)
-
-def post_process_tag_objects(tag_objects):
-    return_list = []
-    manifests = [obj for obj in tag_objects if obj.type == "manifest"]
-    tags = [obj for obj in tag_objects if obj.type == "tag"]
-    for tag in tags:
-        logger.info(f"post_process_tag_objects tag {tag.tag}")
-        found_tag = False
-        for manifest in manifests:
-            if tag.digests[0] in manifest.digests:
-                manifest.add_tag(tag)
-                found_tag = True
-            break;
-        if not found_tag:
-            logger.info(f"Tag {tag.tag} not found in any manifest")
-            return_list.append(tag)
-
-    return_list.extend(manifests)
-    return return_list
-
-
 def safe_get(url, headers=None):
     """GET that returns Response or None (404 or other errors suppressed)."""
     try:
@@ -141,71 +84,167 @@ def safe_get(url, headers=None):
     except requests.RequestException:
         return None
 
-def get_image_manifest(image, ref):
-    url = f"https://{REGISTRY}/v2/{image}/manifests/{ref}"
+def get_tag_details(image_name, tag):
+    url = f"https://{REGISTRY}/v2/{image_name}/manifests/{tag}"
     headers = {
         "Accept": (
-            "application/vnd.docker.distribution.manifest.list.v2+json, "
-            "application/vnd.docker.distribution.manifest.v2+json"
+            "application/vnd.docker.distribution.manifest.list.v2+json,"
+            "application/vnd.docker.distribution.manifest.v2+json,"
+            "application/vnd.oci.image.manifest.v1+json,"
+            "application/vnd.oci.image.index.v1+json"
         )
     }
     resp = safe_get(url, headers)
-    if not resp:
-        return None, None, None
+    resp_json = resp.json()
+    media_type = resp_json.get("mediaType")
+    results = {}
+    results['image_name'] = image_name
+    results['media_type'] = media_type
+    results['tag'] = tag
+    images = []
+    results['images'] = images
+    if media_type == "application/vnd.docker.distribution.manifest.list.v2+json" or media_type == "application/vnd.oci.image.index.v1+json":
+        type = "OCI Multi-arch manifest"
+        results['type'] = type
+        results = process_multiarch_manifest_list(image_name, tag, resp_json)
+    else:
+        type = "Single-arch manifest"
+        results['type'] = type
+        result = {}
+        result['digest'] = resp_json.get("config").get("digest")
+        result['size'] = resp_json.get("config").get("size")
+        images.append(result)
+    #else:
+    #    logger.warn(f"We're not handling the type of mediaType {media_type} we got here!")
+    return results
+
+def process_multiarch_manifest_list(image_name, tag, manifest_list_json):
+    media_type = manifest_list_json.get("mediaType")
+    if media_type == "application/vnd.docker.distribution.manifest.list.v2+json":
+        type = "Multi-arch manifest"
+    elif media_type == "application/vnd.oci.image.index.v1+json":
+        type = "OCI Multi-arch manifest"
+    results = {}
+    results['image_name'] = image_name
+    results['tag'] = tag
+    results['type'] = type
+    images = []
+    results['images'] = images
+    manifests = manifest_list_json.get("manifests")
+    if manifests:
+        type = "Multi-arch manifest OCI"
+        for manifest in manifests:
+            if "annotations" in manifest and manifest.get("annotations").get("vnd.docker.reference.type") ==  'attestation-manifest':
+                logger.info("Skipping processing of attestation manifest.")
+            else:
+                result = {}
+                result['arch'] = manifest.get("platform").get("architecture")
+                result['os'] = manifest.get("platform").get("os")
+                result['digest'] = manifest.get("digest")
+                result['size'] = manifest.get("size")
+                images.append(result)
+                process_manifest_details(image_name, manifest)
+    return results
+
+
+def process_manifest_details(image_name, oci_json):
+    digest = oci_json.get("digest")
+    url = f"https://{REGISTRY}/v2/{image_name}/manifests/{digest}"
+    headers = {
+        "Accept": (
+            "application/vnd.docker.distribution.manifest.v2+json, "
+            "application/vnd.oci.image.manifest.v1+json"
+        )
+    }
     try:
-        manifest = resp.json()
-    except ValueError:
-        manifest = None
-
-    digest = resp.headers.get("Docker-Content-Digest") or resp.headers.get("Content-Digest")
-    content_type = resp.headers.get("Content-Type", "")
-
-    # looking for that elusive created data...
-    content_digest = None
-    if 'config' in manifest and 'digest' in manifest['config']:
-        content_digest = manifest['config']['digest']
-
-    media_type = (manifest.get("mediaType") if isinstance(manifest, dict) else None) or (
-        content_type.split(";", 1)[0] if content_type else None
-    )
-
-    return manifest, digest, content_digest, media_type
-
-class Tag:
-    def __init__(self, image, type, tag, content_digest, digests):
-        self.image = image
-        self.type = type
-        self.tag = tag
-        self.url = f"https://{REGISTRY}/v2/{image}:{tag}"
-        self.digests = digests
-        self.content_digest = content_digest
-        self.tags = []
-
-    def get_json(self):
-        return {
-            "image": self.image,
-            "type": self.type,
-            "tag": self.tag,
-            "url": self.url,
-            "digests": self.digests,
-            "content_digest": self.content_digest,
-            "tags": [tag.get_json() for tag in self.tags]
-        }
-
-    def add_tag(self, tag):
-        self.tags.append(tag)
+        resp = safe_get(url, headers=headers)
+        if resp.status_code == 200:
+                manifest_data = resp.json()
+                config_digest = manifest_data.get("config", {}).get("digest")
+                if config_digest:
+                    image_details = get_blob(image_name, config_digest)
+                    container_config = image_details.get('config', {})
+                    env_vars = container_config.get('Env', [])
+                    entrypoint = container_config.get('Entrypoint', [])
+                    labels = container_config.get('Labels', {})
+                    return image_details
+    except Exception as e:
+        logger.error(f"Error fetching manifest {digest}: {e}")
 
 
-def get_blob_info_for_config_digest(image, config_digest):
-    config_url = f"https://{REGISTRY}/v2/{image}/blobs/{config_digest}"
+def get_blob(image_name, digest):
+    url = f"https://{REGISTRY}/v2/{image_name}/blobs/{digest}"
+    try:
+        resp = safe_get(url)
+        if resp.status_code == 200:
+            blob_data = resp.json()
+            media_type = blob_data.get("mediaType")
+            if media_type == "application/vnd.oci.image.manifest.v1+json":
+                return get_blob(image_name, blob_data.get("config", {}).get("digest"))
+            created_raw = blob_data.get('created')
+            created_pretty = "Unknown"
+            if created_raw:
+                try:
+                    dt = datetime.fromisoformat(created_raw.replace('Z', '+00:00'))
+                    created_pretty = dt.strftime('%b %d, %Y %H:%M:%S')
+                except Exception:
+                    created_pretty = created_raw
+            get_history(blob_data)
+            runtime_config = blob_data.get('config', blob_data)
+            details = {
+                "built": created_pretty, # Our new field
+                "cmd": runtime_config.get("Cmd"),
+                "entrypoint": runtime_config.get("Entrypoint"),
+                "env": runtime_config.get("Env"),
+                "labels": runtime_config.get("Labels"),
+                "working_dir": runtime_config.get("WorkingDir"),
+                "user": runtime_config.get("User"),
+                "exposed_ports": list(runtime_config.get("ExposedPorts", {}).keys()) if runtime_config.get("ExposedPorts") else []
+            }
 
-    config_resp = safe_get(config_url)
-    #config_resp = requests.get(config_url, verify=False)
-    config_resp.raise_for_status()
-    config_data = config_resp.json()
-    created_date = config_data.get("created")
-    logger.info(created_date)
-    return config_data
+            #for key, value in details.items():
+            #    if value and key != "built":
+            #        logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
+
+            return details
+        else:
+            logger.error(f"Blob not found: {resp.status_code}")
+    except Exception as e:
+        logger.error(f"Error fetching blob {digest}: {e}")
+    return None
+
+
+def get_history(blob_data):
+
+    history = blob_data.get('history', [])
+    build_steps = [step.get('created_by', '') for step in history]
+    details = {
+        # ... your other fields ...
+        "build_history": build_steps
+    }
+    for i, step in enumerate(build_steps):
+        clean_step = step.replace('/bin/sh -c #(nop) ', '').strip()
+        logger.info(f"Step {i+1}: {clean_step}")
+
+
+def format_docker_step(step_string):
+    # 1. Remove the "no-op" prefix used for metadata-only commands (ENV, LABEL, etc.)
+    step = step_string.replace('/bin/sh -c #(nop) ', '')
+
+    # 2. Remove the shell execution prefix for RUN commands
+    step = step.replace('/bin/sh -c ', 'RUN ')
+
+    # 3. Clean up multiple spaces
+    step = ' '.join(step.split())
+
+    # 4. Make it look like a Dockerfile (e.g., adding line breaks for long RUN commands)
+    # We look for common command separators like '&&'
+    if '&&' in step:
+        step = step.replace('&&', '&& \\\n  ')
+
+    return step
+
+
 
 
 ############

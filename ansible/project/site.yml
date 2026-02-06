@@ -39,13 +39,6 @@
   roles:
     - { role: nginx, tags: [ "nginx" ] }
 
-- name: DNS Refresh
-  hosts: raspberry-slate
-  become: true
-  gather_facts: false
-  roles:
-    - { role: dns_refresh, tags: [ "dns_refresh" ] }
-
 - name: Secrets
   hosts: raspberry-slate
   become: true

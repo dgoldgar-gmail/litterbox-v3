@@ -9,10 +9,12 @@ import sys
 import yaml
 
 from datetime import datetime
+from packaging.version import Version, InvalidVersion
 from ansible_vault import Vault
 from yaml import SafeLoader, SafeDumper # Specific loaders/dumpers for safety
 from flask import flash, current_app
-from config import BACKUP_DIR,UNIFIED_MAPPING, HOME_ASSISTANT_API_URL
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+from config import BACKUP_DIR,UNIFIED_MAPPING, HOME_ASSISTANT_API_URL, UNKNOWN
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +34,7 @@ def load_yaml_data(yaml_file_path):
                 content = f.read()
                 if content:
                     loaded_data = yaml.load(content, Loader=SafeLoader)
-                    logger.info(f"Data loaded successfully from {yaml_file_path}.")
+                    logger.debug(f"Data loaded successfully from {yaml_file_path}.")
                     return loaded_data if loaded_data is not None else {}
                 else:
                     logger.info(f"File {yaml_file_path} is empty. Initializing with empty data.")
@@ -189,7 +191,7 @@ def dismiss_homeassistant_notification(id):
     headers = {}
     headers["Content-Type"] = "application/json"
     headers["Authorization"] = "Bearer " + get_secret("ha_assistant")
-    logger.info(
+    logger.debug(
         f"\n<<< DISMISS >>>\n%s",
         json.dumps(payload, indent=2, sort_keys=True)
     )
@@ -220,4 +222,66 @@ def configure_logging(
         logging.getLogger("paramiko.transport").setLevel(logging.WARNING)
         logging.getLogger("apscheduler").setLevel(logging.INFO)
         logging.getLogger("urllib3").setLevel(logging.WARNING)
+
+# --- Container version helper functions ---
+
+def version_key(v):
+    try:
+        return Version(v)
+    except InvalidVersion:
+        return Version("0.0.0")
+
+def get_latest_dockerhub_release_version(url, version_pattern):
+    return get_dockerhub_release_versions(url, version_pattern)[0]
+
+def get_dockerhub_release_versions(url, version_pattern):
+    if "page_size" not in url:
+        url = f"{url}&page_size=100" if "?" in url else f"{url}?page_size=100"
+    all_images = []
+    while url:
+        try:
+            resp = requests.get(url, timeout=10)
+            if resp.status_code == 429:
+                wait_time = int(resp.headers.get("Retry-After", 5))
+                logger.warning(f"Rate limited. Sleeping for {wait_time}s...")
+                time.sleep(wait_time)
+                continue
+            resp.raise_for_status()
+            data = resp.json()
+            all_images.extend([e['name'] for e in data.get('results', []) if re.match(version_pattern, e['name'])])
+            url = data.get('next')
+            if url and "page_size=100" not in url:
+                u = urlparse(url)
+                query = parse_qs(u.query)
+                query['page_size'] = [100]  # Overwrite
+                url = urlunparse(u._replace(query=urlencode(query, doseq=True)))
+        except Exception as e:
+            logger.error(f"API Fetch failed: {url} -> {e}")
+            break
+    if not all_images:
+        logger.warning(f"No matching images found for {url}")
+        return UNKNOWN
+    all_images.sort(key=version_key, reverse=True)
+    return all_images
+
+def get_latest_local_registry_image_version(url, version_pattern):
+    return get_local_registry_image_versions(url, version_pattern)[0]
+
+def get_local_registry_image_versions(url, version_pattern):
+    pattern = re.compile(version_pattern)
+    try:
+        resp = requests.get(url, verify=False)
+        resp.raise_for_status()
+        tags = resp.json().get("tags", [])
+        logger.debug(f"Tags for {url}: {tags}")
+        if tags:
+            tags=[ s for s in tags if pattern.match(s) ]
+            tags.sort(key=version_key, reverse=True)
+            logger.debug(f"Tags for {url}: {tags}")
+            return tags
+        else:
+            return UNKNOWN
+    except:
+        logger.error(f"No tags found for image with url '{url}'")
+        return UNKNOWN
 

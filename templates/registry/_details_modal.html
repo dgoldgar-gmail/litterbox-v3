@@ -7,7 +7,9 @@
                 <h5 class="modal-title" id="detailsTitle">Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            {{  ul_block("Platforms", with_add_delete_buttons=False) }}
+            {{  ul_block("Images", with_add_delete_buttons=False) }}
+            <div id="imageTagInfo" class="w-100 vh-50 overflow-y-auto border p-3">
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
@@ -17,9 +19,8 @@
     <script src="{{ url_for('static', filename='global.js') }}"></script>
     <script src="{{ url_for('static', filename='registry/details.js') }}"></script>
 <script>
-    const getTagManifestsBaseUrl = "{{ url_for('registry.get_tag_manifests') }}";
-
-    const getTagBlobBaseUrl = "{{ url_for('registry.get_blob_info') }}";
+    const getTagDetailsBaseUrl = "{{ url_for('registry.get_tag_details') }}"
+    const getArchitectureManifestDetailsBaseUrl = "{{ url_for('registry.get_architecture_manifest_details') }}"
 </script>
 
 {% endblock %}
