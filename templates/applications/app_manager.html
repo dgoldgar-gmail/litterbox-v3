@@ -41,6 +41,7 @@
     application_config = JSON.parse('{{ application_config | tojson | safe }}');
     console.log(application_config)
     const streamLogsBaseurl = "{{ url_for('applications.stream_log') }}";
+    const toggleLogLevelBaseUrl = "{{ url_for('applications.toggle_log_level') }}";
     const streamRestartBaseUrl = "{{ url_for('applications.restart_app')  }}"
     const getContainerVersionsBaseUrl = "{{ url_for('applications.get_container_versions')  }}"
     const deployAppVersionBaseUrl = "{{ url_for('applications.deploy_app_version')  }}"

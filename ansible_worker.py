@@ -8,12 +8,9 @@ from pathlib import Path
 import ansible_runner
 from pathlib import Path
 
-from pathlib import Path
-
-VAULT_PASS_FILE = Path("/app/.ansible/vault_pass")
-
-raw_vault_pass = VAULT_PASS_FILE.read_text().strip()
-
+#from config import ANSIBLE_VAULT_PASS_PATH
+#VAULT_PASS_FILE = Path(ANSIBLE_VAULT_PASS_PATH)
+#raw_vault_pass = VAULT_PASS_FILE.read_text().strip()
 
 BASE_DIR = Path(__file__).resolve().parent
 RUNNER_DIR = BASE_DIR / "ansible"

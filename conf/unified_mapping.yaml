@@ -282,10 +282,9 @@ hosts:
       - name: litterbox
       - name: mariadb
         release_notes: https://mariadb.com/kb/en/release-notes/
+      - name: meatometer
       - name: photoprism
         release_notes: https://docs.photoprism.app/release-notes/
-      - name: meatometer
-      - name: radoneye
     mounts: []
     nvme_devices:
     - /dev/nvme0n1p1

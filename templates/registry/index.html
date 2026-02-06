@@ -37,10 +37,9 @@
 <script>
     const images = JSON.parse('{{ images | tojson | safe }}');
     const getIndexBaseUrl = "{{ url_for('registry.index') }}";
-    const getImageTagsBaseUrl = "{{ url_for('registry.get_image_tags') }}";
     const deleteTagBaseUrl = "{{ url_for('registry.delete_tag') }}";
+    const getImageTagsBaseUrl = "{{ url_for('registry.get_image_tags') }}";
 </script>
+<script src="{{ url_for('static', filename='global.js') }}"></script>
 <script src="{{ url_for('static', filename='registry/images.js') }}"></script>
-
-<!-- script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script -->
 {% endblock %}

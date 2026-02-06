@@ -8,7 +8,6 @@
     "platform": "docker",
     "git_hub_url": "https://api.github.com/repos/authelia/authelia/releases",
     "docker_url": "https://hub.docker.com/v2/repositories/authelia/authelia/tags?page_size=100",
-    "max_version_query_pages": "1",
     "github_version_field": "tag_name",
     "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
     "docker": {
@@ -30,7 +29,6 @@
     "platform": "docker",
     "git_hub_url": "https://github.com/certbot/certbot/releases",
     "docker_url": "https://hub.docker.com/v2/repositories/certbot/certbot/tags",
-    "max_version_query_pages": "1",
     "github_version_field": "tag_name",
     "version_pattern": "^v[0-9].[0-9]+.[0-9]+$",
     "docker": {
@@ -64,7 +62,6 @@
     "platform": "docker",
     "git_hub_url": "https://api.github.com/repos/dresden-elektronik/deconz-rest-plugin/releases",
     "docker_url": "https://hub.docker.com/v2/repositories/deconzcommunity/deconz/tags",
-    "max_version_query_pages": "1",
     "github_version_field": "tag_name",
     "version_pattern": "[0-9].[0-9]{2}.[0-9]+",
     "docker": {
@@ -89,7 +86,6 @@
     "notify_version": "false",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/arm64v8/elasticsearch/tags",
-    "max_version_query_pages": "1",
     "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
     "docker": {
       "image": "elasticsearch",
@@ -118,7 +114,6 @@
     "notify_version": "false",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/elastic/filebeat/tags",
-    "max_version_query_pages": "1",
     "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
     "github_version_field": "name",
     "docker": {
@@ -173,7 +168,6 @@
     "platform": "docker",
     "git_hub_url": "https://api.github.com/repos/grafana/grafana/releases",
     "docker_url": "https://hub.docker.com/v2/repositories/grafana/grafana-enterprise/tags?page_size=100",
-    "max_version_query_pages": "1",
     "github_version_field": "tag_name",
     "version_pattern": "^11.[0-9]{1,2}.[0-9]+$",
     "docker": {
@@ -195,7 +189,6 @@
     "notify_version": "true",
     "git_hub_url": "https://api.github.com/repos/home-assistant/core/releases",
     "docker_url": "https://hub.docker.com/v2/repositories/homeassistant/home-assistant/tags?page_size=100",
-    "max_version_query_pages": "1",
     "github_version_field": "tag_name",
     "version_pattern": "^[0-9]{4}.[0-9]{1,2}.[0-9]{1,2}$",
     "docker": {
@@ -237,7 +230,6 @@
     "platform": "docker",
     "git_hub_url": "https://api.github.com/repos/influxdata/influxdb/releases",
     "docker_url": "https://hub.docker.com/v2/repositories/arm64v8/influxdb/tags?page_size=100",
-    "max_version_query_pages": "1",
     "github_version_field": "name",
     "version_pattern": "^2.[0-9].[0-9]+$",
     "docker": {
@@ -256,7 +248,6 @@
     "notify_version": "false",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/arm64v8/kibana/tags",
-    "max_version_query_pages": "1",
     "github_version_field": "name",
     "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
     "docker": {
@@ -277,7 +268,6 @@
     "notify_version": "false",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/arm64v8/logstash/tags",
-    "max_version_query_pages": "1",
     "github_version_field": "name",
     "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
     "docker": {
@@ -297,7 +287,6 @@
     "notify_version": "true",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/library/mariadb/tags?page_size=100",
-    "max_version_query_pages": "1",
     "github_version_field": "name",
     "version_pattern": "^[0-9][0-9].[0-9]{1,2}(.[0-9]{0,2})?$",
     "docker": {
@@ -335,7 +324,6 @@
     "notify_version": "false",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/elastic/metricbeat/tags",
-    "max_version_query_pages": "1",
     "github_version_field": "name",
     "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
     "docker": {
@@ -366,7 +354,6 @@
     "platform": "docker",
     "git_hub_url": "https://api.github.com/repos/nginx/nginx/releases",
     "docker_url": "https://hub.docker.com/v2/repositories/arm64v8/nginx/tags?page_size=100",
-    "max_version_query_pages": "3",
     "github_version_field": "name",
     "version_pattern": "^[0-9].[0-9][0-9](.[0-9])?$",
     "docker": {
@@ -411,7 +398,6 @@
       "notify_version": "true",
       "platform": "docker",
       "docker_url": "https://hub.docker.com/v2/repositories/pihole/pihole/tags",
-      "max_version_query_pages": "1",
       "version_pattern": "^[0-9]{4}.[0-9]{1,2}.[0-9]{1,2}$",
       "docker": {
         "image": "pihole/pihole",
@@ -433,7 +419,6 @@
      "notify_version": "true",
      "platform": "docker",
      "docker_url": "https://hub.docker.com/v2/repositories/library/postgres/tags/",
-     "max_version_query_pages": "3",
      "version_pattern": "^[0-9]+.[0-9]$",
      "docker": {
        "image": "postgres",
@@ -478,7 +463,6 @@
     "notify_version": "true",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/arm64v8/registry/tags",
-    "max_version_query_pages": "1",
     "github_version_field": "name",
     "version_pattern": "^[0-9].[0-9].[0-9]+$",
     "docker": {
@@ -502,7 +486,6 @@
      "notify_version": "true",
      "platform": "docker",
      "docker_url": "https://hub.docker.com/v2/repositories/vabene1111/recipes/tags/",
-     "max_version_query_pages": "3",
      "github_version_field": "name",
      "version_pattern": "^[0-9].[0-9]+.[0-9]+$",
      "docker": {
@@ -559,7 +542,6 @@
     "git_hub_url": "",
     "platform": "docker",
     "docker_url": "https://hub.docker.com/v2/repositories/arm64v8/telegraf/tags",
-    "max_version_query_pages": "1",
     "github_version_field": "name",
     "docker": {
       "image": "arm64v8/telegraf",

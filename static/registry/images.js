@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return li;
     }
 
-    function createTagListItem(imageName, tag, info) {
+    function createTagListItem(imageName, tag) {
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex align-items-center justify-content-between';
 
@@ -26,31 +26,22 @@ document.addEventListener('DOMContentLoaded', function () {
         tagDiv.textContent = tag;
         tagDiv.className = 'fw-bold';
         tagDiv.style.width = '100px';
-
-        const dateDiv = document.createElement('div');
-        dateDiv.textContent = info.created_date;
-        dateDiv.className = 'text-muted small';
-
         content.appendChild(tagDiv);
-        content.appendChild(dateDiv);
 
         const actions = document.createElement('div');
         actions.className = 'd-flex gap-2';
 
-        const detailsContainer = renderButtonContainer("Details", "btn-outline-primary", () => {
-            window.showDetails(info);
-        })
-        const copyContainer = renderButtonContainer( "Copy URL", "btn-outline-secondary",  () => navigator.clipboard.writeText(info.url))
-        let deleteContainer = document.createElement('div');
-        deleteContainer.style.width = '100px';
-        if (info.digest && info.type === "tag") {
-            deleteContainer = renderButtonContainer( "Delete", "btn-outline-danger", () => deleteTag(imageName, tag, info.digest))
-        } else {
-            console.log(info)
-        }
-
+        const detailsContainer = renderButtonContainer( "Details", "btn-outline-primary", () => window.showDetails(imageName, tag))
+        detailsContainer.style.width = '100px';
         actions.appendChild(detailsContainer);
+
+        docker_url="192.168.50.15:5000/" + imageName + ":" + tag
+        const copyContainer = renderButtonContainer( "Copy URL", "btn-outline-secondary",  () => navigator.clipboard.writeText(docker_url))
         actions.appendChild(copyContainer);
+
+
+        const deleteContainer = renderButtonContainer( "Delete", "btn-outline-danger", () => deleteTag(imageName, tag, info.digest))
+        deleteContainer.style.width = '100px';
         actions.appendChild(deleteContainer);
 
         li.appendChild(content);
@@ -59,20 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return li;
     }
 
-    function renderButtonContainer(text, buttonType, onClick) {
-        const container = document.createElement('div');
-        container.style.width = '100px';
-        const button = document.createElement('button');
-        button.className = 'btn btn-sm w-100 ' + buttonType;
-        button.textContent = text;
-        button.style.whiteSpace = 'nowrap';
-        button.addEventListener('click', onClick);
-        container.appendChild(button);
-        return container;
-    }
-
     function handleImageSelection(selectedLi, itemName) {
-        console.log(itemName)
         const currentSelected = imageList.querySelector('.bg-primary.text-white');
         if (currentSelected) {
             currentSelected.classList.remove('bg-primary', 'text-white');
@@ -91,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const tagsList = document.getElementById("tag-list");
         tagsList.innerHTML = `<li class="list-group-item d-flex justify-content-center align-items-center text-muted"><p>Loading...</p></li>`
 
+
         const getImageVersionsUrl = `${getImageTagsBaseUrl}?image_name=${encodeURIComponent(imageName)}`;
         fetch(getImageVersionsUrl)
             .then(response => {
@@ -101,12 +80,10 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(tags => {
                 tagsList.innerHTML = "";
-                Object.entries(tags)
-                    .sort((a, b) => compareTags(a[0], b[0]))
-                    .forEach(([tag, info]) => {
-                        tagsList.appendChild(createTagListItem(imageName, tag, info));
+                Object.values(tags)
+                    .forEach(tag => {
+                        tagsList.appendChild(createTagListItem(imageName, tag));
                     });
-
                 return;
             })
             .catch(error => {
@@ -120,24 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function parseTag(tag) {
         const clean = tag.replace(/^v/, "");
         return clean.split(".").map(s => Number.isNaN(Number(s)) ? s : Number(s));
-    }
-
-    function compareTags(a, b) {
-        const partsA = parseTag(a);
-        const partsB = parseTag(b);
-
-        for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
-            const segA = partsA[i] ?? 0;
-            const segB = partsB[i] ?? 0;
-
-            if (typeof segA === "number" && typeof segB === "number") {
-                if (segA !== segB) return segB - segA; // numeric compare, high → low
-            } else {
-                const cmp = String(segB).localeCompare(String(segA));
-                if (cmp !== 0) return cmp;
-            }
-        }
-        return 0;
     }
 
     function deleteTag(imageName, tag, digest) {

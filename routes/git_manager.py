@@ -1,7 +1,7 @@
 import subprocess
 import os
 import logging
-from config import GIT_REPO_PATH
+from config import GIT_REPO_PATH, UNKNOWN
 from flask import Blueprint, jsonify, request, render_template
 
 git_manager_bp = Blueprint('git_manager', __name__)
@@ -141,7 +141,7 @@ def git_api_status():
     count_res = run_git_command(["rev-list", "--left-right", "--count", "HEAD...origin/main"])
     stdout_str = porcelain_res.get("stdout", "") if porcelain_res else ""
     files = parse_porcelain_status(stdout_str)
-    branch = branch_res.get("stdout", "unknown").strip() if branch_res else "unknown"
+    branch = branch_res.get("stdout", UNKNOWN).strip() if branch_res else "unknown"
     ahead, behind = 0, 0
     if count_res and count_res.get("success"):
         counts = count_res.get("stdout", "0 0").strip().split()

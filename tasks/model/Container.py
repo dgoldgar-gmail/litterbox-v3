@@ -5,7 +5,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
-from config import REGISTRY
+from config import REGISTRY, UNKNOWN
 from ssh import get_ssh_client
 from utils import configure_logging, set_homeassistant_state, get_timestamp, dismiss_homeassistant_notification, send_homeassistant_notification
 
@@ -65,10 +65,10 @@ class Container:
         exit_status = stdout.channel.recv_exit_status()
         if exit_status != 0:
             logger.warning(f"Docker command failed: {stderr_output}")
-            return "UNKNOWN"
+            return UNKNOWN
         if not stdout_output:
             logger.warning(f"No running container found for {self.app} on {self.host}")
-            return "UNKNOWN"
+            return UNKNOWN
         image = json.loads(stdout_output)
         _, _, tag = image.rpartition(":")
         return tag
@@ -137,11 +137,13 @@ class Container:
         self.send_single_state("image", self.container_image, { "icon": "mdi:image" } )
 
         version_info = self.current_version if self.current_version == self.latest_version else f"( ↑ {self.latest_version} ↑ ) {self.current_version}"
+        version_info = version_info if self.current_version != UNKNOWN else UNKNOWN
+
         icon = "mdi:check" if self.current_version == self.latest_version else "mdi:package-up"
+        icon = icon if self.current_version != UNKNOWN else "mdi:alert-box-outline"
 
         self.notify()
 
-        icon = icon if self.current_version != "UNKNOWN" else "mdi:alert-box-outline"
         self.send_single_state("version_info", version_info, { "icon": icon } )
 
 
@@ -149,7 +151,7 @@ class Container:
         unknown_version_id = f"Unknown version for {self.app} on {self.host}"
         update_version_id = f"Update available for {self.app} on {self.host}"
 
-        if self.current_version == "UNKNOWN":
+        if self.current_version == UNKNOWN:
             send_homeassistant_notification(
                 service="persistent_notification",
                 message=unknown_version_id,
@@ -158,7 +160,7 @@ class Container:
         elif self.current_version != self.latest_version:
             send_homeassistant_notification(
                 service="persistent_notification",
-                message=f"New version available for {self.app} on {self.host} - {self.latest_version}",
+                message=f"New version {self.latest_version} is available for {self.app} on {self.host}.  Current version is {self.current_version}.",
                 title=update_version_id
             )
         else:

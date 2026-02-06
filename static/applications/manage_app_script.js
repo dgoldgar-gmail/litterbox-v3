@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const hostListElement = document.getElementById('hostList');
 
-    function createListItem(name) {
+    function createListItem(name, logging_config) {
+
         const li = document.createElement('li');
         li.className = 'list-group-item p-0 border-0';
 
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         span.className = 'card-text';
         textAndButtonsContainer.appendChild(span);
 
-        addMangementButtons(textAndButtonsContainer, name);
+        addMangementButtons(textAndButtonsContainer, name, logging_config);
 
         const outputBody = document.createElement('div');
         outputBody.className = 'card-body border';
@@ -46,51 +47,108 @@ document.addEventListener('DOMContentLoaded', () => {
         return li;
     }
 
-    function addMangementButtons(container, hostName) {
+    function addMangementButtons(container, hostName, logging_config) {
+
+        console.log(logging_config)
+
         const buttonContainer = document.createElement('div');
         buttonContainer.className = 'd-flex gap-2';
         container.appendChild(buttonContainer);
 
-        const logsButton = document.createElement('button');
-        logsButton.className = 'btn btn-sm btn-outline-info';
-        logsButton.textContent = 'View Logs';
-        logsButton.addEventListener('click', function(event) {
+        button = createButton('View Logs', 'btn btn-sm btn-outline-info', function(event) {
             event.preventDefault();
             followLogs(event, app_name, hostName);
-        });
-        buttonContainer.appendChild(logsButton)
+        })
+        buttonContainer.appendChild(button)
 
-        const restartButton = document.createElement('button');
-        restartButton.className = 'btn btn-sm btn-outline-warning';
-        restartButton.textContent = 'Restart';
-        restartButton.addEventListener('click', function(event) {
+        if ( logging_config ) {
+            if ( logging_config.global_toggle ) {
+                button = createButton('Toggle Log Level', 'btn btn-sm btn-outline-light', function (event) {
+                    event.preventDefault();
+                    toggleLogLevel(app_name, hostName);
+                })
+                buttonContainer.appendChild(button)
+            }
+            if ( logging_config.process_toggles ) {
+                button = createDropdownButton('Toggle Log Level', 'btn btn-sm btn-outline-light', app_name, hostName, logging_config.process_toggles, )
+                buttonContainer.appendChild(button)
+            }
+        }
+
+        button = createButton('Restart', 'btn btn-sm btn-outline-warning', function(event) {
             event.preventDefault();
             restartApplication(event, app_name, hostName);
-        });
-        buttonContainer.appendChild(restartButton);
+        })
+        buttonContainer.appendChild(button)
 
-        const deployButton = document.createElement('button');
-        deployButton.className = 'btn btn-sm btn-outline-danger';
-        deployButton.textContent = 'Deploy';
-        deployButton.addEventListener('click', function(event) {
+        button = createButton('Deploy', 'btn btn-sm btn-outline-danger', function(event) {
             event.preventDefault();
             upgradeApplication(event, app_name, hostName, application_config);
-        });
-        buttonContainer.appendChild(deployButton);
+        })
+        buttonContainer.appendChild(button)
+    }
+
+    function createButton(name, classes, evenListener) {
+        const button = document.createElement('button');
+        button.className = classes;
+        button.textContent = name;
+        button.addEventListener('click', evenListener);
+        return button
     }
 
 
+
+    function createDropdownButton(name, classes, appName, hostName, options) {
+
+        const dropdownDiv = document.createElement("div");
+        dropdownDiv.className = "dropdown";
+
+        const btn = document.createElement("button");
+        btn.className = "btn btn-sm btn-outline-light dropdown-toggle";
+        btn.type = "button";
+        btn.id = "dropdownMenuButton";
+        btn.setAttribute("data-bs-toggle", "dropdown");
+        btn.setAttribute("aria-expanded", "false");
+        btn.textContent = name;
+
+        const menu = document.createElement("ul");
+        menu.className = "dropdown-menu";
+        menu.setAttribute("aria-labelledby", "dropdownMenuButton");
+
+        options.forEach(opt => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.className = "dropdown-item";
+            a.href = "#";
+            a.textContent = opt;
+
+            a.onclick = (e) => {
+                e.preventDefault();
+                console.log("Selected:", opt);
+                toggleProcessLogLevel(app_name, hostName, opt)
+            };
+
+            li.appendChild(a);
+            menu.appendChild(li);
+        });
+
+        dropdownDiv.appendChild(btn);
+        dropdownDiv.appendChild(menu);
+        return dropdownDiv
+    }
+
     function renderHosts() {
         hostListElement.innerHTML = '';
+        console.log(application_config)
         application_config['hosts'].forEach(host => {
-            const li = createListItem(host);
+            const li = createListItem(host, application_config.logging_config);
             hostListElement.appendChild(li);
         });
     }
 
     async function upgradeApplication(event, app_name, hostName, application_config) {
         console.log("Upgrading " + app_name + " on " + hostName + "...");
-        const getContainerVersionsUrl = `${getContainerVersionsBaseUrl}?app=${encodeURIComponent(app_name)}&url=${encodeURIComponent(application_config.docker_url)}&max_pages=${encodeURIComponent(application_config.max_version_query_pages)}&version_pattern=${encodeURIComponent(application_config.version_pattern)}`;
+        const getContainerVersionsUrl = `${getContainerVersionsBaseUrl}?app=${encodeURIComponent(app_name)}&url=${encodeURIComponent(application_config.docker_url)}&version_pattern=${encodeURIComponent(application_config.version_pattern)}`;
         fetch(getContainerVersionsUrl)
             .then(response => {
                 if (!response.ok) {
@@ -129,6 +187,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function followLogs(event, app_name, hostName) {
         const streamUrl = `${streamLogsBaseurl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}`;
+        fetchStreamedResponse(event, "logs", streamUrl)
+    }
+
+    function toggleLogLevel(app_name, hostName) {
+        const streamUrl = `${toggleLogLevelBaseUrl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}`;
+        fetchStreamedResponse(event, "logs", streamUrl)
+    }
+
+    function toggleProcessLogLevel(appName, hostName, processName) {
+        const streamUrl = `${toggleLogLevelBaseUrl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}&process=${encodeURIComponent(processName)}`;
         fetchStreamedResponse(event, "logs", streamUrl)
     }
 

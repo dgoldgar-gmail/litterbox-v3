@@ -7,8 +7,8 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
-from config import REGISTRY
-from utils import configure_logging, get_secret, get_homeassistant_state
+from config import REGISTRY, UNKNOWN
+from utils import configure_logging, get_secret, get_homeassistant_state, get_latest_dockerhub_release_version, get_latest_local_registry_image_version
 
 logger = logging.getLogger(__name__)
 configure_logging()
@@ -25,7 +25,6 @@ class Application:
         self.version_pattern = app_json['version_pattern'] if 'version_pattern' in app_json else None
         self.github_version_field = app_json['github_version_field'] if 'github_version_field' in app_json else None
         self.docker_url = app_json['docker_url'] if 'docker_url' in app_json else None
-        self.max_version_query_pages = app_json['max_version_query_pages'] if 'max_version_query_pages' in app_json else None
         self.git_hub_url = app_json['git_hub_url'] if 'git_hub_url' in app_json else None
         self.docker = app_json['docker']
         self.image = self.docker['image'] if self.docker != None else None
@@ -50,52 +49,20 @@ class Application:
                 logger.error(f"Failure in getting installed_version for frigate: {e}")
                 self.latest_version = "NOT SET"
         elif REGISTRY in self.image:
-            self.latest_version=self.get_latest_local_image_tag()
+            logger.info(f"Getting latest version for registry image {self.image}")
+            self.latest_version=get_latest_local_registry_image_version(self.docker_url, self.version_pattern)
         elif self.docker_url:
             try:
-                self.latest_version=self.get_latest_dockerhub_release_version(self.docker_url)
-            except:
-                self.latest_version="Unknown"
-        else:
-            try:
-                self.latest_version=self.get_latest_github_release_version(self.git_hub_url,self.github_version_field, self.version_pattern)
-                if self.name == "photoprism":
-                    self.latest_version=self.latest_version.split('-')[0]
+                # defensive...if the api call failed, keep the old version if we have one.
+                latest_version = get_latest_dockerhub_release_version(self.docker_url, self.version_pattern)
+                logger.debug(f"Latest version for {self.name}  is {latest_version}")
+                if latest_version == UNKNOWN and self.latest_version != UNKNOWN:
+                    logger.info(f"Failed to get latest version for {self.name} using dockerhub api, keeping old version {self.latest_version}")
+                else:
+                    self.latest_version=latest_version
             except Exception as e:
-                logging.error("Failed getting latest version for " + self.name, e)
-
-    def get_latest_local_image_tag(self):
-        pattern = re.compile(self.version_pattern)
-        image_name=self.image.split("/")[1]
-        url = f"https://{REGISTRY}/v2/{image_name}/tags/list"
-        try:
-            resp = requests.get(url, verify=False)
-            resp.raise_for_status()
-            tags = resp.json().get("tags", [])
-            if tags:
-                tags=[ s for s in tags if pattern.match(s) ]
-                tags.sort()
-                return tags[-1]
-            else:
-                return "NOT_SET"
-        except:
-            logger.error(f"No tags found for image '{image_name}'")
-            return "NOT_SET"
-
-    def get_latest_dockerhub_release_version(self, url=None):
-        pattern = re.compile(self.version_pattern)
-        all_images=[]
-        curl_count=0
-        while url != None and curl_count < int(self.max_version_query_pages):
-            curl_count = curl_count+1
-            resp = requests.get(url)
-            data = resp.json()
-            images=data['results']
-            images = [e['name'] for e in images]
-            all_images.extend([ s for s in images if pattern.match(s) ])
-            url = data['next']
-        all_images.sort()
-        return all_images[-1]
+                logger.warn(f"Caught exception, setting latest_version to {UNKNOWN} {e}")
+                self.latest_version=UNKNOWN
 
     def get_latest_github_release_version(self, url=None,github_version_field=None,  version_pattern=None):
         logging.debug("get_latest_github_release_version for " + url)
@@ -107,15 +74,15 @@ class Application:
         resp = requests.get( url, headers=headers)
         #print(resp.headers)
         data = resp.json()
-        latest_version = "not found"
+        latest_version = UNKNOWN
         try:
             pattern = re.compile(version_pattern)
             for version in data:
                 version_tag=version[github_version_field]
+                logging.info(f"Version tag for {self.name} is {version_tag} matching {version_pattern}")
                 if pattern.match(version_tag):
                     latest_version = version_tag
-                    break;
+                    break
         except Exception as e:
             logging.error(data, e)
         return latest_version
-

@@ -242,3 +242,16 @@ function getcamelCase(word) {
     return word.charAt(0).toLowerCase() + word.slice(1)
 }
 
+
+function renderButtonContainer(text, buttonType, onClick) {
+    const container = document.createElement('div');
+    container.style.width = '100px';
+    const button = document.createElement('button');
+    button.className = 'btn btn-sm w-100 ' + buttonType;
+    button.textContent = text;
+    button.style.whiteSpace = 'nowrap';
+    button.addEventListener('click', onClick);
+    container.appendChild(button);
+    return container;
+}
+
