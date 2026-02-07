@@ -1,13 +1,21 @@
+import docker
 import json
 import logging
 import os
+import subprocess
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
-from config import REGISTRY, UNKNOWN
-from ssh import get_ssh_client
-from utils import configure_logging, set_homeassistant_state, get_timestamp, dismiss_homeassistant_notification, send_homeassistant_notification
+from config import Configuration
+from docker_daemon_client import DockerDaemonClient
+from home_assistant_client import HomeAssistantClient
+from utils import configure_logging, get_timestamp
+
+
+configuration = Configuration()
+docker_daemon_client = DockerDaemonClient()
+home_assistant_client = HomeAssistantClient()
 
 logger = logging.getLogger(__name__)
 configure_logging()
@@ -35,9 +43,10 @@ class Container:
         output['container_image'] = self.container_image
         return output
 
-    def collect_version_info(self, latest_version):
-        logger.debug(f"Collecting version info for container: {self.app} on {self.host}")
-        self.latest_version = latest_version
+    def collect_version_info(self):
+        logger.debug(f"Collecting current version info for container: {self.app} on {self.host}")
+        self.latest_version = home_assistant_client.get_homeassistant_state(f"sensor.{self.app}_latest_version")["state"]
+        logger.info(f"Found latest_version for {self.app} in state... {self.latest_version}")
         self.collection_timestamp = get_timestamp()
         try:
             if self.app == "tasmota":
@@ -52,69 +61,69 @@ class Container:
             self.current_version = None
 
     def get_current_version_by_docker_tag(self):
-        client = get_ssh_client(self.host)
-        command = (
-            "/usr/bin/docker ps "
-            "--format '{{json .Image}}' "
-            f"-f name={self.app}"
-        )
-        logger.debug(f"Executing command: {command} on {self.host}")
-        stdin, stdout, stderr = client.exec_command(command)
-        stdout_output = stdout.read().decode("utf-8").strip()
-        stderr_output = stderr.read().decode("utf-8").strip()
-        exit_status = stdout.channel.recv_exit_status()
-        if exit_status != 0:
-            logger.warning(f"Docker command failed: {stderr_output}")
-            return UNKNOWN
-        if not stdout_output:
-            logger.warning(f"No running container found for {self.app} on {self.host}")
-            return UNKNOWN
-        image = json.loads(stdout_output)
-        _, _, tag = image.rpartition(":")
-        return tag
+        try:
+            logger.debug("-------> Use docker client...")
+            client = docker.from_env()
+          
+            containers = client.containers.list(filters={"name": self.app})
+            if not containers:
+                logger.warning(f"No running container found for {self.app} locally")
+                return configuration.UNKNOWN
+
+            image_full_name = containers[0].image.tags[0]
+            _, _, tag = image_full_name.rpartition(":")
+            logger.debug(f"Got tag for {self.app}  container: {tag}")
+            return tag
+        except Exception as e:
+            logger.warning(f"Local Docker SDK call failed: {e}")
+            return configuration.UNKNOWN
 
     def get_frigate_current_version(host):
         sensor_value=get_state("update.frigate_server")
         return sensor_value['attributes']['installed_version']
 
     def get_webssh_current_version(self):
-        client = get_ssh_client(self.host)
-        command="/usr/bin/docker exec webssh /usr/local/bin/python /code/run.py --version"
-        logger.debug(f"Using {command} to get webssh current version.")
-        stdin, stdout, stderr = client.exec_command(command)
-        output = stdout.read().decode("utf-8")
-        logger.debug(f"Webssh current version: {output}")
-        return "v" +  output.strip()
+        try:
+            client = docker.from_env()
+            container = client.containers.get("webssh")
+            exit_code, output = container.exec_run(
+                cmd="/usr/local/bin/python /code/run.py --version",
+                stdout=True,
+                stderr=True
+            )
+            if exit_code == 0:
+                version = output.decode("utf-8").strip()
+                logger.debug(f"Webssh current version: {version}")
+                return f"v{version}"
+            else:
+                logger.error(f"Version command failed with exit code {exit_code}")
+                return configuration.UNKNOWN
+        except docker.errors.NotFound:
+            logger.error("Container 'webssh' not found.")
+            return configuration.UNKNOWN
+        except Exception as e:
+            logger.error(f"Failed to get webssh version via SDK: {e}")
+            return configuration.UNKNOWN
+
+
 
     def collect_docker_stats(self):
-        logger.debug(f"Collecting docker stats for {self.app} on {self.host}")
-        command = f"/usr/bin/docker ps -a --format json --filter name={self.app}"
-        logger.debug(f"Executing command {command}")
+        logger.debug(f"Collecting local docker stats for {self.app}")
         try:
-            client = get_ssh_client(self.host)
-            stdin, stdout, stderr = client.exec_command(command)
-            output = stdout.read().decode("utf-8")
-            output=json.loads(output)
-
-            created_at=output['CreatedAt']
-            image=output['Image']
-            status=output['Status']
-            state=output['State']
-
-            self.container_created_at =  created_at
-            self.container_state = state
-            self.container_status = status
-            self.container_image = image
-
-        except Exception as e:
-            logging.debug("docker ps reports no container info for " + self.app)
-            self.container_created_at =  "Container Down"
+            attrs = docker_daemon_client.get_container_attrs(self.app)
+            self.container_created_at = attrs.get('Created', 'Unknown')
+            self.container_state = attrs.get('State', {}).get('Status', 'Unknown')
+            self.container_status = attrs.get('State', {}).get('Health', {}).get('Status', self.container_state)
+            self.container_image = attrs.get('Config', {}).get('Image', 'Unknown')
+        except (docker.errors.NotFound, Exception) as e:
+            logger.info(f"Docker reports no container info for {self.app}: {e}")
+            self.container_created_at = "Container Down"
             self.container_state = "Container Down"
             self.container_status = "Container Down"
             self.container_image = "Container Down"
-            logger.debug(e)
 
     def send_single_state(self, attribute, data, sensor_attributes=None):
+        logger.debug(f"send_single_state: {self.host} {self.app} {attribute} {data}" )
         short_host = self.host.split("-")[1]
         sensor_name = f'sensor.{short_host}_{self.app}_{attribute}'
         payload = {}
@@ -124,7 +133,7 @@ class Container:
 
         sensor_attributes['collection_timestamp'] = self.collection_timestamp
         payload['attributes'] = sensor_attributes
-        set_homeassistant_state(sensor_name, payload)
+        home_assistant_client.set_homeassistant_state(sensor_name, payload)
 
     def send_state_data(self):
         logger.debug(f"Sending state data for {self.app} on {self.host}")
@@ -137,32 +146,31 @@ class Container:
         self.send_single_state("image", self.container_image, { "icon": "mdi:image" } )
 
         version_info = self.current_version if self.current_version == self.latest_version else f"( ↑ {self.latest_version} ↑ ) {self.current_version}"
-        version_info = version_info if self.current_version != UNKNOWN else UNKNOWN
+        version_info = version_info if self.current_version != configuration.UNKNOWN else configuration.UNKNOWN
 
         icon = "mdi:check" if self.current_version == self.latest_version else "mdi:package-up"
-        icon = icon if self.current_version != UNKNOWN else "mdi:alert-box-outline"
+        icon = icon if self.current_version != configuration.UNKNOWN else "mdi:alert-box-outline"
 
         self.notify()
 
         self.send_single_state("version_info", version_info, { "icon": icon } )
 
-
     def notify(self):
         unknown_version_id = f"Unknown version for {self.app} on {self.host}"
         update_version_id = f"Update available for {self.app} on {self.host}"
 
-        if self.current_version == UNKNOWN:
-            send_homeassistant_notification(
+        if self.current_version == configuration.UNKNOWN:
+            home_assistant_client.send_homeassistant_notification(
                 service="persistent_notification",
                 message=unknown_version_id,
                 title=unknown_version_id
             )
         elif self.current_version != self.latest_version:
-            send_homeassistant_notification(
+            home_assistant_client.send_homeassistant_notification(
                 service="persistent_notification",
                 message=f"New version {self.latest_version} is available for {self.app} on {self.host}.  Current version is {self.current_version}.",
                 title=update_version_id
             )
         else:
-            dismiss_homeassistant_notification(id=unknown_version_id)
-            dismiss_homeassistant_notification(id=update_version_id)
+            home_assistant_client.dismiss_homeassistant_notification(id=unknown_version_id)
+            home_assistant_client.dismiss_homeassistant_notification(id=update_version_id)

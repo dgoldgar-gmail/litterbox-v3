@@ -25,7 +25,6 @@
   {
     "name": "certbot",
     "hosts": [
-      "raspberry-slate"
     ],
     "live": "False",
     "managed": "False",
@@ -94,8 +93,6 @@
   {
     "name": "elasticsearch",
     "hosts": [
-      "raspberry-five",
-      "ubuntu-main"
     ],
     "live": "False",
     "managed": "False",
@@ -126,10 +123,6 @@
   {
     "name": "filebeat",
     "hosts": [
-      "raspberry-five",
-      "raspberry-slate",
-      "raspberry-pearl",
-      "ubuntu-main"
     ],
     "live": "False",
     "managed": "False",
@@ -297,7 +290,6 @@
   {
     "name": "kibana",
     "hosts": [
-      "raspberry-five"
     ],
     "live": "False",
     "managed": "False",
@@ -322,6 +314,9 @@
     "name": "litterbox",
     "hosts": [
       "raspberry-five",
+      "raspberry-pearl",
+      "raspberry-slate",
+      "ubuntu-main",
       "ubuntu-one"
     ],
     "live": "True",
@@ -350,6 +345,12 @@
         "raspberry-slate:192.168.50.14",
         "--add-host",
         "raspberry-five:192.168.50.15",
+        "--user",
+        "root",
+        "--group-add",
+        "$(getent group docker | cut -d: -f3)",
+        "-e",
+        "MODE=&getSchedulerMode(host)&",
         "-e",
         "BACKUP_DIR=/app/BACKUP",
         "-e",
@@ -361,13 +362,15 @@
         "-e",
         "JINJA_TEMPLATES=/app/jinja",
         "-v",
+        "/var/run/docker.sock:/var/run/docker.sock",
+        "-v",
         "/opt/LITTERBOX/apps/litterbox-v3/generated:/app/generated",
         "-v",
-        "/opt/LITTERBOX/apps/litterbox-v3/generated/sshconfig/config:/home/dgoldgar/.ssh/config",
+        "/opt/LITTERBOX/apps/litterbox-v3/generated/sshconfig/config:/root/.ssh/config",
         "-v",
-        "/opt/LITTERBOX/apps/litterbox-v3/.ssh/homeassistant:/home/dgoldgar/.ssh/homeassistant",
+        "/opt/LITTERBOX/apps/litterbox-v3/.ssh/homeassistant:/root/.ssh/homeassistant",
         "-v",
-        "/opt/LITTERBOX/apps/litterbox-v3/.ssh/litterbox_deploy_key:/home/dgoldgar/.ssh/litterbox_deploy_key",
+        "/opt/LITTERBOX/apps/litterbox-v3/.ssh/litterbox_deploy_key:/root/.ssh/litterbox_deploy_key",
         "-v",
         "/opt/LITTERBOX/apps/litterbox-v3/.ansible:/app/.ansible",
         "-v",
@@ -378,7 +381,6 @@
   {
     "name": "logstash",
     "hosts": [
-      "raspberry-pearl"
     ],
     "live": "False",
     "managed": "False",
@@ -454,10 +456,6 @@
   {
     "name": "metricbeat",
     "hosts": [
-      "raspberry-five",
-      "raspberry-slate",
-      "raspberry-pearl",
-      "ubuntu-main"
     ],
     "live": "False",
     "managed": "False",

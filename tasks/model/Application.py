@@ -7,8 +7,14 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
-from config import REGISTRY, UNKNOWN
-from utils import configure_logging, get_secret, get_homeassistant_state, get_latest_dockerhub_release_version, get_latest_local_registry_image_version
+from config import Configuration
+from utils import configure_logging, get_secret
+from docker_registry_client import DockerRegistryClient
+from home_assistant_client import HomeAssistantClient
+
+home_assistant_client = HomeAssistantClient()
+configuration = Configuration()
+docker_registry_cient = DockerRegistryClient()
 
 logger = logging.getLogger(__name__)
 configure_logging()
@@ -41,28 +47,29 @@ class Application:
         logger.debug(f"Getting latest app version for {self.name}")
         if self.name == "frigate":
             try:
-                sensor_value=get_homeassistant_state("update.frigate_server")
+                sensor_value=home_assistant_client.get_homeassistant_state("update.frigate_server")
                 sensor_value=sensor_value['attributes']['installed_version']
                 logger.debug(f"Sensor value for update.frigate_server is {sensor_value}")
                 self.latest_version = sensor_value
             except Exception as e:
                 logger.error(f"Failure in getting installed_version for frigate: {e}")
                 self.latest_version = "NOT SET"
-        elif REGISTRY in self.image:
-            logger.info(f"Getting latest version for registry image {self.image}")
-            self.latest_version=get_latest_local_registry_image_version(self.docker_url, self.version_pattern)
+        elif configuration.REGISTRY in self.image:
+            logger.debug(f"Getting latest version for registry image {self.image}")
+            self.latest_version=docker_registry_cient.get_latest_local_registry_image_version(self.docker_url, self.version_pattern)
         elif self.docker_url:
             try:
                 # defensive...if the api call failed, keep the old version if we have one.
-                latest_version = get_latest_dockerhub_release_version(self.docker_url, self.version_pattern)
+                latest_version = docker_registry_cient.get_latest_dockerhub_release_version(self.docker_url, self.version_pattern)
                 logger.debug(f"Latest version for {self.name}  is {latest_version}")
-                if latest_version == UNKNOWN and self.latest_version != UNKNOWN:
+                if latest_version == configuration.UNKNOWN and self.latest_version != configuration.UNKNOWN:
                     logger.info(f"Failed to get latest version for {self.name} using dockerhub api, keeping old version {self.latest_version}")
                 else:
                     self.latest_version=latest_version
             except Exception as e:
-                logger.warn(f"Caught exception, setting latest_version to {UNKNOWN} {e}")
-                self.latest_version=UNKNOWN
+                logger.warn(f"Caught exception, setting latest_version to {configuration.UNKNOWN} {e}")
+                self.latest_version=configuration.UNKNOWN
+        return self.latest_version 
 
     def get_latest_github_release_version(self, url=None,github_version_field=None,  version_pattern=None):
         logging.debug("get_latest_github_release_version for " + url)
@@ -74,12 +81,11 @@ class Application:
         resp = requests.get( url, headers=headers)
         #print(resp.headers)
         data = resp.json()
-        latest_version = UNKNOWN
+        latest_version = configuration.UNKNOWN
         try:
             pattern = re.compile(version_pattern)
             for version in data:
                 version_tag=version[github_version_field]
-                logging.info(f"Version tag for {self.name} is {version_tag} matching {version_pattern}")
                 if pattern.match(version_tag):
                     latest_version = version_tag
                     break

@@ -8,66 +8,63 @@ from cryptography.hazmat.backends import default_backend
 from datetime import datetime, timezone
 from ssl import DER_cert_to_PEM_cert
 
-from utils import get_all_hosts, get_timestamp
-from config import APPLICATIONS_CONFIG
-from utils import configure_logging, load_json_data, set_homeassistant_state, dismiss_homeassistant_notification, send_homeassistant_notification
+from utils import get_timestamp
+from config import Configuration
+from home_assistant_client import HomeAssistantClient
+
 
 from .model.Application import Application
 from .model.Host import Host
 
+configuration = Configuration()
+home_assistant_client = HomeAssistantClient()
+
 logger = logging.getLogger(__name__)
-configure_logging()
+#configure_logging()
 
 cached_apps = {}
 cached_hosts = {}
 
-def collect_host_info():
-    hosts=get_all_hosts()
-    for host in hosts:
-        try:
-            if host in cached_hosts:
-                host_obj = cached_hosts[host]
-            else:
-                host_obj = Host(host)
-                cached_hosts[host] = host_obj
-            host_obj.collect_host_info()
-            host_obj.send_state_data()
-        except Exception as e:
-            logger.error(f"Failed to collect host info for {host}: {e}")
+# TODO:  Refactor this.. it should only collect for the local host...
+#        It will also need to collect the container info for the local host
+#.       It will need to get the latest version from the ha-state
+def collect_host_info(elector):
+    hostname = socket.gethostname()
+    logger.info(f"Collecting host info for {hostname}")
+    try:
+        host_obj = Host(hostname, elector)
+        host_obj.collect_host_info()
+        host_obj.send_state_data()
+    except Exception as e:
+        logger.error(f"Failed to collect host info for {hostname}: {e}")
 
 def collect_application_info():
-    applications = load_json_data(APPLICATIONS_CONFIG)
+    applications = configuration.load_json_data(configuration.APPLICATIONS_CONFIG)
     for app in applications:
         if app['platform'] == "docker" and app['live'] == "True":
             app_name = app['name']
             logger.debug(f"Collect info for: {app['name']}")
             try:
                 if app_name in cached_apps.keys():
-                    logger.debug(f"Getting application {app_name} from cache")
                     app_obj = cached_apps[app_name]
                 else:
-                    logger.debug(f"Creating application {app_name} and adding to cache ")
                     app_obj = Application(app)
                     cached_apps[app_name] = app_obj
                 try:
+                    logger.info(f"Getting latest app version for {app_name}")
                     app_obj.get_latest_app_version()
+                    latest_version = app_obj.latest_version
+                    sensor_name = f"sensor.{app_name}_latest_version"
+                    payload = {}
+                    payload['state'] = latest_version
+                    sensor_attributes = {}
+                    sensor_attributes['collection_timestamp'] = get_timestamp()
+                    home_assistant_client.set_homeassistant_state(sensor_name, payload)
                 except:
                     logger.error(f"Failed to get latest app version for {app_name}")
-                for host in app['hosts']:
-                    if host in cached_hosts.keys():
-                        host_obj = cached_hosts[host]
-                        if host_obj and host_obj.status == "up":
-                            logger.debug(f"Confirmed {host} is up. Collecting current version for {app_name}.")
-                            host_obj.collect_container_info(app_name, app_obj.latest_version)
-                        else:
-                            # TODO:  I guess we should zero out the states for the objects we failed to collect here...
-                            logger.info(f"Host {host} is down. Skipping container collection.")
-                    else:
-                        logger.info(f"Host {host} cached entry does not exist yet. Skipping.")
 
             except Exception as e:
                 logger.error(f"Failed to collect app info for {app_name}: {e}")
-
 
 def collect_certificate_info():
     hostname="authabitrail.duckdns.org"
@@ -96,7 +93,7 @@ def collect_certificate_info():
 
     state = "ok"
     if days_remaining < 7:
-        send_homeassistant_notification(
+        home_assistant_client.send_homeassistant_notification(
             service="persistent_notification",
             message=f"{hostname} certificate expires in {days_remaining} days",
             title=f"Time to renew {hostname} certificate"
@@ -105,7 +102,7 @@ def collect_certificate_info():
         if days_remaining < 1:
             state = "error"
     else:
-        dismiss_homeassistant_notification(f"Time to renew {hostname} certificate")
+        home_assistant_client.dismiss_homeassistant_notification(f"Time to renew {hostname} certificate")
 
     sensor_name = f"sensor.{hostname.replace('.', '_')}_certificate"
     payload = {}
@@ -120,6 +117,6 @@ def collect_certificate_info():
     sensor_attributes['issuer'] = cert.issuer.rfc4514_string()
     sensor_attributes['serial_number'] = cert.serial_number
     payload['attributes'] = sensor_attributes
-    set_homeassistant_state(sensor_name, payload)
+    home_assistant_client.set_homeassistant_state(sensor_name, payload)
 
 

@@ -6,40 +6,40 @@
 
 <h2>Registry</h2>
 
-
-
-    <div class="row flex-grow-1">
-        <div class="col-sm-4 col-md-3 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header">
-                    Images
-                </div>
-                <ul class="list-group" id="image-list">
-                    <!-- Filled by JavaScript -->
-                </ul>
+<div class="row flex-grow-1">
+    <div class="col-sm-4 col-md-3 d-flex">
+        <div class="card flex-fill">
+            <div class="card-header">
+                Images
             </div>
-        </div>
-
-        <div class="col-sm-8 col-md-9 d-flex">
-            <div class="card flex-fill">
-                <div id="image-name" class="card-header">
-                </div>
-                <ul class="list-group" id="tag-list">
-                    <!-- Filled by JavaScript -->
-                </ul>
-            </div>
+            <ul class="list-group" id="image-list">
+                <!-- Filled by JavaScript -->
+            </ul>
         </div>
     </div>
 
-    {% include "registry/_details_modal.html" %}
-
-
+    <div class="col-sm-8 col-md-9 d-flex">
+        <div class="card flex-fill">
+            <div id="image-name" class="card-header">
+            </div>
+            <ul class="list-group" id="tag-list">
+                <!-- Filled by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="modal-container"></div>
 <script>
     const images = JSON.parse('{{ images | tojson | safe }}');
     const getIndexBaseUrl = "{{ url_for('registry.index') }}";
     const deleteTagBaseUrl = "{{ url_for('registry.delete_tag') }}";
     const getImageTagsBaseUrl = "{{ url_for('registry.get_image_tags') }}";
+    const loadDetailsModalBaseUrl = "{{ url_for('registry.details_modal') }}";
+    const getTagDetailsBaseUrl = "{{ url_for('registry.get_tag_details') }}";
+    const getArchitectureManifestDetailsBaseUrl = "{{ url_for('registry.get_architecture_manifest_details') }}"
+
 </script>
 <script src="{{ url_for('static', filename='global.js') }}"></script>
+<script src="{{ url_for('static', filename='registry/details.js') }}"></script>
 <script src="{{ url_for('static', filename='registry/images.js') }}"></script>
 {% endblock %}

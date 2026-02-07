@@ -1,6 +1,6 @@
-ansible_user: dgoldgar
-ssh_dir: "/home/dgoldgar/.ssh"
-ssh_user: "dgoldgar"
+ansible_user: root
+ssh_dir: "/root/.ssh"
+ssh_user: "root"
 
 
 generated_dir: "../../generated"

@@ -40,6 +40,9 @@ server {
         {%- if endpoint.origin_header %}
         proxy_set_header Origin http://$host;
         {% endif %}
+        {%- if endpoint.forward_user %}
+        proxy_set_header X-Forwarded-User $user;
+        {% endif %}
     }
     {%- if endpoint.websocket_path %}
     location {{ endpoint.websocket_path }} {

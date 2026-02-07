@@ -12,20 +12,25 @@ from .Container import Container
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
-from config import UNIFIED_MAPPING
+from config import Configuration
 from ssh import get_ssh_client
-from utils import configure_logging, load_yaml_data, get_timestamp, get_homeassistant_state, set_homeassistant_state, send_homeassistant_notification, dismiss_homeassistant_notification
+from utils import configure_logging, get_timestamp
+from home_assistant_client import HomeAssistantClient
+
+home_assistant_client = HomeAssistantClient()
+configuration = Configuration()
 
 logger = logging.getLogger(__name__)
 configure_logging()
 
-mapping_data = load_yaml_data(UNIFIED_MAPPING)
+mapping_data = configuration.load_yaml_data(configuration.UNIFIED_MAPPING)
 
 class Host:
-    def __init__(self, name):
-        logger.debug(f"Initializing host: {name}")
+    def __init__(self, name, elector):
         self.name = name
         self.host_meta = self.get_metadata()
+        self.containers = {}
+        self.collect_containers()
         self.type = self.host_meta['type']
         self.temp = None
         self.volts = None
@@ -33,29 +38,31 @@ class Host:
         self.mount_names = self.host_meta['mounts']
         self.nvme_devices = {}
         self.mounts = {}
-        self.containers = {}
         self.sensors = None
+        self.elector = elector
 
     def get_metadata(self):
-        mapping = load_yaml_data(UNIFIED_MAPPING)
+        mapping = configuration.load_yaml_data(configuration.UNIFIED_MAPPING)
         for map in mapping['hosts']:
             if map['name'] == self.name:
                 return map
 
     def collect_host_info(self):
         self.collection_timestamp = get_timestamp()
-        self.ping_host()
+        #self.ping_host()
+        self.status = "up"
         self.type = self.host_meta['type']
         self.temp = None
         self.volts = None
-        if self.status == "up":
-            self.collect_mounts()
-            if self.type == "raspberry-pi":
-                self.temp = self.get_vcgencmd_measurement("measure_temp")
-                self.volts = self.get_vcgencmd_measurement("measure_volts")
-            elif self.type == "ubuntu":
-                self.collect_nvme_devices()
-                self.collect_sensors()
+        self.collect_mounts()
+        if self.type == "raspberry-pi":
+            self.temp = self.get_vcgencmd_measurement("measure_temp")
+            self.volts = self.get_vcgencmd_measurement("measure_volts")
+        elif self.type == "ubuntu":
+            self.collect_nvme_devices()
+            self.collect_sensors()
+        else:
+            logger.info(f"No collection enabled for host type: {self.type}")
 
     def collect_nvme_devices(self):
         if self.nvme_device_names is None:
@@ -95,16 +102,16 @@ class Host:
             pass
         return output
 
-
     def ping_host(self):
         try:
             with socket.create_connection((self.name, 22), timeout=2):
                 self.status = "up"
-                dismiss_homeassistant_notification(id=f"Host {self.name} is down!")
+                home_assistant_client.dismiss_homeassistant_notification(id=f"Host {self.name} is down!")
         except (socket.timeout, ConnectionRefusedError, OSError):
-            send_homeassistant_notification("persistent_notification", message=f"Host {self.name} is down!")
+            home_assistant_client.send_homeassistant_notification("persistent_notification", message=f"Host {self.name} is down!")
             self.status = "down"
         logger.debug(f"ping_host: {self.name} is {self.status}")
+
 
     def get_vcgencmd_measurement(self, measurement):
         client = get_ssh_client(self.name)
@@ -117,7 +124,6 @@ class Host:
 
     def collect_nvme_metrics(self, device):
         client = get_ssh_client(self.name)
-
         command="/usr/bin/sudo /usr/sbin/nvme smart-log " + device + " -o json"
         stdin, stdout, stderr = client.exec_command(command)
         output = stdout.read().decode("utf-8")
@@ -144,21 +150,6 @@ class Host:
             logging.info("smartctl data collection failed for host " + self.name)
         return smartctl_metrics
 
-    def collect_container_info(self, app, latest_version):
-        logger.debug(f"-> collect_container_info for {app} on {self.name}, latest version: {latest_version}")
-        if app in self.containers:
-            container = self.containers[app]
-        else:
-            container = Container(self.name, app)
-            self.containers[app] = container
-        try:
-            container.collect_version_info(latest_version)
-        except:
-            logger.error(f"Failed to collect version info for {app} on ${self.name}")
-        try:
-            container.collect_docker_stats()
-        except:
-            logger.error(f"Failed to collect docker stats for {app} on {self.name}")
 
     def collect_sensors(self):
         client = get_ssh_client(self.name)
@@ -169,8 +160,41 @@ class Host:
         logger.debug(f"Sensors {json.dumps(output)}")
         self.sensors = output
 
+    def collect_containers(self):
+        application_config = configuration.load_json_data(configuration.APPLICATIONS_CONFIG)
+        containers = {}
+        for app in application_config:
+            app_name = app['name']
+            app_platform = app['platform']
+            try:
+                if app_platform == "docker" and self.name in app['hosts']:
+                    logger.info(f"Collecting {app_name} for {self.name}")
+                    container = self.collect_container_info(app_name)
+                    containers[app_name] = container
+                    container.send_state_data()
+            except Exception as e:
+                logger.error(f"Failed to collect container info for {app_name}: {e}")
+        return containers
+
+    def collect_container_info(self, app):
+        logger.debug(f"-> collect_container_info for {app} on {self.name}")
+        container = None
+        if app in self.containers:
+            container = self.containers[app]
+        else:
+            container = Container(self.name, app)
+        try:
+            container.collect_version_info()
+        except:
+            logger.error(f"Failed to collect version info for {app} on {self.name}")
+        try:
+            container.collect_docker_stats()
+        except:
+            logger.error(f"Failed to collect docker stats for {app} on {self.name}")
+        return container
+
     def send_state_data(self):
-        sensor_name = f"sensor.host_{self.name.replace('-', '_')}"
+        sensor_name = f"sensor.host_{self.name.replace('-', '_').replace('.', '_')}"
 
         payload = {}
         payload['state'] = self.status
@@ -180,7 +204,9 @@ class Host:
         attributes['type'] = self.type
         attributes['cpu_temp'] = self.temp
         attributes['cpu_volts'] = self.volts
-        set_homeassistant_state(sensor_name, payload)
+        home_assistant_client.set_homeassistant_state(sensor_name, payload)
+
+        self.send_elector_info()
 
         for container in self.containers:
             logger.debug(f"Calling send_state_data for {container} on {self.name}")
@@ -190,3 +216,22 @@ class Host:
                 container_obj.send_state_data()
             except Exception as e:
                 logger.error(f"Failed to send state data for {container} on {self.name}: {e}")
+
+
+    def send_elector_info(self):
+        payload = {}
+
+        try:
+            sensor_name = f"sensor.host_{self.name.replace('-', '_').replace('.', '_')}_elector_role"
+            sensor_value = "SATELLITE" if self.elector is None else self.elector.role.name
+            payload['state'] = sensor_value
+            home_assistant_client.set_homeassistant_state(sensor_name, payload)
+        except Exception as e:
+            logger.error(f"Failed to send elector role for {self.name}: {e}")
+        try:
+            sensor_name = f"sensor.host_{self.name.replace('-', '_').replace('.', '_')}_elector_state"
+            sensor_value = "SATELLITE" if self.elector is None else self.elector.state.name
+            payload['state'] = sensor_value
+            home_assistant_client.set_homeassistant_state(sensor_name, payload)
+        except Exception as e:
+            logger.error(f"Failed to send elector state for {self.name}: {e}")
