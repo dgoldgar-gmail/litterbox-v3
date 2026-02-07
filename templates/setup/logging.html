@@ -27,11 +27,15 @@
             column 1
         </div>
     </div>
+
+    <div class="col-md text-end mt-4">
+        <button type="button" id="apply-button" class="btn btn-primary me-2">Apply</button>
+    </div>
 </div>
+
 
 <script>
     const loggers = {{ loggers | tojson }};
-    console.log(loggers)
 </script>
 
 <script src="{{ url_for('static', filename='setup/logging.js') }}"></script>

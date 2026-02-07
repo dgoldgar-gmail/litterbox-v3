@@ -37,20 +37,50 @@ document.addEventListener('DOMContentLoaded', () => {
             const isDebug = item.eff_level === 'DEBUG'   || item.level === 'DEBUG';
             const isError = item.eff_level === 'ERROR'   || item.level === 'ERROR';
             const isWarn  = item.eff_level === 'WARNING' || item.level === 'WARNING';
+
             const globalIndex = start + index;
+            const groupName = `level-${globalIndex}`;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td class="text-truncate px-2" title="${item.name}">
                     ${item.name}
                 </td>
-                <td class="text-center"><input class="form-check-input mt-0" type="checkbox" id="e-${globalIndex}" ${isError ? 'checked' : ''}></td>
-                <td class="text-center"><input class="form-check-input mt-0" type="checkbox" id="w-${globalIndex}" ${isWarn ? 'checked' : ''}></td>
-                <td class="text-center"><input class="form-check-input mt-0" type="checkbox" id="i-${globalIndex}" ${isInfo ? 'checked' : ''}></td>
-                <td class="text-center"><input class="form-check-input mt-0" type="checkbox" id="d-${globalIndex}" ${isDebug ? 'checked' : ''}></td>
+                <td class="text-center">
+                    <input class="form-check-input mt-0" type="radio" name="${groupName}" value="ERROR" id="e-${globalIndex}" ${isError ? 'checked' : ''}>
+                </td>
+                <td class="text-center">
+                    <input class="form-check-input mt-0" type="radio" name="${groupName}" value="WARNING" id="w-${globalIndex}" ${isWarn ? 'checked' : ''}>
+                </td>
+                <td class="text-center">
+                    <input class="form-check-input mt-0" type="radio" name="${groupName}" value="INFO" id="i-${globalIndex}" ${isInfo ? 'checked' : ''}>
+                </td>
+                <td class="text-center">
+                    <input class="form-check-input mt-0" type="radio" name="${groupName}" value="DEBUG" id="d-${globalIndex}" ${isDebug ? 'checked' : ''}>
+                </td>
             `;
             tbody.appendChild(tr);
         });
         colContainer.appendChild(table);
     }
+
+    document.getElementById('apply-button').addEventListener('click', async () => {
+        const updatedLoggers = loggers.map((item, index) => {
+            // Find the radio button that is checked in this specific row's group
+            const selectedRadio = document.querySelector(`input[name="level-${index}"]:checked`);
+
+            return {
+                name: item.name,
+                level: selectedRadio ? selectedRadio.value : item.level // Fallback to current level if none selected
+            };
+        });
+
+        console.log("Collected Data:", JSON.stringify(updatedLoggers, null, 2));
+
+        const response = await fetch('/setup/update_loggers', {
+            method: 'PUT', // Changed from POST
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedLoggers)
+        });
+    });
 });

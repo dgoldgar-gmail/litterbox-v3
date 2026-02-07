@@ -288,7 +288,7 @@ def get_local_registry_image_versions(url, version_pattern):
 
 
 def get_all_loggers():
-    # 1. Get the root logger
+
     loggers = [logging.getLogger()]
     loggers += [logging.getLogger(name) for name in logging.root.manager.loggerDict]
 
