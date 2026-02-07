@@ -61,11 +61,16 @@ cards:
         {% if endpoint.template %}
         template: {{ endpoint.template }}
         {% endif %}
-        {% set host_info =  hosts |selectattr( "name", "in", "raspberry-" + endpoint.host)|list | first %}
-        {% if host_info | length > 0  %}
-        {% set local_ip=host_info['ip'] %}
+        {% set ns = namespace(host_info=none) %}
+        {% set target_ubuntu = "ubuntu-" + endpoint.host %}
+        {% set target_raspberry = "raspberry-" + endpoint.host %}
+        {# Filter the list for an exact match on either name #}
+        {% set host_info = hosts | selectattr("name", "equalto", target_ubuntu) | list | first
+                        or hosts | selectattr("name", "equalto", target_raspberry) | list | first %}
+        {% if host_info %}
+            {% set local_ip = host_info['ip'] %}
         {% else %}
-        {% set local_ip = endpoint.host %}
+            {% set local_ip = endpoint.host %}
         {% endif %}
 {{ tap_actions.url_navigate_action("tap_action", "https://" + endpoint.name + ".authabitrail.duckdns.org", 8)  }}
 {% set browser_mod_popup_style = { "icon_size": "15px", "dialog_min_width": "200", "dialog_max_width": "350", "dialog_min_height": "200", "dialog_max_height": "300"  } %}

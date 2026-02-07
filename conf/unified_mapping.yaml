@@ -240,7 +240,7 @@ hosts:
       - '/dev/sda'
     nvme_devices: []
   - name: raspberry-pearl
-    ip: 192.168.50.123
+    ip: 192.168.50.12
     type: raspberry-pi
     collectors:
     - radoneye

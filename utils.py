@@ -285,3 +285,25 @@ def get_local_registry_image_versions(url, version_pattern):
         logger.error(f"No tags found for image with url '{url}'")
         return UNKNOWN
 
+
+
+def get_all_loggers():
+    # 1. Get the root logger
+    loggers = [logging.getLogger()]
+    loggers += [logging.getLogger(name) for name in logging.root.manager.loggerDict]
+
+    all_loggers = []
+
+    for logger in sorted(loggers, key=lambda x: x.name):
+        next_logger = {}
+
+        name = logger.name if logger.name != 'root' else 'root'
+        level = logging.getLevelName(logger.level)
+        eff_level = logging.getLevelName(logger.getEffectiveLevel())
+
+        next_logger['name'] = name
+        next_logger['level'] = level
+        next_logger['eff_level'] = eff_level
+
+        all_loggers.append(next_logger)
+    return all_loggers
