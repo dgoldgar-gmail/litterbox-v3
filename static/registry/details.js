@@ -95,13 +95,51 @@ window.initAndShowDetailsModal = function(imageName, tag) {
             });
     }
 
+
     function addInfoDivElement(label, data) {
+        const imageTagInfo = document.getElementById("imageTagInfo");
+
+        // 1. Create a Row container
         const rowWrapper = document.createElement("div");
         rowWrapper.className = "row g-2 mb-2 align-items-stretch w-100 m-0";
-        rowWrapper.innerHTML = `
-            <div class="col-4"><div class="p-2 border rounded fw-bold h-100">${label}</div></div>
-            <div class="col-8"><div class="p-2 border rounded h-100 text-break">${Array.isArray(data) ? data.join(', ') : data}</div></div>
-        `;
+
+        // 2. Label Column (1/3 width)
+        const labelCol = document.createElement("div");
+        labelCol.className = "col-4";
+        const labelBox = document.createElement("div");
+        labelBox.className = "p-2 border rounded fw-bold h-100";
+        labelBox.textContent = label;
+        labelCol.appendChild(labelBox);
+
+        // 3. Text Column (2/3 width)
+        const textCol = document.createElement("div");
+        textCol.className = "col-8";
+        const textBox = document.createElement("div");
+        textBox.className = "p-2 border rounded h-100 text-break";
+
+        // --- ARRAY CHECK LOGIC ---
+        if (Array.isArray(data)) {
+            // If it's an array, create a div for each entry
+            data.forEach((item, index) => {
+                const line = document.createElement("div");
+                line.textContent = item;
+
+                // Add a separator line for everything except the last item
+                if (index < data.length - 1) {
+                    line.className = "border-bottom pb-1 mb-1";
+                }
+                textBox.appendChild(line);
+            });
+        } else {
+            // Fallback for simple strings
+            textBox.textContent = data;
+        }
+
+        // 4. Assemble
+        textCol.appendChild(textBox);
+        rowWrapper.appendChild(labelCol);
+        rowWrapper.appendChild(textCol);
+
         imageTagInfo.appendChild(rowWrapper);
     }
 
