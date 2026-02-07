@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+{% block title %}Logging Configuration{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+<h2>Logging Configuration</h2>
+
+
+<div class="container-fluid px-4"> <div class="row">
+    <div class="col-md-4 border">
+        <div id="loggers-col-1">
+            column 1
+        </div>
+    </div>
+
+    <div class="col-md-4 border border-start-0 border-end-0">
+        <div id="loggers-col-2">
+            column 1
+        </div>
+    </div>
+
+    <div class="col-md-4 border">
+        <div id="loggers-col-3">
+            column 1
+        </div>
+    </div>
+</div>
+
+<script>
+    const loggers = {{ loggers | tojson }};
+    console.log(loggers)
+</script>
+
+<script src="{{ url_for('static', filename='setup/logging.js') }}"></script>
+
+{% endblock %}
