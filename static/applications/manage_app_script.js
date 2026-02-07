@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if ( logging_config.global_toggle ) {
                 button = createButton('Toggle Log Level', 'btn btn-sm btn-outline-light', function (event) {
                     event.preventDefault();
-                    toggleLogLevel(app_name, hostName);
+                    toggleLogLevel(event, app_name, hostName);
                 })
                 buttonContainer.appendChild(button)
             }
@@ -96,8 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return button
     }
 
-
-
     function createDropdownButton(name, classes, appName, hostName, options) {
 
         const dropdownDiv = document.createElement("div");
@@ -125,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             a.onclick = (e) => {
                 e.preventDefault();
                 console.log("Selected:", opt);
-                toggleProcessLogLevel(app_name, hostName, opt)
+                toggleLogLevel(e, app_name, hostName, opt)
             };
 
             li.appendChild(a);
@@ -184,19 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Cancelled restarting " + app_name + " on " + hostName + ".");
         }
     }
-    
-    function followLogs(event, app_name, hostName) {
-        const streamUrl = `${streamLogsBaseurl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}`;
-        fetchStreamedResponse(event, "logs", streamUrl)
-    }
 
-    function toggleLogLevel(app_name, hostName) {
-        const streamUrl = `${toggleLogLevelBaseUrl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}`;
-        fetchStreamedResponse(event, "logs", streamUrl)
-    }
-
-    function toggleProcessLogLevel(appName, hostName, processName) {
-        const streamUrl = `${toggleLogLevelBaseUrl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(app_name)}&process=${encodeURIComponent(processName)}`;
+    function toggleLogLevel(event, appName, hostName, processName) {
+        let streamUrl = `${toggleLogLevelBaseUrl}?host=${encodeURIComponent(hostName)}&container=${encodeURIComponent(appName)}`;
+        if (processName) {
+            streamUrl = streamUrl + `&process=${encodeURIComponent(processName)}`
+        }
         fetchStreamedResponse(event, "logs", streamUrl)
     }
 
