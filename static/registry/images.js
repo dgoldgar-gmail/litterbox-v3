@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const actions = document.createElement('div');
         actions.className = 'd-flex gap-2';
 
-        const detailsContainer = renderButtonContainer( "Details", "btn-outline-primary", () => window.showDetails(imageName, tag))
+        const detailsContainer = renderButtonContainer( "Details", "btn-outline-primary", () => showDetails(imageName, tag))
         detailsContainer.style.width = '100px';
         actions.appendChild(detailsContainer);
 
@@ -116,6 +116,24 @@ document.addEventListener('DOMContentLoaded', function () {
         // docker exec -it registry bin/registry garbage-collect /etc/distribution/config.yml
     }
 
+    // images.js
+    async function showDetails(imageName, tag) {
+        const url = `${loadDetailsModalBaseUrl}?image_name=${encodeURIComponent(imageName)}&tag=${encodeURIComponent(tag)}`;
+
+        try {
+            const response = await fetch(url);
+            const html = await response.text();
+
+            // 1. Inject HTML
+            document.getElementById('modal-container').innerHTML = html;
+
+            // 2. Call the function we just wrote in details.js
+            window.initAndShowDetailsModal(imageName, tag);
+
+        } catch (error) {
+            console.error('Error loading modal structure:', error);
+        }
+    }
 
     function renderImageList() {
         images.forEach( image => {

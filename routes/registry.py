@@ -17,6 +17,12 @@ logger.propagate = True
 def index():
     return render_template('registry/index.html', images=get_image_list())
 
+@registry_bp.route('/details_modal', methods=['GET'])
+def details_modal():
+    image_name = request.args.get('image_name')
+    tag = request.args.get('tag')
+    return render_template('registry/_details_modal.html')
+
 @registry_bp.route('/get_image_tags', methods=['GET'])
 def get_image_tags():
     image_name = request.args.get('image_name')
