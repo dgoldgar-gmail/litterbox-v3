@@ -14,7 +14,7 @@ from ansible_vault import Vault
 from yaml import SafeLoader, SafeDumper # Specific loaders/dumpers for safety
 from flask import flash, current_app
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
-from config import BACKUP_DIR,UNIFIED_MAPPING, HOME_ASSISTANT_API_URL, UNKNOWN
+from config import BACKUP_DIR, UNIFIED_MAPPING, HOME_ASSISTANT_API_URL, UNKNOWN, LOGGER_CONFIG
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ def save_json_data(app_data_dict, json_file_path):
 # --- Backup Helper Function ---
 def create_backup(file_path):
     if os.path.exists(file_path):
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         file_dir = os.path.dirname(file_path)
         file_name = os.path.basename(file_path)
         backup_dir = os.path.join(file_dir, 'backups')
@@ -288,7 +288,7 @@ def get_local_registry_image_versions(url, version_pattern):
 
 
 def get_all_loggers():
-
+    logging.getLogger('werkzeug')
     loggers = [logging.getLogger()]
     loggers += [logging.getLogger(name) for name in logging.root.manager.loggerDict]
 
@@ -307,3 +307,20 @@ def get_all_loggers():
 
         all_loggers.append(next_logger)
     return all_loggers
+
+def apply_logger_config(data):
+    for entry in data:
+            name = entry.get('name')
+            level = entry.get('level')
+            if name and level:
+                the_logger = logging.getLogger(name)
+                the_logger.setLevel(level.upper())
+                the_logger.propagate = True
+                logger.info(f"Set {name} to {level}")
+
+
+def initialize_logger_config():
+    logger_config = load_yaml_data(LOGGER_CONFIG)
+    apply_logger_config(logger_config)
+
+

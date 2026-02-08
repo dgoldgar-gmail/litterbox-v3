@@ -10,7 +10,7 @@ from yaml import SafeLoader, SafeDumper
 app = Flask(__name__)
 app.logger.setLevel(os.environ.get('LOG_LEVEL', 'INFO').upper())
 
-from utils import load_yaml_data, load_json_data, save_json_data
+from utils import load_yaml_data, load_json_data, save_json_data, initialize_logger_config
 
 from routes.ansible import ansible_bp
 from routes.applications import applications_bp
@@ -49,4 +49,5 @@ def inject_user():
     return dict(username=username)
 
 if __name__ == "__main__":
+    initialize_logger_config()
     app.run(host="0.0.0.0", port=5555, debug=True)

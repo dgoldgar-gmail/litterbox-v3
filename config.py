@@ -51,6 +51,7 @@ SECRETS_YAML = load_config_file("SECRETS_YAML", "secrets.yaml")
 OVERVIEW_MAPPING = load_config_file("OVERVIEW_MAPPING", "overview_mapping.yaml")
 UNIFIED_MAPPING = load_config_file("UNIFIED_MAPPING", "unified_mapping.yaml")
 APPLICATIONS_CONFIG = load_config_file("APPLICATIONS_CONFIG", "applications.json")
+LOGGER_CONFIG = load_config_file("LOGGER_CONFIG", "logger_config.json")
 
 UNIFIED_MAPPING_SCHEMA = load_config_file("UNIFIED_MAPPING_SCHEMA", "unified_mapping_schema.json")
 OVERVIEW_MAPPING_SCHEMA = load_config_file("OVERVIEW_MAPPING_SCHEMA", "overview_mapping_schema.json")
