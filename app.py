@@ -49,5 +49,4 @@ def inject_user():
     return dict(username=username)
 
 if __name__ == "__main__":
-    initialize_logger_config()
     app.run(host="0.0.0.0", port=5555, debug=True)
