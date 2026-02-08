@@ -316,7 +316,7 @@ def apply_logger_config(data):
                 the_logger = logging.getLogger(name)
                 the_logger.setLevel(level.upper())
                 the_logger.propagate = True
-                logger.info(f"Set {name} to {level}")
+                logger.info(f"Set logger {name} to {level}")
 
 
 def initialize_logger_config():

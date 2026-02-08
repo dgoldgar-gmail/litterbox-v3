@@ -70,19 +70,24 @@ endpoints:
     icon: mdi:zigbee
     host: slate
     internal_port: "6080"
+    websocket: true
+    preserve_host: "$host"
   - name: frigate
     entity: update.frigate_server
     template: frigate_template
     host: main
     internal_port: "5000"
+    websocket: true
   - name: grafana
     icon: si:grafana
     host: pearl
     internal_port: "3000"
+    extra-paths: ["/api/live/"]
   - name: influxdb
     icon: si:influxdb
     host: pearl
     internal_port: "8086"
+    extra-paths: ["/pwa"]
   - name: kibana
     icon: si:kibana
     host: five
@@ -91,16 +96,19 @@ endpoints:
     icon: lci:litterbox
     host: one
     internal_port: "5555"
+    forward_user: true
   - name: phoscon
     entity: sensor.slate_deconz_version_info
     icon: phu:phoscon
     host: slate
     internal_port: "9080"
+    extra-paths: ["/pwa"]
   - name: photoprism
     entity: sensor.one_photoprism_version_info
     icon: mdi:camera-burst
     host: ubuntu-one
     internal_port: "2342"
+    websocket: true
   - name: pihole
     entity: sensor.five_pihole_version_info
     icon: mdi:pi-hole
@@ -120,6 +128,8 @@ endpoints:
     icon: mdi:ssh
     host: pearl
     internal_port: "8888"
+    websocket: true
+    preserve_host: "$http_host"
 govee:
   devices:
     woodstove:

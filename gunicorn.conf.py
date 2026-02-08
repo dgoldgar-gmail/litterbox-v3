@@ -32,6 +32,5 @@ logconfig_dict = {
 }
 
 def post_worker_init(worker):
-    # This runs after the app is loaded in the worker
     from utils import initialize_logger_config
     initialize_logger_config()
