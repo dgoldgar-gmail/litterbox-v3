@@ -230,8 +230,6 @@ govee:
             renotify_interval: 120
           SET_TEMP:
             renotify_interval: -1
-    test:
-      entities: []
 hosts:
   - name: dgoldgar-ltmgx3r.internal.salesforce.com
     ip: 192.168.50.100

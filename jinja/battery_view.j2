@@ -26,7 +26,7 @@ cards:
         entities:
 {% for device in govee.devices -%}
 {% filter indent(width=10) %}
-- sensor.gv_{{device}}_battery
+- sensor.meatometer_{{device}}_battery
 {% endfilter %}
 {% endfor -%}
 
