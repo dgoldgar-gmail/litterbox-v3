@@ -6,10 +6,14 @@ import requests
 import subprocess
 import time
 
-from config import APPLICATIONS_CONFIG, REGISTRY
+from config import Configuration
+from docker_registry_client import DockerRegistryClient
 from flask import Blueprint, flash, render_template, redirect, request, url_for, jsonify, Response
-from utils import load_json_data, resolve_secrets, get_dockerhub_release_versions, get_local_registry_image_versions
+from utils import resolve_secrets, resolve_functions
 from ssh import get_ssh_client
+
+configuration = Configuration()
+docker_registry_client = DockerRegistryClient()
 
 applications_bp = Blueprint('applications', __name__, template_folder='../../templates')
 
@@ -18,7 +22,7 @@ logger.propagate = True
 
 @applications_bp.route('/manage_application/<name>', methods=['GET'])
 def manage_application(name):
-    applications = load_json_data(APPLICATIONS_CONFIG)
+    applications = configuration.load_json_data(configuration.APPLICATIONS_CONFIG)
     logger.info("In manage_application for " + str(name))
     app_to_manage = next((item for item in applications if item["name"] == name), None)
     logger.info(app_to_manage)
@@ -28,9 +32,10 @@ def manage_application(name):
 
 @applications_bp.route('/stream_log', methods=['GET'])
 def stream_log():
+    logger.info(f"Stream logs called {request.args}")
     host = request.args.get('host')
     container_name = request.args.get('container')
-    logger.info(f"Toggling log level for {container_name} on {host}")
+    logger.info(f"Stream logs for {container_name} on {host}")
     command = f"docker logs --tail 10 -f {container_name}"
     logger.info(command)
     return generate_response(host, command)
@@ -69,7 +74,8 @@ def deploy_app_version():
 
     pull_command = f"docker pull {docker_image}:{version}"
     rm_command = f"docker rm -f {container_name}"
-    run_command = build_run_command(config, version)
+    user_context = { "host": host }
+    run_command = build_run_command(config, version, user_context)
     post_install_commands = get_post_install_commands(config, container_name)
 
     logger.info(pull_command)
@@ -90,19 +96,17 @@ def get_container_versions():
     url = request.args.get('url')
     max_pages = request.args.get('max_pages')
     version_pattern = request.args.get('version_pattern')
-    if REGISTRY in url:
-        return get_local_registry_image_versions(url, version_pattern)
+    if configuration.REGISTRY in url:
+        logger.info("Getting versions to display")
+        return docker_registry_client.get_local_registry_image_versions(url, version_pattern)
     else:
-        return get_dockerhub_release_versions(url, version_pattern)
+        return docker_registry_client.get_dockerhub_release_versions(url, version_pattern)
 
 def generate_response(host, command):
-
     client = get_ssh_client(host)
     stdin, stdout, stderr = client.exec_command(command)
-
     for line in iter(stdout.readline, ""):
         yield line
-
     if stdout.channel.recv_exit_status() != 0:
         yield f"\nFAILURE: '{command}' failed. Stopping chain.\n"
         raise RuntimeError("Command failed: " + command)
@@ -112,6 +116,7 @@ def generate_responses( host, commands):
         for command in commands:
             yield from generate_response(host, command)
     except RuntimeError:
+        logger.info("Runtime error in generate_responses")
         return
 
 def pull_container_version(container_name, version, host):
@@ -127,20 +132,19 @@ def get_current_version_by_docker_tag(apphost, container_name):
     output = stdout.read().decode('utf-8')
     error = stderr.read().decode('utf-8')
 
-
 def get_container_config(name):
-    applications = load_json_data(APPLICATIONS_CONFIG)
+    applications = configuration.load_json_data(configuration.APPLICATIONS_CONFIG)
     for item in applications:
         if item.get("name") == name:
             return item
     return None
 
-def build_run_command(config, desired_verison):
-
+def build_run_command(config, desired_verison, user_context):
     docker_info=config['docker']
     docker_image=docker_info['image']
     container_specific_args=docker_info['args']
     container_specific_args = resolve_secrets(" ".join(container_specific_args))
+    container_specific_args = resolve_functions(container_specific_args, user_context)
 
     common_args = [ "docker", "run", "-d", "--name", config['name'], "--network=host", "--privileged", "--restart=unless-stopped" ]
 

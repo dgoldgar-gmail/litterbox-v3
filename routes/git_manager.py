@@ -1,14 +1,16 @@
 import subprocess
 import os
 import logging
-from config import GIT_REPO_PATH, UNKNOWN
+from config import Configuration
 from flask import Blueprint, jsonify, request, render_template
+
+configuration = Configuration()
 
 git_manager_bp = Blueprint('git_manager', __name__)
 logger = logging.getLogger(__name__)
 
 # The path to the repository we want to manage
-REPO_PATH = os.environ.get("GIT_REPO_PATH", GIT_REPO_PATH)
+REPO_PATH = os.environ.get("GIT_REPO_PATH", configuration.GIT_REPO_PATH)
 
 @git_manager_bp.route('/index', methods=['GET'])
 def index():
@@ -141,7 +143,7 @@ def git_api_status():
     count_res = run_git_command(["rev-list", "--left-right", "--count", "HEAD...origin/main"])
     stdout_str = porcelain_res.get("stdout", "") if porcelain_res else ""
     files = parse_porcelain_status(stdout_str)
-    branch = branch_res.get("stdout", UNKNOWN).strip() if branch_res else "unknown"
+    branch = branch_res.get("stdout", configuration.UNKNOWN).strip() if branch_res else "unknown"
     ahead, behind = 0, 0
     if count_res and count_res.get("success"):
         counts = count_res.get("stdout", "0 0").strip().split()

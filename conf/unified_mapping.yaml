@@ -70,19 +70,24 @@ endpoints:
     icon: mdi:zigbee
     host: slate
     internal_port: "6080"
+    websocket: true
+    preserve_host: "$host"
   - name: frigate
     entity: update.frigate_server
     template: frigate_template
     host: main
     internal_port: "5000"
+    websocket: true
   - name: grafana
     icon: si:grafana
     host: pearl
     internal_port: "3000"
+    extra-paths: ["/api/live/"]
   - name: influxdb
     icon: si:influxdb
     host: pearl
     internal_port: "8086"
+    extra-paths: ["/pwa"]
   - name: kibana
     icon: si:kibana
     host: five
@@ -91,16 +96,19 @@ endpoints:
     icon: lci:litterbox
     host: one
     internal_port: "5555"
+    forward_user: true
   - name: phoscon
     entity: sensor.slate_deconz_version_info
     icon: phu:phoscon
     host: slate
     internal_port: "9080"
+    extra-paths: ["/pwa"]
   - name: photoprism
     entity: sensor.one_photoprism_version_info
     icon: mdi:camera-burst
     host: ubuntu-one
     internal_port: "2342"
+    websocket: true
   - name: pihole
     entity: sensor.five_pihole_version_info
     icon: mdi:pi-hole
@@ -120,6 +128,8 @@ endpoints:
     icon: mdi:ssh
     host: pearl
     internal_port: "8888"
+    websocket: true
+    preserve_host: "$http_host"
 govee:
   devices:
     woodstove:
@@ -220,9 +230,13 @@ govee:
             renotify_interval: 120
           SET_TEMP:
             renotify_interval: -1
-    test:
-      entities: []
 hosts:
+  - name: dgoldgar-ltmgx3r.internal.salesforce.com
+    ip: 192.168.50.100
+    type: mac
+    containers: []
+    mounts: []
+    nvme_devices: []
   - name: raspberry-five
     collectors:
     ip: 192.168.50.15
@@ -240,7 +254,7 @@ hosts:
       - '/dev/sda'
     nvme_devices: []
   - name: raspberry-pearl
-    ip: 192.168.50.123
+    ip: 192.168.50.12
     type: raspberry-pi
     collectors:
     - radoneye
@@ -253,6 +267,7 @@ hosts:
       release_notes: https://grafana.com/docs/grafana/latest/release-notes/
     - name: influxdb
       release_notes: https://docs.influxdata.com/influxdb/v2/reference/release-notes/influxdb/
+    - name: litterbox
     - name: radoneye
       release_notes: ''
     - name: webssh
@@ -273,6 +288,7 @@ hosts:
       release_notes: https://github.com/dresden-elektronik/deconz-rest-plugin/releases
     - name: homeassistant
       release_notes: https://www.home-assistant.io/blog/categories/release-notes/
+    - name: litterbox
     - name: nginx
       release_notes: https://github.com/nginx/nginx/tags
   - name: ubuntu-one
@@ -295,70 +311,121 @@ hosts:
     containers:
       - name: frigate
         release_notes: https://github.com/blakeblackshear/frigate/releases
+      - name: litterbox
     mounts:
       - '/dev/sda'
     nvme_devices:
-      - /dev/nvme0
+      - /dev/nvme0n1
 radoneye:
-- name: radoneye1
-  serial: abc
-  location: def
+  - name: radoneye1
+    serial: 000IE08RE349
+    location: game_room
 tasmota:
   devices:
-  - name: tasmota_07
-    type: switch
-    full_name: Tasmota Switch 07
-    description: Television
-    ip: 192.168.50.237
-  - name: tasmota_08
-    type: switch
-    full_name: Tasmota Switch 08
-    description: Cat Box
-    ip: 192.168.50.238
-  - name: tasmota_09
-    type: switch
-    full_name: Tasmota Switch 09
-    description: Basement Fridge
-    ip: 192.168.50.239
-  - name: tasmota_10
-    type: switch
-    full_name: Tasmota Switch 10
-    description: Dishwasher
-    ip: 192.168.50.240
-  - name: test
-    full_name: x
-    type: switch
-    description: va
-    ip: 192.168.100.131
+    - name: tasmota_01
+      full_name: Tasmota Switch 01
+      type: switch
+      description: Living Room
+      ip: 192.168.50.231
+    - name: tasmota_02
+      full_name: Tasmota Switch 02
+      type: switch
+      description: Game Room
+      ip: 192.168.50.232
+    - name: tasmota_03
+      type: switch
+      full_name: Tasmota Switch 03
+      description: Washing Machine
+      ip: 192.168.50.233
+    - name: tasmota_04
+      type: switch
+      full_name: Tasmota Switch 04
+      description: Sams Room
+      ip: 192.168.50.234
+    - name: tasmota_05
+      type: switch
+      full_name: Tasmota Switch 05
+      description: Office Lights
+      ip: 192.168.50.235
+    - name: tasmota_06
+      type: switch
+      full_name: Tasmota Switch 06
+      description: Gym
+      ip: 192.168.50.236
+    - name: tasmota_07
+      type: switch
+      full_name: Tasmota Switch 07
+      description: Television
+      ip: 192.168.50.237
+    - name: tasmota_08
+      type: switch
+      full_name: Tasmota Switch 08
+      description: Cat Box
+      ip: 192.168.50.238
+    - name: tasmota_09
+      type: switch
+      full_name: Tasmota Switch 09
+      description: Basement Fridge
+      ip: 192.168.50.239
+    - name: tasmota_10
+      type: switch
+      full_name: Tasmota Switch 10
+      description: Dishwasher
+      ip: 192.168.50.240
+    - name: tasmota_bulb_01
+      type: bulb
+      full_name: Tasmota Bulb 01
+      description: Game Room Desk Lamp
+      ip: 192.168.0.200
+    - name: tasmota_bulb_02
+      type: bulb
+      full_name: Tasmota Bulb 02
+      description: Woodstove Light
+      ip: 192.168.0.3
+    - name: tasmota_rgb_01
+      type: rgb
+      full_name: Tasmota Bulb 01
+      description: Sams Room RGB Lights
+      ip: 192.168.0.144
+    - name: tasmota_rgb_02
+      type: rgb
+      full_name: Tasmota Bulb 02
+      description: Game Room RGB Lights
+      ip: 192.168.0.223
+    - name: tasmota_esp32_01
+      type: esp32
+      full_name: Tasmota ESP32 01
+      description: Game Room ESP32
+      ip: 192.168.0.45
   entities:
     switch:
-    - name: Today
-      full_name: energy_today
-      icon: mdi:sun-angle
-    - name: Yesterday
-      full_name: energy_yesterday
-      icon: mdi:moon-waning-crescent
-    - name: Total
-      full_name: energy_total
-      icon: mdi:infinity
-    - name: Version
-      full_name: version
-      icon: si:tasmota
+      - name: Today
+        full_name: energy_today
+        icon: mdi:sun-angle
+      - name: Yesterday
+        full_name: energy_yesterday
+        icon: mdi:moon-waning-crescent
+      - name: Total
+        full_name: energy_total
+        icon: mdi:infinity
+      - name: Version
+        full_name: version
+        icon: si:tasmota
     bulb:
-    - name: Version
-      full_name: version
-      icon: si:tasmota
+      - name: Version
+        full_name: version
+        icon: si:tasmota
     rgb:
-    - name: Version
-      full_name: version
-      icon: si:tasmota
+      - name: Version
+        full_name: version
+        icon: si:tasmota
     esp32:
-    - name: Version
-      full_name: version
-      icon: si:tasmota
-    - name: Blerry Version
-      full_name: blerry_version
-      icon: mdi:fruit-grapes
+      - name: Version
+        full_name: version
+        icon: si:tasmota
+      - name: Blerry Version
+        full_name: blerry_version
+        icon: mdi:fruit-grapes
 zigbee:
   device_types:
     thermometer:
@@ -398,3 +465,11 @@ zigbee:
       devices:
       - drum room
       - woodstove
+litterbox:
+  leaders:
+    - raspberry-five
+    - ubuntu-one
+  satellites:
+    - ubuntu-main
+    - raspberry-pearl
+    - raspberry-slate

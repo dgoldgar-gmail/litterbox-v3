@@ -1,130 +1,138 @@
-import os
-import socket
-import threading
-import time
-import random
+import os, socket, threading, time, random, logging
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
+from enum import Enum, auto
 
-from utils import configure_logging, set_homeassistant_state, get_homeassistant_state, send_homeassistant_notification
-from config import LEADER_TTL, LEADER_HEARTBEAT_INTERVAL, LEADER_WATCHDOG_INTERVAL
-from apscheduler.schedulers.base import STATE_PAUSED
+from utils import configure_logging
+from home_assistant_client import HomeAssistantClient
+from config import Configuration
 
-import logging
-
+configuration = Configuration()
+home_assistant_client = HomeAssistantClient()
 logger = logging.getLogger(__name__)
 configure_logging()
 
 
-def leadership_watchdog(elector, scheduler, interval=LEADER_WATCHDOG_INTERVAL):
-    previous_state = None
-    while True:
-        try:
-            leader = elector.is_leader()
-            if scheduler.running:
-                if leader and scheduler.state == STATE_PAUSED:
-                    scheduler.resume()
-                    if previous_state != True:
-                        logger.info("Scheduler resumed (gained leadership)")
-                    previous_state = True
-                elif not leader and scheduler.state != STATE_PAUSED:
-                    scheduler.pause()
-                    if previous_state != False:
-                        logger.info("Scheduler paused (lost leadership)")
-                    previous_state = False
-            else:
-                previous_state = None
-        except Exception:
-            logger.exception("Error in leadership watchdog")
-        time.sleep(interval)
+class LeadershipRole(Enum):
+    LEADER = auto()
+    FOLLOWER = auto()
 
+class LeadershipState(Enum):
+    ACTIVE = auto()
+    STANDBY = auto()
 
 class LeaderElector:
-    def __init__(self, entity_id="sensor.scheduler_leader",
-                 heartbeat_interval=LEADER_HEARTBEAT_INTERVAL, ttl=LEADER_TTL):
+    def __init__(self, scheduler, configuration, entity_id="sensor.scheduler_leader"):
+        self.scheduler = scheduler
+        self.config = configuration
         self.entity_id = entity_id
-        self.heartbeat_interval = heartbeat_interval
-        self.ttl = ttl
+        self.ttl = configuration.LEADER_TTL
+        self.heartbeat_interval = configuration.LEADER_HEARTBEAT_INTERVAL
+
+        self.state = LeadershipState.STANDBY
+        self.role = LeadershipRole.FOLLOWER
+
         self.host = socket.gethostname()
         self.pid = os.getpid()
         self._stop = threading.Event()
         self._thread = None
-        self._leader = False  # Track local leadership state
-        self._startup_delay = random.uniform(0, 5)  # Reduce startup race
+        self._startup_delay = random.uniform(0, 5)
 
     def start(self):
         self._thread = threading.Thread(target=self._heartbeat_loop, daemon=True)
         self._thread.start()
+        threading.Thread(
+            target=self.leadership_watchdog,
+            daemon=True
+        ).start()
 
     def stop(self):
         self._stop.set()
 
-    def _heartbeat_loop(self):
-        # optional startup delay
-        time.sleep(self._startup_delay)
+    def promote_to_active(self):
+        logger.info(f"--- PROMOTING {self.host} TO ACTIVE ---")
+        from tasks.collector import collect_application_info, collect_certificate_info
+        from tasks.duck_dns import update_dns_info
 
+        self.scheduler.add_job(
+            collect_application_info, 'interval',
+            minutes=self.config.COLLECT_APP_INFO_INTERVAL,
+            id="app_info",
+            replace_existing=True,
+            next_run_time=datetime.now()
+        )
+        self.scheduler.add_job(
+            update_dns_info, 'cron',
+            minute=0, hour=f'*/{self.config.UPDATE_DUCK_DNS_INTERVAL}',
+            id="duckdns_update",
+            replace_existing=True
+        )
+        self.scheduler.add_job(
+            collect_certificate_info, 'cron',
+            minute=0, hour=f'*/{self.config.COLLECT_CERTIFICATE_INFO_INTERVAL}',
+            id="certificate_inf",
+            replace_existing=True
+        )
+        self.state = LeadershipState.ACTIVE
+
+    def demote_to_standby(self):
+        logger.info(f"--- DEMOTING {self.host} TO STANDBY ---")
+        for job_id in ["app_info", "duckdns_update", "certificate_inf"]:
+            if self.scheduler.get_job(job_id):
+                self.scheduler.remove_job(job_id)
+        self.state = LeadershipState.STANDBY
+
+    def _heartbeat_loop(self):
+        time.sleep(self._startup_delay)
         while not self._stop.is_set():
             try:
-                # --- Read HA leadership sensor ---
-                state = get_homeassistant_state(self.entity_id)
-                attrs = state.get("attributes", {}) if state else {}
+                state_data = home_assistant_client.get_homeassistant_state(self.entity_id)
+                attrs = state_data.get("attributes", {}) if state_data else {}
                 last = attrs.get("last_heartbeat")
-                last_dt = None
 
-                if last:
-                    try:
-                        # Parse UTC timestamp
-                        last_dt = datetime.fromisoformat(last)
-                        if last_dt.tzinfo is None:
-                            last_dt = last_dt.replace(tzinfo=ZoneInfo("UTC"))
-                    except ValueError:
-                        logger.warning("Invalid last_heartbeat format, ignoring")
-                        last_dt = None
-
-                current_leader = attrs.get("host") == self.host and attrs.get("pid") == self.pid
-
-                # --- Current UTC time ---
+                # Logic to check if current leader is valid
+                last_dt = datetime.fromisoformat(last).replace(tzinfo=ZoneInfo("UTC")) if last else None
                 now_utc = datetime.utcnow().replace(tzinfo=ZoneInfo("UTC"))
 
-                # Determine if leadership should be acquired
-                ttl_expired = (last_dt is None) or (now_utc - last_dt > timedelta(seconds=self.ttl))
-                acquire_leadership = ttl_expired or current_leader or last_dt is None
+                is_currently_me = (attrs.get("host") == self.host and attrs.get("pid") == self.pid)
+                is_expired = (last_dt is None or (now_utc - last_dt > timedelta(seconds=self.ttl)))
 
-                if acquire_leadership:
-                    # Write UTC to HA sensor
+                if is_currently_me or is_expired:
+                    # We are taking/keeping leadership
                     payload = {
                         "state": "active",
                         "attributes": {
-                            "host": self.host,
-                            "pid": self.pid,
+                            "host": self.host, "pid": self.pid,
                             "last_heartbeat": now_utc.isoformat(),
-                        },
+                            "status": self.state.name
+                        }
                     }
-                    set_homeassistant_state(self.entity_id, payload)
+                    home_assistant_client.set_homeassistant_state(self.entity_id, payload)
 
-                    # Only notify on leadership change
-                    if not self._leader:
-                        local_now = now_utc.astimezone(ZoneInfo("America/New_York"))
-                        local_str = local_now.strftime("%Y-%m-%d %H:%M:%S %Z")
-                        logger.info("Leadership acquired")
-                        send_homeassistant_notification(
-                            service="persistent_notification",
-                            message=f"{self.host} elected scheduler leader at {local_str}",
-                            title="Leadership Acquired",
-                        )
-                    self._leader = True
+                    if self.role == LeadershipRole.FOLLOWER:
+                        logger.info("Leadership Acquired via Heartbeat")
+                    self.role = LeadershipRole.LEADER
                 else:
-                    if self._leader:
-                        logger.info("Leadership lost")
-                    self._leader = False
+                    if self.role == LeadershipRole.FOLLOWER:
+                        logger.info("Leadership Surrendered (Another node is active)")
+                    self.role = LeadershipRole.FOLLOWER
 
             except Exception:
-                if self._leader:
-                    logger.warning("Lost leadership due to HA connectivity issue")
-                self._leader = False
-                logger.exception("Failed to read/write HA leadership sensor")
+                logger.exception("Heartbeat failure")
+                self.role = LeadershipRole.FOLLOWER
 
             time.sleep(self.heartbeat_interval)
 
-    def is_leader(self):
-        return self._leader
+    def leadership_watchdog(self):
+        """Monitors the election result and syncs the scheduler jobs."""
+        is_active_locally = False
+        while True:
+            try:
+                should_be_active = self.role == LeadershipRole.LEADER
+                if self.role == LeadershipRole.LEADER and self.state == LeadershipState.STANDBY:
+                    self.promote_to_active()
+                elif self.role == LeadershipRole.FOLLOWER and self.state == LeadershipState.ACTIVE:
+                    self.demote_to_standby()
+            except Exception:
+                logger.exception("Error in leadership watchdog")
+            time.sleep(configuration.LEADER_WATCHDOG_INTERVAL)

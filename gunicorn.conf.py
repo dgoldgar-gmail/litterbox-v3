@@ -30,3 +30,19 @@ logconfig_dict = {
         }
     }
 }
+
+"""
+def post_worker_init(worker):
+    from log_level_config_manager import LogLevelConfigManager
+    log_level_config_manager = LogLevelConfigManager()
+    log_level_config_manager.initialize_logger_config()
+
+def on_starting(server):
+    import socket
+    from home_assistant_client import HomeAssistantClient
+    home_assistant_client = HomeAssistantClient()
+    host_name = socket.gethostname()
+    title = f"Litterbox Restarted on {host_name}"
+    message = "Litterbox restarted successfully"
+    home_assistant_client.send_homeassistant_notification("persistent_notification", message="Litterbox restarted", title=title)
+"""

@@ -1,16 +1,15 @@
-import logging
-import time
-import json
-import os
-import tempfile
-import subprocess
-from pathlib import Path
 import ansible_runner
-from pathlib import Path
+import json
+import logging
+import os
+import signal
+import subprocess
+import tempfile
+import time
 
-#from config import ANSIBLE_VAULT_PASS_PATH
-#VAULT_PASS_FILE = Path(ANSIBLE_VAULT_PASS_PATH)
-#raw_vault_pass = VAULT_PASS_FILE.read_text().strip()
+from log_level_config_manager import LogLevelConfigManager
+
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 RUNNER_DIR = BASE_DIR / "ansible"
@@ -20,6 +19,8 @@ RESULTS_DIR = RUNNER_DIR / "results"
 
 QUEUE_DIR.mkdir(exist_ok=True, parents=True)
 RESULTS_DIR.mkdir(exist_ok=True, parents=True)
+
+log_level_config_manager = LogLevelConfigManager()
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +112,9 @@ def main():
                 if job_file.exists():
                     job_file.unlink()
         time.sleep(2)
+
+signal.signal(signal.SIGUSR1, log_level_config_manager.toggle_logging_level)
+logger.info(f"SIGUSR1 signal registered to toggle logging level. Initial level: {logging.getLevelName(logging.root.level)}")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')

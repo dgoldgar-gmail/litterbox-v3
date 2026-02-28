@@ -6,7 +6,7 @@
 {{ tap_actions.browser_popup_action("tap_action", app_name.title(), "binary_sensor.application_actions_popup", app_name.title() + " on " + host.name.title() , browser_mod_popup_style, 4)  }}
             type: vertical-stack
             cards:
-              {% set short_host = host.name.replace("raspberry-","") %}
+              {% set short_host = host.name.replace("raspberry-","").replace("ubuntu-","") %}
               - type: entities
                 entities:
                 - entity: sensor.{{ short_host }}_{{ app_name }}_collection_timestamp

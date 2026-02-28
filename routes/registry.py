@@ -3,9 +3,13 @@ import re
 import requests
 import urllib3
 
-from config import REGISTRY
-from utils import get_local_registry_image_versions
+from config import Configuration
+from docker_registry_client import DockerRegistryClient
 from flask import Blueprint, flash, render_template, redirect, request, url_for, jsonify
+
+configuration = Configuration()
+docker_registry_client = DockerRegistryClient()
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 registry_bp = Blueprint('registry', __name__, template_folder='../../registry')
@@ -17,11 +21,17 @@ logger.propagate = True
 def index():
     return render_template('registry/index.html', images=get_image_list())
 
+@registry_bp.route('/details_modal', methods=['GET'])
+def details_modal():
+    image_name = request.args.get('image_name')
+    tag = request.args.get('tag')
+    return render_template('registry/_details_modal.html')
+
 @registry_bp.route('/get_image_tags', methods=['GET'])
 def get_image_tags():
     image_name = request.args.get('image_name')
-    url = f"https://{REGISTRY}/v2/{image_name}/tags/list"
-    tags=get_local_registry_image_versions(url, ".*")
+    url = f"https://{configuration.REGISTRY}/v2/{image_name}/tags/list"
+    tags=docker_registry_client.get_local_registry_image_versions(url, ".*")
     logger.info(tags)
     return tags
 
@@ -44,7 +54,7 @@ def delete_tag():
     tag = request.args.get('tag')
     digest = request.args.get('digest')
     redirect_url = url_for('registry.index')
-    url = f"https://{REGISTRY}/v2/{image_name}/manifests/{digest}"
+    url = f"https://{configuration.REGISTRY}/v2/{image_name}/manifests/{digest}"
 
     try:
         resp = requests.delete(url, verify=False)
@@ -63,7 +73,7 @@ def delete_tag():
     return redirect(redirect_url)
 
 def get_image_list():
-    url = f"https://{REGISTRY}/v2/_catalog"
+    url = f"https://{configuration.REGISTRY}/v2/_catalog"
     try:
         resp = requests.get(url, verify=False)
         resp.raise_for_status()
@@ -85,7 +95,7 @@ def safe_get(url, headers=None):
         return None
 
 def get_tag_details(image_name, tag):
-    url = f"https://{REGISTRY}/v2/{image_name}/manifests/{tag}"
+    url = f"https://{configuration.REGISTRY}/v2/{image_name}/manifests/{tag}"
     headers = {
         "Accept": (
             "application/vnd.docker.distribution.manifest.list.v2+json,"
@@ -149,7 +159,7 @@ def process_multiarch_manifest_list(image_name, tag, manifest_list_json):
 
 def process_manifest_details(image_name, oci_json):
     digest = oci_json.get("digest")
-    url = f"https://{REGISTRY}/v2/{image_name}/manifests/{digest}"
+    url = f"https://{configuration.REGISTRY}/v2/{image_name}/manifests/{digest}"
     headers = {
         "Accept": (
             "application/vnd.docker.distribution.manifest.v2+json, "
@@ -173,7 +183,7 @@ def process_manifest_details(image_name, oci_json):
 
 
 def get_blob(image_name, digest):
-    url = f"https://{REGISTRY}/v2/{image_name}/blobs/{digest}"
+    url = f"https://{configuration.REGISTRY}/v2/{image_name}/blobs/{digest}"
     try:
         resp = safe_get(url)
         if resp.status_code == 200:

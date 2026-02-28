@@ -2,7 +2,7 @@ import logging
 import paramiko
 import logging
 import urllib3
-from config import KEY_FILE, SSH_USER
+from config import Configuration
 from pathlib import Path
 from scp import SCPClient
 
@@ -11,11 +11,13 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logger = logging.getLogger(__name__)
 logger.propagate = True
 
+configuration = Configuration()
+
 def get_ssh_client(host):
 
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(host, 22, SSH_USER, key_filename=KEY_FILE)
+    client.connect(host, 22, configuration.SSH_USER, key_filename=configuration.KEY_FILE)
     return client
 
 
