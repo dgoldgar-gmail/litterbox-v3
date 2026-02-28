@@ -66,6 +66,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function invokeGitManagerRoute(endpoint, payload, onSuccess, onError) {
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.success) {
+                onSuccess()
+            } else {
+                onError(result.error)
+            }
+        } catch (err) {
+            onError(err)
+        }
+    }
+
     /**
      * Commit
      */
@@ -90,6 +108,15 @@ document.addEventListener('DOMContentLoaded', () => {
             files: selectedFiles,
             timestamp: new Date().toISOString()
         };
+
+        invokeGitManagerRoute("/git_manager/commit", payload, () => {
+                console.log("Committed successfully");
+                clearDiffResults();
+                renderChanges();
+            }, (error) => {
+                alert("Error: " + error);
+            })
+        /*
         try {
             const response = await fetch(`/git_manager/commit`, {
                 method: 'POST',
@@ -107,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error("Error sending file list:", err);
         }
+         */
     });
 
     pushBtn.addEventListener('click', async (e) => {
