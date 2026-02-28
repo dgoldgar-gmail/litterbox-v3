@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pullBtn = document.getElementById('pull');
     const checkoutBtn = document.getElementById('checkout');
     const resetBtn = document.getElementById('reset');
+    const switchBranchBtn = document.getElementById('branch-switch');
+    const createBranchBtn = document.getElementById('branch-create');
 
     // This data is injected into the window object by the template
     let changes = statusData["changes"] || { changes: [] };
@@ -167,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Staged
      */
+    /*
     stagedBtn.addEventListener('click', async () => {
         try {
             const response = await fetch(`/git_manager/staged`, {
@@ -186,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error sending file list:", err);
         }
     });
+     */
 
     /**
      * PULL

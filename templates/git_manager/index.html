@@ -41,33 +41,27 @@
 <div class="container mt-4">
 
     <h2 class="mb-4">Manage GIT Repository</h2>
-
     <form id="git-form">
         <h3>Repository Status</h3>
         <div id="git-changes" class="mb-4">
-            <!-- populated by hosts.js -->
         </div>
-        <button id="commit" type="button" class="btn btn-primary">
-            Commit
-        </button>
-        <button id="push" type="button" class="btn btn-success">
-            Push
-        </button>
-        <button id="diff" type="button" class="btn btn-info">
-            Diff
-        </button>
-        <button id="staged" type="button" class="btn btn-outline-info">
-            Staged
-        </button>
-        <button id="pull" type="button" class="btn btn-light">
-            Pull main/origin
-        </button>
-        <button id="checkout" type="button" class="btn btn-warning">
-            Checkout
-        </button>
-        <button id="reset" type="button" class="btn btn-danger">
-            Reset
-        </button>
+
+        <button id="commit" type="button" class="btn btn-primary">Commit</button>
+        <button id="push" type="button" class="btn btn-success">Push</button>
+        <button id="diff" type="button" class="btn btn-info">Diff</button>
+        <button id="pull" type="button" class="btn btn-light">Pull main/origin</button>
+        <button id="checkout" type="button" class="btn btn-warning">Checkout</button>
+        <button id="reset" type="button" class="btn btn-danger">Reset</button>
+
+        <div class="dropdown d-inline-block ms-1">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Branch
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" id="branch-switch" href="#">Switch</a></li>
+                <li><a class="dropdown-item" id="branch-create" href="#">Create</a></li>
+            </ul>
+        </div>
     </form>
     <div id="staged-changes"></div>
     <div id="diff-results"></div>

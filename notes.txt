@@ -1,0 +1,27 @@
+
+
+
+
+-H "Accept: application/vnd.docker.distribution.manifest.v2+json, \
+            application/vnd.docker.distribution.manifest.list.v2+json, \
+            application/vnd.oci.image.manifest.v1+json, \
+            application/vnd.oci.image.index.v1+json"
+
+
+
+
+1. If it's an "Index" (The Multi-Arch Menu)
+
+Media Type: application/vnd.oci.image.index.v1+json or application/vnd.docker.distribution.manifest.list.v2+json
+
+    What it means: You are not at the layers yet. This is a list of manifests for different platforms (amd64, arm64, etc.).
+
+    What to do next: Look inside the manifests array, find the digest for the architecture you want, and perform another GET request using that digest.
+
+2. If it's a "Manifest" (The Layer Blueprint)
+
+Media Type: application/vnd.oci.image.manifest.v1+json or application/vnd.docker.distribution.manifest.v2+json
+
+    What it means: You’ve reached the target. This JSON contains the layers (actual file data) and the config (environment variables, entrypoint).
+
+    What to do next: You can now pull individual layers using the digests found in the layers array.

@@ -24,4 +24,7 @@ test.sh
 bin/bootstrap_hosts.sh
 conf/backups/**/*
 
-
+.DS_Store
+icloud_photos
+local_build.sh
+tmp
