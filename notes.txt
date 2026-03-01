@@ -1,27 +1,48 @@
-
-
-
-
--H "Accept: application/vnd.docker.distribution.manifest.v2+json, \
-            application/vnd.docker.distribution.manifest.list.v2+json, \
-            application/vnd.oci.image.manifest.v1+json, \
-            application/vnd.oci.image.index.v1+json"
-
-
-
-
-1. If it's an "Index" (The Multi-Arch Menu)
-
-Media Type: application/vnd.oci.image.index.v1+json or application/vnd.docker.distribution.manifest.list.v2+json
-
-    What it means: You are not at the layers yet. This is a list of manifests for different platforms (amd64, arm64, etc.).
-
-    What to do next: Look inside the manifests array, find the digest for the architecture you want, and perform another GET request using that digest.
-
-2. If it's a "Manifest" (The Layer Blueprint)
-
-Media Type: application/vnd.oci.image.manifest.v1+json or application/vnd.docker.distribution.manifest.v2+json
-
-    What it means: You’ve reached the target. This JSON contains the layers (actual file data) and the config (environment variables, entrypoint).
-
-    What to do next: You can now pull individual layers using the digests found in the layers array.
+diff --color -r ./.git/HEAD ../litterbox-v3.with-git-client/.git/HEAD
+1c1
+< ref: refs/heads/dev
+---
+> 204e7b31fc3fec6f6e44b9218139b07f5851e1cf
+Binary files ./.git/index and ../litterbox-v3.with-git-client/.git/index differ
+diff --color -r ./.git/logs/HEAD ../litterbox-v3.with-git-client/.git/logs/HEAD
+442,443d441
+< 204e7b31fc3fec6f6e44b9218139b07f5851e1cf 25037bc76156c338f002ab20b512080f02772f4d Litterbox Worker <admin@litterbox.local> 1772377741 -0500	reset: moving to origin
+< 25037bc76156c338f002ab20b512080f02772f4d f07fbc159f0eedf89380a22efaa8ee9cf616d3f1 Litterbox Worker <admin@litterbox.local> 1772377746 -0500	checkout: moving from 25037bc76156c338f002ab20b512080f02772f4d to dev
+diff --color -r ./.gitignore ../litterbox-v3.with-git-client/.gitignore
+27d26
+< .DS_Store
+28a28
+> 
+29a30,32
+> 
+> .DS_Store
+> 
+diff --color -r ./.idea/workspace.xml ../litterbox-v3.with-git-client/.idea/workspace.xml
+7,22c7
+<     <list default="true" id="4dd82951-b5ef-4c33-ad3e-d7041a5e2632" name="Changes" comment="">
+<       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/conf/applications.json" beforeDir="false" afterPath="$PROJECT_DIR$/conf/applications.json" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/notes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/routes/applications.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes/applications.py" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/routes/git_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes/git_manager.py" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler.py" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/static/git_manager/tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/git_manager/tools.js" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/supervisord.conf" beforeDir="false" afterPath="$PROJECT_DIR$/supervisord.conf" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/tasks/collector.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/collector.py" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/templates/git_manager/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/git_manager/index.html" afterDir="false" />
+<       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+<     </list>
+---
+>     <list default="true" id="4dd82951-b5ef-4c33-ad3e-d7041a5e2632" name="Changes" comment="" />
+51c36
+<     "git-widget-placeholder": "dev",
+---
+>     "git-widget-placeholder": "204e7b31",
+102c87
+<       <workItem from="1771769664787" duration="46026000" />
+---
+>       <workItem from="1771769664787" duration="45085000" />
+Only in .: notes.txt

@@ -5,7 +5,7 @@ import signal
 import sys
 import threading
 from apscheduler.schedulers.blocking import BlockingScheduler
-from tasks.collector import collect_host_info, collect_application_info, collect_certificate_info
+from tasks.collector import collect_host_info, collect_application_info, collect_certificate_info, synch_photos
 from tasks.duck_dns import update_dns_info
 from tasks.leader import LeaderElector
 from utils import configure_logging
@@ -24,7 +24,11 @@ mode = os.environ.get("MODE","satellite")
 logger.info(f"MODE=> {mode}")
 is_leader = mode == "leader"
 
+
 logger.info(f"Collector type: {mode}")
+
+is_synch_photos = os.getenv("SYNCH_PHOTOS", "false").lower() == "true"
+logger.info(f"SYNCH_PHOTOS=> {is_synch_photos}")
 
 def shutdown(signum, frame):
     logger.info(f"Received signal {signum}, shutting down scheduler...")
@@ -58,6 +62,18 @@ scheduler.add_job(
     minutes=configuration.COLLECT_HOST_INFO_INTERVAL,
     next_run_time=datetime.now(),
     id="host_info")
+
+
+if is_synch_photos:
+    scheduler.add_job(
+        synch_photos,
+        'cron',
+        day=f'*/{configuration.SYNCH_PHOTOS_INTERVAL}', # Fires every N days of the month
+        hour=2,                                         # Fires at 2:00 AM
+        minute=0,
+        id="synch_photos",
+        replace_existing=True
+    )
 
 signal.signal(signal.SIGTERM, shutdown)
 signal.signal(signal.SIGINT, shutdown)

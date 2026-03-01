@@ -2,9 +2,11 @@ import subprocess
 import os
 import logging
 from config import Configuration
+from git_client import GitClient
 from flask import Blueprint, jsonify, request, render_template
 
 configuration = Configuration()
+git_client = GitClient(".")
 
 git_manager_bp = Blueprint('git_manager', __name__)
 logger = logging.getLogger(__name__)
@@ -14,7 +16,10 @@ REPO_PATH = os.environ.get("GIT_REPO_PATH", configuration.GIT_REPO_PATH)
 
 @git_manager_bp.route('/index', methods=['GET'])
 def index():
-    result = git_api_status()
+    #result = git_api_status()
+    result = git_client.get_status()
+    result['staged'] = git_client.get_upstream_diff()
+
     logger.info(f"RESULT: {result}")
     return render_template('git_manager/index.html', status_data=result)
 
@@ -28,30 +33,20 @@ def commit():
 
     for file in data['files']:
         logger.info(f"Processing file: {file['path']} ({file['status']})")
+        if file['status'] == 'A':
+            git_client.add(file['path'])
+        if file['status'] == 'D':
+            git_client.add(file['path'])
+        elif file['status'] == 'M':
+            git_client.add(file['path'])
 
+    result = git_client.commit(message)
 
-        if file['status'] == 'modified':
-            run_git_command(["add", file['path']])
-        elif file['status'] == 'untracked':
-            run_git_command(["add", file['path']])
-        elif file['status'] == 'deleted':
-            run_git_command(["add", file['path']])
-
-
-    commit = run_git_command(["commit", "-m", message])
-    #push = run_git_command(["push", "origin", "main"])
-
-    logger.info(f"COMMIT: {commit}")
-    #logger.info(f"PUSH: {push}")
-
-    status_data = git_api_status()
-    logger.info(f"STATUS: {status_data}")
+    # TODO:  This response fails...
     return jsonify({
-        "success": commit["success"],
-        "status_data": status_data,
-        "files_processed": selected_files,
-        "diff_data": ""
-    })
+            "success": True,
+            "commitid": result
+            })
 
 @git_manager_bp.route('/push', methods=['POST'])
 def push():
@@ -99,26 +94,19 @@ def pull():
         "diff_data": ""
     })
 
-@git_manager_bp.route('/staged', methods=['POST'])
-def staged():
-    staged_data = run_git_command(["diff", "origin/main..HEAD"])
-    logger.info(f"RESULT: {staged_data}")
-
-    status_data = git_api_status()
-    return jsonify({
-        "success": status_data['success'],
-        "status_data": status_data,
-        "staged_data": staged_data['stdout'],
-        "diff_data": ""
-    })
-
 @git_manager_bp.route('/checkout', methods=['POST'])
 def checkout():
-    result = run_git_command(["checkout", "."])
+
+    data = request.get_json() or {}
+    selected_files = data.get('files', [])
+    logger.info(f"checkout - input: {data}")
+
+    result = git_client.checkout(selected_files)
     logger.info(f"RESULT: {result}")
-    status_data = git_api_status()
+
+    status_data = git_client.get_status()
     return jsonify({
-        "success": result['success'],
+        "success": True,
         "status_data": status_data,
         "diff_data": ""
     })

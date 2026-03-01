@@ -13,8 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pullBtn = document.getElementById('pull');
     const checkoutBtn = document.getElementById('checkout');
     const resetBtn = document.getElementById('reset');
-    const switchBranchBtn = document.getElementById('branch-switch');
-    const createBranchBtn = document.getElementById('branch-create');
 
     // This data is injected into the window object by the template
     let changes = statusData["changes"] || { changes: [] };
@@ -28,60 +26,135 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let html = '<ul id="git-changes" class="list-group">';
-        changes.forEach((change, index) => {
-            const statusClass = getStatusBadgeClass(change.working_tree || change.index);
-            const statusText = (change.working_tree !== 'unchanged') ? change.working_tree : change.index;
+        console.log(statusData)
 
-            html += `
-                <li class="list-group-item d-flex align-items-center">
+        gitChangesContainer.innerHTML = ""; // clear previous content
 
-                    <input class="form-check-input me-3 file-checkbox"
-                               type="checkbox"
-                               value="${change.path}"
-                               data-status="${statusText}"
-                               id="file-${index}"
-                               checked>
-                    <label class="form-check-label d-flex justify-content-between w-100" for="file-${index}">
-                        <span class="text-truncate" style="max-width: 80%;" title="${change.path}">
-                            ${change.path}
-                        </span>
-                        <span class="badge ${statusClass}">${statusText}</span>
-                    </label>
-                </li>
-            `;
+        const ul = document.createElement("ul");
+        ul.id = "git-changes";
+        ul.classList.add("list-group");
+
+        ul.appendChild(createDiffListHeaderRow())
+
+        document.getElementById("title").innerHTML =
+            `Manage GIT Repository (${statusData.branch})`;
+
+        statusData.unstaged.forEach((change, index) => {
+            const li = createDiffListItem("unstaged", change, index);
+            ul.appendChild(li);
         });
-        html += '</ul>';
-        gitChangesContainer.innerHTML = html;
+        statusData.untracked.forEach((change, index) => {
+            const li = createDiffListItem("untracked", change, index);
+            ul.appendChild(li);
+        });
+        statusData.staged.forEach((change, index) => {
+            const li = createDiffListItem("staged", change, index);
+            ul.appendChild(li);
+        });
+
+        gitChangesContainer.appendChild(ul);
     }
 
-    function getStatusBadgeClass(status) {
-        switch (status.toLowerCase()) {
-            case 'modified': return 'bg-warning text-dark';
-            case 'added': return 'bg-success';
-            case 'untracked': return 'bg-info text-dark';
-            case 'deleted': return 'bg-danger';
-            case 'renamed': return 'bg-primary';
-            default: return 'bg-secondary';
-        }
-    }
+    function createDiffListHeaderRow() {
 
-    async function invokeGitManagerRoute(endpoint, payload, onSuccess, onError) {
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+        // --- Header row ---
+        const headerLi = document.createElement("li");
+        headerLi.classList.add("list-group-item", "d-flex", "align-items-center", "fw-bold");
+
+        // Select All checkbox
+        const selectAllCheckbox = document.createElement("input");
+        selectAllCheckbox.type = "checkbox";
+        selectAllCheckbox.classList.add("form-check-input", "me-3");
+        selectAllCheckbox.id = "select-all-files";
+
+        // Optional: clicking this checks/unchecks all file checkboxes
+        selectAllCheckbox.addEventListener("change", (e) => {
+            document.querySelectorAll(".file-checkbox").forEach(cb => {
+                cb.checked = e.target.checked;
             });
-            const result = await response.json();
-            if (result.success) {
-                onSuccess()
-            } else {
-                onError(result.error)
-            }
-        } catch (err) {
-            onError(err)
+        });
+
+        // File path column
+        const filePathSpan = document.createElement("span");
+        filePathSpan.classList.add("flex-grow-1");
+        filePathSpan.textContent = "File Path";
+
+        // Status column
+        const statusSpan = document.createElement("span");
+        statusSpan.textContent = "Status";
+
+        headerLi.appendChild(selectAllCheckbox);
+        headerLi.appendChild(filePathSpan);
+        headerLi.appendChild(statusSpan);
+
+       return headerLi;
+    }
+
+    function createDiffListItem(type, change, index) {
+        console.log(change)
+
+        let change_type = null;
+        let change_path = null;
+
+        if ( type == "unstaged" ) {
+            change_type = change.split(":")[0]
+            change_path = change.split(":")[1].trim()
+        } else if ( type == "untracked" ) {
+            change_type = "A"
+            change_path = change.trim()
+        } else if ( type == "staged" ) {
+            change_type = 'S'
+            change_path = change.split(":")[1].trim()
         }
+
+        console.log(change_type)
+        console.log(change_path)
+
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex align-items-center";
+
+        const checkbox = document.createElement("input");
+        checkbox.className = "form-check-input me-3 file-checkbox";
+        checkbox.type = "checkbox";
+        checkbox.value = change_path;
+        checkbox.dataset.status = change_type;
+        checkbox.id = `file-${index}`;
+        checkbox.checked = false;
+
+        const label = document.createElement("label");
+        label.className = "form-check-label d-flex justify-content-between w-100";
+        label.setAttribute("for", `file-${index}`);
+
+        const pathSpan = document.createElement("span");
+        pathSpan.className = "text-truncate";
+        pathSpan.style.maxWidth = "80%";
+        pathSpan.title = change_path;
+        pathSpan.textContent = change_path;
+
+        const badgeSpan = document.createElement("span");
+
+        badgeSpan.classList.add( "badge", "rounded")
+        if ( change_type == "M" ) {
+            badgeSpan.classList.add("bg-warning", "text-dark");
+            badgeSpan.textContent = "modified";
+        } else if ( change_type == "D" ) {
+            badgeSpan.classList.add("bg-danger", "text-dark");
+            badgeSpan.textContent = "deleted";
+        } else if ( change_type == "A" ) {
+            badgeSpan.classList.add("bg-success", "text-dark");
+            badgeSpan.textContent = "added";
+        } else if ( change_type == "S" ) {
+            badgeSpan.classList.add("bg-info", "text-dark");
+            badgeSpan.textContent = "staged";
+        }
+
+        label.appendChild(pathSpan);
+        label.appendChild(badgeSpan);
+
+        li.appendChild(checkbox);
+        li.appendChild(label);
+
+        return li;
     }
 
     /**
@@ -108,15 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
             files: selectedFiles,
             timestamp: new Date().toISOString()
         };
-
-        invokeGitManagerRoute("/git_manager/commit", payload, () => {
-                console.log("Committed successfully");
-                clearDiffResults();
-                renderChanges();
-            }, (error) => {
-                alert("Error: " + error);
-            })
-        /*
         try {
             const response = await fetch(`/git_manager/commit`, {
                 method: 'POST',
@@ -134,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error("Error sending file list:", err);
         }
-         */
     });
 
     pushBtn.addEventListener('click', async (e) => {
@@ -162,6 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error sending file list:", err);
         }
     });
+
+
 
     /**
      * DIFF
@@ -192,32 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error sending file list:", err);
         }
     });
-
-
-    /**
-     * Staged
-     */
-    /*
-    stagedBtn.addEventListener('click', async () => {
-        try {
-            const response = await fetch(`/git_manager/staged`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const result = await response.json();
-            if (result.success) {
-                renderCommitDiff(result.staged_data);
-                if (result.status_data) {
-                    renderChanges();
-                }
-            } else {
-                alert("Error: " + (result.error || "Request failed"));
-            }
-        } catch (err) {
-            console.error("Error sending file list:", err);
-        }
-    });
-     */
 
     /**
      * PULL
@@ -251,10 +290,19 @@ document.addEventListener('DOMContentLoaded', () => {
      * CHECKOUT
      */
     checkoutBtn.addEventListener('click', async () => {
-        if (!confirm("WARNING: This will delete all uncommitted changes. Proceed?")) return;
+        if (!confirm("WARNING: This will delete uncommitted changes to the selected files. Proceed?")) return;
+
+        const checkedBoxes = document.querySelectorAll('.file-checkbox:checked');
+        const selectedFiles = Array.from(checkedBoxes).map(cb => ({
+            path: cb.value,
+            status: cb.dataset.status
+        }));
+
         const payload = {
+            files: selectedFiles,
             timestamp: new Date().toISOString()
         };
+
         try {
             const response = await fetch(`/git_manager/checkout`, {
                 method: 'POST',

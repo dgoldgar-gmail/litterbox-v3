@@ -6,11 +6,13 @@ import ssl
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from datetime import datetime, timezone
+from pathlib import Path
 from ssl import DER_cert_to_PEM_cert
 
 from utils import get_timestamp
 from config import Configuration
 from home_assistant_client import HomeAssistantClient
+from icloud_client import synch_photos_for_user
 
 
 from .model.Application import Application
@@ -118,5 +120,11 @@ def collect_certificate_info():
     sensor_attributes['serial_number'] = cert.serial_number
     payload['attributes'] = sensor_attributes
     home_assistant_client.set_homeassistant_state(sensor_name, payload)
+
+
+def synch_photos():
+    users = [ "dave", "erin" ]
+    for user in users:
+        synch_photos_for_user(user)
 
 
