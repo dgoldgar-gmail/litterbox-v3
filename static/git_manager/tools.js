@@ -251,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderChanges();
             } else {
                 onError(result.error)
-                //alert("Error: " + (result.error || "Request failed"));
             }
         } catch (err) {
             console.error("Error sending file list:", err);
