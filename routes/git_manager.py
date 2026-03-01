@@ -48,8 +48,11 @@ def commit():
     }
 
     logger.info(f"COMMIT: {commit_info}")
+
     result = git_client.get_status()
     result['staged'] = git_client.get_upstream_diff()
+
+    console.log("RESULT: ", result)
 
     return jsonify({
             "success": True,
