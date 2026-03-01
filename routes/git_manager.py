@@ -39,14 +39,21 @@ def commit():
         elif file['status'] == 'M':
             git_client.add(file['path'])
 
-    commit_result = git_client.commit(message)
+    new_commit = git_client.commit(message)
+    commit_info = {
+        "hash": new_commit.hexsha,
+        "short_hash": new_commit.hexsha[:7],
+        "message": new_commit.message,
+        "author": new_commit.author.name
+    }
+
     logger.info(f"COMMIT: {commit_result}")
     result = git_client.get_status()
     result['staged'] = git_client.get_upstream_diff()
 
     return jsonify({
             "success": True,
-            "commit_result": commit_result,
+            "commit_result": commit_info,
             "status_data": result
             })
 
