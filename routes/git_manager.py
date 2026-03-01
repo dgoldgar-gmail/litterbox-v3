@@ -40,7 +40,7 @@ def commit():
             git_client.add(file['path'])
 
     commit_result = git_client.commit(message)
-
+    logger.info(f"COMMIT: {commit_result}")
     result = git_client.get_status()
     result['staged'] = git_client.get_upstream_diff()
 

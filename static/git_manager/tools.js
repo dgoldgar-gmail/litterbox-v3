@@ -165,171 +165,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return li;
     }
 
-    /**
-     * Commit
-     */
-    commitBtn.addEventListener('click', async (e) => {
-
-        const message = prompt("Enter a commit message:", "Update via Web UI");
-        if (message === null) {
-            console.log("User cancelled the push.");
-            return;
-        }
-        if (message.trim() === "") {
-            alert("You must provide a commit message to proceed.");
-            return;
-        }
-
-        const checkedBoxes = document.querySelectorAll('.file-checkbox:checked');
-        const selectedFiles = Array.from(checkedBoxes).map(cb => ({
-            path: cb.value,
-            status: cb.dataset.status
-        }));
-        const payload = {
-            files: selectedFiles,
-            timestamp: new Date().toISOString()
-        };
-        try {
-            const response = await fetch(`/git_manager/commit`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            if (result.success) {
-                console.log("Committed successfully");
-                clearDiffResults();
-                renderChanges();
-            } else {
-                alert("Error: " + (result.error || "Request failed"));
-            }
-        } catch (err) {
-            console.error("Error sending file list:", err);
-        }
-    });
-
-    pushBtn.addEventListener('click', async (e) => {
-
-        if (!confirm("Push committed changes to origin/main?")) return;
-
-        const payload = {
-            timestamp: new Date().toISOString()
-        };
-        try {
-            const response = await fetch(`/git_manager/push`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            if (result.success) {
-                console.log("Pushed successfully");
-                clearDiffResults();
-                renderChanges();
-            } else {
-                alert("Error: " + (result.error || "Request failed"));
-            }
-        } catch (err) {
-            console.error("Error sending file list:", err);
-        }
-    });
-
-    /**
-     * PULL
-     */
-    pullBtn.addEventListener('click', async () => {
-        if (!confirm("Pull latest changes from origin/main?")) return;
-        const payload = {
-            timestamp: new Date().toISOString()
-        };
-        try {
-            const response = await fetch(`/git_manager/pull`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            console.log(result)
-            if (result.success) {
-                console.log("Pulled successfully");
-                clearDiffResults();
-                renderChanges();
-            } else {
-                alert("Error: " + (result.error || "Request failed"));
-            }
-        } catch (err) {
-            console.error("Error sending file list:", err);
-        }
-    });
-
-    /**
-     * CHECKOUT
-     */
-    checkoutBtn.addEventListener('click', async () => {
-        if (!confirm("WARNING: This will delete uncommitted changes to the selected files. Proceed?")) return;
-
-        const checkedBoxes = document.querySelectorAll('.file-checkbox:checked');
-        const selectedFiles = Array.from(checkedBoxes).map(cb => ({
-            path: cb.value,
-            status: cb.dataset.status
-        }));
-
-        const payload = {
-            files: selectedFiles,
-            timestamp: new Date().toISOString()
-        };
-
-        try {
-            const response = await fetch(`/git_manager/checkout`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            console.log(result)
-            if (result.success) {
-                console.log("Checked out successfully");
-                clearDiffResults();
-                renderChanges();
-            } else {
-                alert("Error: " + (result.error || "Request failed"));
-            }
-        } catch (err) {
-            console.error("Error sending file list:", err);
-        }
-    });
-
-    /**
-     * RESET
-     */
-    resetBtn.addEventListener('click', async () => {
-        if (!confirm("DANGER: This will delete all uncommitted and staged changes. Proceed?")) return;
-        const payload = {
-            timestamp: new Date().toISOString()
-        };
-        try {
-            const response = await fetch(`/git_manager/reset`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            console.log(result)
-            if (result.success) {
-                console.log("Reset out successfully");
-                clearDiffResults();
-                renderChanges();
-            } else {
-                alert("Error: " + (result.error || "Request failed"));
-            }
-        } catch (err) {
-            console.error("Error sending file list:", err);
-        }
-    });
-
-    function clearDiffResults() {
-        const container = document.getElementById('diff-results');
-        container.innerHTML = '';
+    function clearDiff() {
+        containers = ["staged-changes", "unstaged-changes"]
+        containers.forEach(container_name => {
+            const container = document.getElementById(container_name);
+            container.innerHTML = '';
+        })
     }
 
     function renderDiff(type, rawOutput) {
@@ -394,6 +235,190 @@ document.addEventListener('DOMContentLoaded', () => {
 
         container.innerHTML = html;
     }
+
+    async function issueGitCommand(command, payload, onSuccess, onError) {
+        try {
+            const response = await fetch(`/git_manager/${command}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.success) {
+                console.log(command, "successful");
+                onSuccess()
+                clearDiff();
+                renderChanges();
+            } else {
+                onError(result.error)
+                //alert("Error: " + (result.error || "Request failed"));
+            }
+        } catch (err) {
+            console.error("Error sending file list:", err);
+        }
+    }
+
+    commitBtn.addEventListener('click', async (e) => {
+
+        const message = prompt("Enter a commit message:", "Update via Web UI");
+        if (message === null) {
+            console.log("User cancelled the commit.");
+            return;
+        }
+        if (message.trim() === "") {
+            alert("You must provide a commit message to proceed.");
+            return;
+        }
+
+        const checkedBoxes = document.querySelectorAll('.file-checkbox:checked');
+        const selectedFiles = Array.from(checkedBoxes).map(cb => ({
+            path: cb.value,
+            status: cb.dataset.status
+        }));
+        const payload = {
+            files: selectedFiles,
+            timestamp: new Date().toISOString()
+        };
+        issueGitCommand("commit", payload, () => {
+            //console.log("Committed successfully");
+            // TODO:  Maybe pop up a message or flash or something...
+        }, (error) => {
+            alert("Error: " + error);
+        });
+    });
+
+
+    // Update all these...
+
+    /**
+     * Commit
+     */
+
+
+    pushBtn.addEventListener('click', async (e) => {
+
+        if (!confirm("Push committed changes to origin/main?")) return;
+
+        const payload = {
+            timestamp: new Date().toISOString()
+        };
+        try {
+            const response = await fetch(`/git_manager/push`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.success) {
+                console.log("Pushed successfully");
+                clearDiff();
+                renderChanges();
+            } else {
+                alert("Error: " + (result.error || "Request failed"));
+            }
+        } catch (err) {
+            console.error("Error sending file list:", err);
+        }
+    });
+
+    /**
+     * PULL
+     */
+    pullBtn.addEventListener('click', async () => {
+        if (!confirm("Pull latest changes from origin/main?")) return;
+        const payload = {
+            timestamp: new Date().toISOString()
+        };
+        try {
+            const response = await fetch(`/git_manager/pull`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            console.log(result)
+            if (result.success) {
+                console.log("Pulled successfully");
+                clearDiff();
+                renderChanges();
+            } else {
+                alert("Error: " + (result.error || "Request failed"));
+            }
+        } catch (err) {
+            console.error("Error sending file list:", err);
+        }
+    });
+
+    /**
+     * CHECKOUT
+     */
+    checkoutBtn.addEventListener('click', async () => {
+        if (!confirm("WARNING: This will delete uncommitted changes to the selected files. Proceed?")) return;
+
+        const checkedBoxes = document.querySelectorAll('.file-checkbox:checked');
+        const selectedFiles = Array.from(checkedBoxes).map(cb => ({
+            path: cb.value,
+            status: cb.dataset.status
+        }));
+
+        const payload = {
+            files: selectedFiles,
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            const response = await fetch(`/git_manager/checkout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            console.log(result)
+            if (result.success) {
+                console.log("Checked out successfully");
+                clearDiff();
+                renderChanges();
+            } else {
+                alert("Error: " + (result.error || "Request failed"));
+            }
+        } catch (err) {
+            console.error("Error sending file list:", err);
+        }
+    });
+
+    /**
+     * RESET
+     */
+    resetBtn.addEventListener('click', async () => {
+        if (!confirm("DANGER: This will delete all uncommitted and staged changes. Proceed?")) return;
+        const payload = {
+            timestamp: new Date().toISOString()
+        };
+        try {
+            const response = await fetch(`/git_manager/reset`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            console.log(result)
+            if (result.success) {
+                console.log("Reset out successfully");
+                clearDiff();
+                renderChanges();
+            } else {
+                alert("Error: " + (result.error || "Request failed"));
+            }
+        } catch (err) {
+            console.error("Error sending file list:", err);
+        }
+    });
+
+    // END stuff that needs to be updated
+
+
+
+
 
     renderChanges();
 
