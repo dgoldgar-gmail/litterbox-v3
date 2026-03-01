@@ -248,8 +248,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.success) {
                 console.log(command, "successful");
                 onSuccess()
+                console.log("Clear and repopulate changes", result)
                 clearDiff();
-                renderChanges(result.status_data);
+                renderChanges(result);
             } else {
                 onError(result.error)
             }
