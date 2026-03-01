@@ -16,7 +16,6 @@ REPO_PATH = os.environ.get("GIT_REPO_PATH", configuration.GIT_REPO_PATH)
 
 @git_manager_bp.route('/index', methods=['GET'])
 def index():
-    #result = git_api_status()
     result = git_client.get_status()
     result['staged'] = git_client.get_upstream_diff()
 
@@ -40,14 +39,16 @@ def commit():
         elif file['status'] == 'M':
             git_client.add(file['path'])
 
-    result = git_client.commit(message)
+    commit_result = git_client.commit(message)
 
-    # TODO:  This response fails...
+    result = git_client.get_status()
+    result['staged'] = git_client.get_upstream_diff()
+
     return jsonify({
             "success": True,
-            "commitid": result
+            "commit_result": commit_result,
+            "status_data": result
             })
-
 
 
 @git_manager_bp.route('/diff', methods=['POST'])
@@ -88,27 +89,6 @@ def push():
         "success": push["success"],
         "status_data": status_data,
         "diff_data": ""
-    })
-
-@git_manager_bp.route('/diff1', methods=['POST'])
-def diff1():
-    data = request.get_json() or {}
-    selected_files = data.get('files', [])
-
-    logger.info(f"User wants diff for: {selected_files}")
-
-    if not selected_files:
-        return jsonify({"success": False, "error": "No files selected"}), 400
-
-    diff_data = [run_git_command(["diff", f]) for f in selected_files]
-    logger.info(f"Diff results: {diff_data}")
-
-    status_data = git_api_status()
-    return jsonify({
-        "success": True,
-        "status_data": status_data,
-        "files_processed": selected_files,
-        "diff_data": diff_data
     })
 
 @git_manager_bp.route('/pull', methods=['POST'])
