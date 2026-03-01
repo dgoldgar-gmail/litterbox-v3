@@ -47,7 +47,7 @@ def commit():
         "author": new_commit.author.name
     }
 
-    logger.info(f"COMMIT: {commit_result}")
+    logger.info(f"COMMIT: {commit_info}")
     result = git_client.get_status()
     result['staged'] = git_client.get_upstream_diff()
 
