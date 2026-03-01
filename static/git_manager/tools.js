@@ -245,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(payload)
             });
             const result = await response.json();
+            console.log("Result of ", command, result)
             if (result.success) {
                 console.log(command, "successful");
                 onSuccess()
