@@ -49,6 +49,7 @@ def commit():
 
     logger.info(f"COMMIT: {commit_info}")
 
+    git_client.repo.git.clear_cache()
     result = git_client.get_status()
     result['staged'] = git_client.get_upstream_diff()
 
