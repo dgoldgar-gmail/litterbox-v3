@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
      * Renders the list of changed files as checkboxes
      */
     function renderChanges() {
-        changes = statusData["changes"] || { changes: [] };
         if (!changes || changes.length === 0) {
             gitChangesContainer.innerHTML = '<div class="alert alert-info">No changes detected. Repository is clean.</div>';
             return;
