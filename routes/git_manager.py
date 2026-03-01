@@ -48,6 +48,34 @@ def commit():
             "commitid": result
             })
 
+
+
+@git_manager_bp.route('/diff', methods=['POST'])
+def diff():
+    data = request.get_json() or {}
+    selected_files = data.get('files', [])
+
+    logger.info(f"User wants diff for: {selected_files}")
+
+    if not selected_files:
+        return jsonify({"success": False, "error": "No files selected"}), 400
+
+    diff_data = git_client.get_diff(selected_files)
+    logger.info(f"Diff results: {diff_data}")
+
+    status_data = git_api_status()
+    return jsonify({
+        "success": True,
+        "status_data": status_data,
+        "files_processed": selected_files,
+        "diff_data": diff_data
+    })
+
+
+
+
+# EVERYTHING FROM HERE DOWN NEEDS TO BE UPDATED TO USE THE GITCLIENT
+
 @git_manager_bp.route('/push', methods=['POST'])
 def push():
     push = run_git_command(["push", "origin", "main"])
@@ -62,8 +90,8 @@ def push():
         "diff_data": ""
     })
 
-@git_manager_bp.route('/diff', methods=['POST'])
-def diff():
+@git_manager_bp.route('/diff1', methods=['POST'])
+def diff1():
     data = request.get_json() or {}
     selected_files = data.get('files', [])
 

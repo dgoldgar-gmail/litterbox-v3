@@ -26,7 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log(statusData)
+        /*
+        console.log(statusData['branch'])
+        console.log(statusData['is_dirty'])
+        console.log(statusData['staged'])
+        console.log(statusData['staged_diff'])
+        console.log(statusData['unstaged'])
+        console.log(statusData['unstaged_diff'])
+        console.log(statusData['untracked'])
+         */
 
         gitChangesContainer.innerHTML = ""; // clear previous content
 
@@ -53,6 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         gitChangesContainer.appendChild(ul);
+
+        renderDiff("Unstaged Changes", statusData['unstaged_diff'])
+        renderDiff("Staged Changes", statusData['staged_diff'])
+
     }
 
     function createDiffListHeaderRow() {
@@ -91,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createDiffListItem(type, change, index) {
-        console.log(change)
 
         let change_type = null;
         let change_path = null;
@@ -106,9 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
             change_type = 'S'
             change_path = change.split(":")[1].trim()
         }
-
-        console.log(change_type)
-        console.log(change_path)
 
         const li = document.createElement("li");
         li.className = "list-group-item d-flex align-items-center";
@@ -226,38 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
-
-    /**
-     * DIFF
-     */
-    diffBtn.addEventListener('click', async () => {
-        const checkedBoxes = document.querySelectorAll('.file-checkbox:checked');
-        const selectedFiles = Array.from(checkedBoxes).map(cb => cb.value);
-        const payload = {
-            files: selectedFiles,
-            timestamp: new Date().toISOString()
-        };
-        try {
-            const response = await fetch(`/git_manager/diff`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            if (result.success) {
-                renderDiffResults(result.diff_data);
-                if (result.status_data) {
-                    renderChanges();
-                }
-            } else {
-                alert("Error: " + (result.error || "Request failed"));
-            }
-        } catch (err) {
-            console.error("Error sending file list:", err);
-        }
-    });
-
     /**
      * PULL
      */
@@ -356,14 +332,18 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = '';
     }
 
-    function renderCommitDiff(rawOutput) {
-        const container = document.getElementById('diff-results');
+    function renderDiff(type, rawOutput) {
+        console.log(type)
+        const container = document.getElementById(type.toLowerCase().replace(" ", "-"));
+
         if (!rawOutput) {
-            container.innerHTML = '<div class="alert alert-info">No staged changes to show.</div>';
+            container.innerHTML = '<div class="alert alert-info">No ' + type + ' to show.</div>';
             return;
         }
 
-        const diffSplitIndex = rawOutput.indexOf('\ndiff --git');
+        console.log(rawOutput)
+        const diffSplitIndex = rawOutput.indexOf('diff --git');
+        console.log(diffSplitIndex)
 
         let headerText = "";
         let diffContent = "";
@@ -376,21 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
             headerText = rawOutput;
         }
 
-        /*
-        //Could rebuild this so it just shows the list of commits or something...
-        let html = `
-            <div class="card mb-3 bg-dark-subtle border-secondary">
-                <div class="card-header bg-dark text-muted small">Commit Metadata</div>
-                <div class="card-body font-monospace small text-light">
-                    ${headerText.trim().replace(/\n/g, '<br>')}
-                </div>
-            </div>
-            <h2 class="h5 mb-3 text-secondary">Committed Changes</h2>
-        `;
-        */
-
         const fileDiffs = diffContent.split('\ndiff --git').filter(Boolean);
-        let html = "<br><h3>Staged Changes</h3><br>";
+        let html = "<br><h3>" + type + "</h3><br>";
         fileDiffs.forEach(diff => {
             const fullDiff = 'diff --git' + diff;
             const lines = fullDiff.split('\n');
@@ -426,54 +393,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         container.innerHTML = html;
-    }
-
-    function renderDiffResults(diffData) {
-        const container = document.getElementById('diff-results');
-
-        if (!diffData || diffData.length === 0) {
-            container.innerHTML = '<div class="alert alert-warning">No diff data returned.</div>';
-            return;
-        }
-
-        let html = "<br><h3>Uncommitted Changes</h3><br>";
-
-        diffData.forEach(res => {
-            if (res.stdout) {
-                // TODO:  This could fail because the file is deleted or something?
-                const fileName = res.stdout.split('\n')[0].split(" ")[3].replace("b/","")
-                // Escape HTML and split into lines to add color classes
-                const lines = res.stdout.split('\n').map(line => {
-                    let className = 'diff-line';
-
-                    if (line.startsWith('+') && !line.startsWith('+++')) {
-                        className += ' diff-added';
-                    } else if (line.startsWith('-') && !line.startsWith('---')) {
-                        className += ' diff-removed';
-                    } else if (line.startsWith('@@')) {
-                        className += ' diff-header';
-                    }
-                    return `<div class="${className}">${escapeHtml(line)}</div>`;
-                }).join('');
-                html += `
-                    <div class="card mb-3">
-                        <div class="card-header py-1 bg-primary-subtle text-white border-secondary shadow-sm">
-                            <medium>Git Diff Output - ${fileName}</medium>
-                        </div>
-                        <div class="card-body p-0"> <pre class="m-0" style="white-space: pre-wrap; font-size: 0.85rem;"><code>${lines}</code></pre>
-                        </div>
-                    </div>`;
-            }
-        });
-
-        container.innerHTML = html;
-        container.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
     }
 
     renderChanges();

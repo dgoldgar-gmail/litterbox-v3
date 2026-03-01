@@ -18,43 +18,37 @@ class GitClient:
     def current_branch(self):
         return self.repo.active_branch.name
 
-    # 1. Diff local branch changes
     def get_status(self):
         status = {
             "branch": self.repo.active_branch.name,
             "is_dirty": self.repo.is_dirty(),
             "untracked": self.repo.untracked_files,
             "unstaged": [],
-            "staged": []
+            "staged": [],
+            "staged_diff": "",
+            "unstaged_diff": ""
         }
 
-        # ---- UNSTAGED ----
         output = self.repo.git.diff("--name-status", "-M")
         for line in output.splitlines():
             parts = line.split("\t")
             change_type = parts[0]
-
             if change_type.startswith("R"):
-                old_path = parts[1]
-                new_path = parts[2]
-                status["unstaged"].append(f"R: {old_path} -> {new_path}")
+                status["unstaged"].append(f"R: {parts[1]} -> {parts[2]}")
             else:
-                path = parts[1]
-                status["unstaged"].append(f"{change_type}: {path}")
+                status["unstaged"].append(f"{change_type}: {parts[1]}")
 
-        # ---- STAGED ----
         output = self.repo.git.diff("--cached", "--name-status", "-M")
         for line in output.splitlines():
             parts = line.split("\t")
             change_type = parts[0]
-
             if change_type.startswith("R"):
-                old_path = parts[1]
-                new_path = parts[2]
-                status["staged"].append(f"R: {old_path} -> {new_path}")
+                status["staged"].append(f"R: {parts[1]} -> {parts[2]}")
             else:
-                path = parts[1]
-                status["staged"].append(f"{change_type}: {path}")
+                status["staged"].append(f"{change_type}: {parts[1]}")
+
+        status["unstaged_diff"] = self.repo.git.diff("HEAD")
+        status['staged_diff'] = self.repo.git.diff("--cached")
 
         return status
 
