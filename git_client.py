@@ -18,67 +18,58 @@ class GitClient:
     def current_branch(self):
         return self.repo.active_branch.name
 
-    def get_status(self):
-        status = {
-            "branch": self.repo.active_branch.name,
-            "is_dirty": self.repo.is_dirty(),
-            "untracked": self.repo.untracked_files,
-            "unstaged": [],
-            "staged": [],
-            "staged_diff": "",
-            "unstaged_diff": ""
-        }
 
+    def _parse_name_status(self, output):
+        """Helper to parse --name-status output into a readable list."""
+        results = []
+        for line in output.splitlines():
+            if not line: continue
+            parts = line.split("\t")
+            change_type = parts[0]
+            if change_type.startswith("R"):
+                results.append(f"R: {parts[1]} -> {parts[2]}")
+            else:
+                results.append(f"{change_type}: {parts[1]}")
+        return results
+
+    def git_untracked(self):
+        """Returns a list of files that are not yet tracked by Git."""
+        # GitPython provides a built-in property for this
+        return  self.repo.untracked_files
+
+    def git_unstaged(self):
+        """Returns a list of modified/deleted/added files in the working directory."""
         output = self.repo.git.diff("--name-status", "-M")
-        for line in output.splitlines():
-            parts = line.split("\t")
-            change_type = parts[0]
-            if change_type.startswith("R"):
-                status["unstaged"].append(f"R: {parts[1]} -> {parts[2]}")
-            else:
-                status["unstaged"].append(f"{change_type}: {parts[1]}")
+        return self._parse_name_status(output)
 
+    def git_staged(self):
+        """Returns a list of files currently in the index (staging area)."""
         output = self.repo.git.diff("--cached", "--name-status", "-M")
-        for line in output.splitlines():
-            parts = line.split("\t")
-            change_type = parts[0]
-            if change_type.startswith("R"):
-                status["staged"].append(f"R: {parts[1]} -> {parts[2]}")
-            else:
-                status["staged"].append(f"{change_type}: {parts[1]}")
+        return self._parse_name_status(output)
 
-        status["unstaged_diff"] = self.repo.git.diff("HEAD")
-        status['staged_diff'] = self.repo.git.diff("--cached")
+    def git_unstaged_diff(self):
+        """Returns the actual diff text for unstaged changes."""
+        return self.repo.git.diff()
 
-        return status
+    def git_staged_diff(self):
+        """Returns the actual diff text for staged changes."""
+        return self.repo.git.diff("--cached")
 
-    # 2. Diff with upstream ( find staged changes )
-    def get_upstream_diff(self):
-        tracking_branch = self.repo.active_branch.tracking_branch()
-        if not tracking_branch:
-            return ["No upstream branch configured."]
+    def git_committed(self):
+        """Returns files committed locally but not yet pushed to upstream."""
+        # Compares current branch to its upstream tracking branch
+        try:
+            output = self.repo.git.diff("@{u}..HEAD", "--name-status", "-M")
+            return self._parse_name_status(output)
+        except Exception:
+            return "No upstream branch found."
 
-        # Using raw git for reliability
-        output = self.repo.git.diff(
-            tracking_branch.commit,
-            name_status=True,
-            cached=True
-        )
-
-        summary = []
-
-        for line in output.splitlines():
-            parts = line.split("\t")
-            change_type = parts[0]
-            if change_type.startswith("R"):
-                # Renamed: just treat as "M" for display purposes
-                new_path = parts[2]
-                summary.append(f"M: {new_path}")
-            else:
-                path = parts[1]
-                summary.append(f"{change_type}: {path}")
-
-        return summary
+    def git_committed_diff(self):
+        """Returns the diff text between local HEAD and upstream."""
+        try:
+            return self.repo.git.diff("@{u}..HEAD")
+        except Exception:
+            return "No upstream branch found."
 
     # 3. Add files
     def add(self, files=None):
