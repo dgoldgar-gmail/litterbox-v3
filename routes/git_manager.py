@@ -16,8 +16,19 @@ REPO_PATH = os.environ.get("GIT_REPO_PATH", configuration.GIT_REPO_PATH)
 
 @git_manager_bp.route('/index', methods=['GET'])
 def index():
-    result = git_client.get_status()
-    result['staged'] = git_client.get_upstream_diff()
+
+    # "branch": self.repo.active_branch.name,
+    # "is_dirty": self.repo.is_dirty(),
+    result = {}
+    result['branch'] = git_client.current_branch
+    #result['is_dirty'] = git_client.is_dirty()
+    result['untracked'] = git_client.git_untracked()
+    result['unstaged'] = git_client.git_unstaged()
+    result['staged'] = git_client.git_staged()
+    result['committed'] = git_client.git_committed()
+    result['unstaged_diff'] = git_client.git_unstaged_diff()
+    result['staged_diff'] = git_client.git_staged_diff()
+    result['committed_diff'] = git_client.git_committed_diff()
 
     logger.info(f"RESULT: {result}")
     return render_template('git_manager/index.html', status_data=result)
@@ -51,7 +62,9 @@ def commit():
 
     git_client.repo.git.clear_cache()
     result = git_client.get_status()
-    result['staged'] = git_client.get_upstream_diff()
+    result['staged'] = git_client.get_upstream_status()
+    result['staged_diff'] = git_client.get_upstream_diff()
+
 
     logger.info("RESULT: ", result)
 

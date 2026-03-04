@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         renderDiff("Unstaged Changes", statusData['unstaged_diff'])
         renderDiff("Staged Changes", statusData['staged_diff'])
+        renderDiff("Committed Changes", statusData['committed_diff'])
 
     }
 
