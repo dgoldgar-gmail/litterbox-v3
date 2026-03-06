@@ -5,10 +5,14 @@ apscheduler
 docker
 Flask==2.2.5
 gevent
+GitPython
 gunicorn
 Jinja2==3.0.3
 PyYaml
 paramiko
+piexif
+pyicloud
 requests
 scp
 watchdog
+

@@ -3,7 +3,7 @@
 # --- Configuration ---
 REGISTRY_HOST="192.168.50.15:5000"
 IMAGE_NAME="litterbox-v3"
-TAG="0.6"
+TAG="0.8"
 GENERIC_IMAGE="${REGISTRY_HOST}/${IMAGE_NAME}:${TAG}"
 BUILDER_NAME="multiarch-builder"
 

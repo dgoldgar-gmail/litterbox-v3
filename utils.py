@@ -102,6 +102,13 @@ def getSchedulerMode(hostname):
     else:
         return configuration.UNKNOWN
 
+def getSyncPhotos(hostname):
+    mapping=configuration.load_yaml_data(configuration.UNIFIED_MAPPING)
+    for host in mapping.get('hosts', []):
+        if host.get('name') == hostname:
+            containers = host.get('containers', [])
+            return any(c.get('name') == 'photoprism' for c in containers)
+
 # --- Logging Helper Function ---
 def configure_logging(
     level=logging.INFO,

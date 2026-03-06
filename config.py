@@ -40,8 +40,8 @@ class Configuration:
         self.CONFIG_DIR = self.__setup_directory_environment("CONFIG_DIR", "app/config")
         self.JINJA_TEMPLATES = self.__setup_directory_environment("JINJA_TEMPLATES", "app/templates")
         self.GENERATED = self.__setup_directory_environment("GENERATED", "app/generated")
-        # Fixed: Added self. and used double underscores to match your method
         self.GIT_REPO_PATH = self.__setup_directory_environment("GIT_REPO_PATH", "/app/git")
+        self.PHOTOPRISM_PATH = self.__setup_directory_environment("PHOTOPRISM_PATH", "/app/photoprism")
 
         # Files
         self.SECRETS_YAML = self.__load_config_file("SECRETS_YAML", "secrets.yaml")
@@ -49,6 +49,7 @@ class Configuration:
         self.UNIFIED_MAPPING = self.__load_config_file("UNIFIED_MAPPING", "unified_mapping.yaml")
         self.APPLICATIONS_CONFIG = self.__load_config_file("APPLICATIONS_CONFIG", "applications.json")
         self.LOGGER_CONFIG = self.__load_config_file("LOGGER_CONFIG", "logger_config.json")
+        self.ICLOUD_PHOTOS_LOCK = self.__load_config_file("ICLOUD_PHOTOS_LOCK", f"{self.PHOTOPRISM_PATH}/icloud_sessions/icloud_photos_lock.json", True)
 
         self.UNIFIED_MAPPING_SCHEMA = self.__load_config_file("UNIFIED_MAPPING_SCHEMA", "unified_mapping_schema.json")
         self.OVERVIEW_MAPPING_SCHEMA = self.__load_config_file("OVERVIEW_MAPPING_SCHEMA", "overview_mapping_schema.json")
@@ -65,6 +66,7 @@ class Configuration:
         self.COLLECT_HOST_INFO_INTERVAL = int(os.environ.get("COLLECT_HOST_INFO_INTERVAL", 5))
         self.COLLECT_CERTIFICATE_INFO_INTERVAL = int(os.environ.get("COLLECT_CERTIFICATE_INFO_INTERVAL", 12))
         self.UPDATE_DUCK_DNS_INTERVAL = int(os.environ.get("UPDATE_DUCK_DNS_INTERVAL", 12))
+        self.SYNCH_PHOTOS_INTERVAL = int(os.environ.get("SYNCH_PHOTOS_INTERVAL", 7))
 
         self.LEADER_TTL = int(os.environ.get("LEADER_TTL", 240))
         self.LEADER_WATCHDOG_INTERVAL = int(os.environ.get("LEADER_TTL", 60))
@@ -84,6 +86,7 @@ class Configuration:
         logger.info(f"{name} set to: {value}")
         return value
 
+    # I think this is named wrong....
     def __load_config_file(self, variable_name, file_name, full_path=False):
         if full_path:
             config_file = f"{file_name}"
@@ -137,8 +140,9 @@ class Configuration:
             content = f.read()
             return json.loads(content)
 
-    def save_json_data(self, app_data_dict, json_file_path):
-        self.create_backup(json_file_path)  # New backup logic
+    def save_json_data(self, app_data_dict, json_file_path, backup=True):
+        if backup:
+            self.create_backup(json_file_path)
 
         try:
             with open(json_file_path, 'w') as f:
