@@ -2,9 +2,11 @@ import subprocess
 import os
 import logging
 from config import Configuration
+from git_client import GitClient
 from flask import Blueprint, jsonify, request, render_template
 
 configuration = Configuration()
+git_client = GitClient(".")
 
 git_manager_bp = Blueprint('git_manager', __name__)
 logger = logging.getLogger(__name__)
@@ -14,9 +16,7 @@ REPO_PATH = os.environ.get("GIT_REPO_PATH", configuration.GIT_REPO_PATH)
 
 @git_manager_bp.route('/index', methods=['GET'])
 def index():
-    result = git_api_status()
-    logger.info(f"RESULT: {result}")
-    return render_template('git_manager/index.html', status_data=result)
+    return render_template('git_manager/index.html', status_data=git_status_data())
 
 @git_manager_bp.route('/commit', methods=['POST'])
 def commit():
@@ -28,206 +28,144 @@ def commit():
 
     for file in data['files']:
         logger.info(f"Processing file: {file['path']} ({file['status']})")
+        if file['status'] == 'A':
+            git_client.add(file['path'])
+        if file['status'] == 'D':
+            git_client.add(file['path'])
+        elif file['status'] == 'M':
+            git_client.add(file['path'])
 
+    new_commit = git_client.commit(message)
+    commit_info = {
+        "hash": new_commit.hexsha,
+        "short_hash": new_commit.hexsha[:7],
+        "message": new_commit.message,
+        "author": new_commit.author.name
+    }
 
-        if file['status'] == 'modified':
-            run_git_command(["add", file['path']])
-        elif file['status'] == 'untracked':
-            run_git_command(["add", file['path']])
-        elif file['status'] == 'deleted':
-            run_git_command(["add", file['path']])
+    logger.debug(f"COMMIT: {commit_info}")
 
-
-    commit = run_git_command(["commit", "-m", message])
-    #push = run_git_command(["push", "origin", "main"])
-
-    logger.info(f"COMMIT: {commit}")
-    #logger.info(f"PUSH: {push}")
-
-    status_data = git_api_status()
-    logger.info(f"STATUS: {status_data}")
     return jsonify({
-        "success": commit["success"],
-        "status_data": status_data,
-        "files_processed": selected_files,
-        "diff_data": ""
-    })
+            "success": True,
+            "commit_result": commit_info,
+            "status_data": git_status_data()
+            })
 
 @git_manager_bp.route('/push', methods=['POST'])
 def push():
-    push = run_git_command(["push", "origin", "main"])
-
-    logger.info(f"COMMIT: {push}")
-
-    status_data = git_api_status()
-    logger.info(f"STATUS: {status_data}")
-    return jsonify({
-        "success": push["success"],
-        "status_data": status_data,
-        "diff_data": ""
-    })
-
-@git_manager_bp.route('/diff', methods=['POST'])
-def diff():
     data = request.get_json() or {}
-    selected_files = data.get('files', [])
+    is_force = data.get('force', False)
 
-    logger.info(f"User wants diff for: {selected_files}")
+    current_branch = git_client.current_branch
+    # push_results is now a list: [{"branch": "...", "success": True, ...}]
+    push_results = git_client.push(is_force)
 
-    if not selected_files:
-        return jsonify({"success": False, "error": "No files selected"}), 400
+    logger.debug(f"PUSH RESULT for {current_branch}: {push_results}")
 
-    diff_data = [run_git_command(["diff", f]) for f in selected_files]
-    logger.info(f"Diff results: {diff_data}")
+    branch_result = next((item for item in push_results if item["branch"] == current_branch), None)
 
-    status_data = git_api_status()
+    if branch_result:
+        is_success = branch_result["success"]
+        message = branch_result["summary"]
+    else:
+        is_success = all(res["success"] for res in push_results) if push_results else False
+        message = "Push completed" if is_success else "Push failed or no results returned"
+
     return jsonify({
-        "success": True,
-        "status_data": status_data,
-        "files_processed": selected_files,
-        "diff_data": diff_data
+        "success": is_success,
+        "message": message,
+        "push_results": push_results,
+        "status_data": git_status_data()
     })
 
-@git_manager_bp.route('/pull', methods=['POST'])
-def pull():
-    result = run_git_command(["pull", "origin", "main"])
+@git_manager_bp.route('/squash', methods=['POST'])
+def squash():
 
-    status_data = git_api_status()
+    data = request.get_json() or {}
+    message = data.get("message", "Squashed from Litterbox UI")
+
+    squash_result = git_client.squash_since_divergence(message)
+
+    logger.info(f"SQUASH RESULT: {squash_result}")
+
     return jsonify({
-        "success": True,
-        "status_data": result,
-        "diff_data": ""
-    })
-
-@git_manager_bp.route('/staged', methods=['POST'])
-def staged():
-    staged_data = run_git_command(["diff", "origin/main..HEAD"])
-    logger.info(f"RESULT: {staged_data}")
-
-    status_data = git_api_status()
-    return jsonify({
-        "success": status_data['success'],
-        "status_data": status_data,
-        "staged_data": staged_data['stdout'],
-        "diff_data": ""
-    })
-
-@git_manager_bp.route('/checkout', methods=['POST'])
-def checkout():
-    result = run_git_command(["checkout", "."])
-    logger.info(f"RESULT: {result}")
-    status_data = git_api_status()
-    return jsonify({
-        "success": result['success'],
-        "status_data": status_data,
-        "diff_data": ""
+        "success": squash_result.get("success", False),
+        "message": squash_result.get("message", "Squash completed"),
+        "status_data": git_status_data()
     })
 
 @git_manager_bp.route('/reset', methods=['POST'])
-def reset():
-    fetch_result =run_git_command(["fetch", "origin"])
-    reset_result = run_git_command(["reset", "--hard", "origin/main"])
-    logger.info(f"RESULT: {reset_result}")
-    status_data = git_api_status()
-    return jsonify({
-        "success": fetch_result['success'],
-        "status_data": status_data,
-        "diff_data": ""
-    })
+def reset_work_route():
+    data = request.get_json() or {}
+    mode = data.get('mode', 'soft')
+    files = data.get('files', [])
 
-def git_api_status():
+    # Validation: If 'files' mode is chosen, we need a list
+    if mode == 'files' and not files:
+        return jsonify({
+            "success": False,
+            "message": "No files specified for reset."
+        }), 400
 
-    porcelain_res = run_git_command(["status", "--porcelain"])
-    branch_res = run_git_command(["rev-parse", "--abbrev-ref", "HEAD"])
-    run_git_command(["fetch", "origin"])
-    count_res = run_git_command(["rev-list", "--left-right", "--count", "HEAD...origin/main"])
-    stdout_str = porcelain_res.get("stdout", "") if porcelain_res else ""
-    files = parse_porcelain_status(stdout_str)
-    branch = branch_res.get("stdout", configuration.UNKNOWN).strip() if branch_res else "unknown"
-    ahead, behind = 0, 0
-    if count_res and count_res.get("success"):
-        counts = count_res.get("stdout", "0 0").strip().split()
-        if len(counts) >= 2:
-            ahead = counts[0].strip()
-            behind = counts[1].strip()
-    return {
-        "success": True,
-        "branch": branch,
-        "ahead": ahead,
-        "behind": behind,
-        "changes": files,
-        "is_dirty": len(files) > 0
-    }
-
-
-def parse_porcelain_status(stdout):
-    """
-    Parses 'git status --porcelain' output.
-    Format is XY PATH where XY are status codes.
-    """
-    files = []
-    if not stdout:
-        return files
-
-    mapping = {
-        'M': 'modified',
-        'A': 'added',
-        'D': 'deleted',
-        'R': 'renamed',
-        'C': 'copied',
-        'U': 'updated but unmerged',
-        '?': 'untracked',
-        '!': 'ignored',
-        ' ': 'unchanged'
-    }
-
-    for line in stdout.splitlines():
-        # Lines should be "XY path" (at least 4 chars)
-        if len(line) < 4:
-            continue
-
-        index_status = line[0]
-        work_tree_status = line[1]
-
-        # Slicing from index 3 captures the path exactly as Git provides it
-        raw_path = line[3:]
-
-        # Handle renames: "old_path -> new_path"
-        if " -> " in raw_path:
-            file_path = raw_path.split(" -> ")[-1].strip()
-        else:
-            file_path = raw_path.strip()
-
-        files.append({
-            "path": file_path,
-            "index": mapping.get(index_status, "unchanged"),
-            "working_tree": mapping.get(work_tree_status, "unchanged"),
-            "raw_code": f"{index_status}{work_tree_status}"
-        })
-    return files
-
-def run_git_command(args):
-    """Helper to run git commands via system binary."""
     try:
-        if not os.path.exists(REPO_PATH):
-            os.makedirs(REPO_PATH, exist_ok=True)
+        # Call your git_client method
+        result_msg = git_client.reset_work(mode=mode, files=files)
 
-        result = subprocess.run(
-            ["git"] + args,
-            cwd=REPO_PATH,
-            capture_output=True,
-            text=True,
-            timeout=30,
-            env=os.environ
-        )
-        return {
-            "success": result.returncode == 0,
-            # CRITICAL: We do NOT strip() stdout here because porcelain status
-            # depends on the exact column positions.
-            "stdout": result.stdout,
-            "stderr": result.stderr.strip(),
-            "rc": result.returncode
-        }
+        return jsonify({
+            "success": True,
+            "message": result_msg,
+            "status_data": git_status_data() # Refresh UI state (files, log, etc)
+        }), 200
+
     except Exception as e:
-        logger.error(f"Execution Error: {str(e)}")
-        return {"success": False, "stdout": "", "stderr": str(e), "rc": 1}
+        logger.error(f"Reset failed ({mode}): {e}")
+        return jsonify({
+            "success": False,
+            "message": f"Git error: {str(e)}"
+        }), 500
+
+@git_manager_bp.route('/checkout', methods=['POST'])
+def checkout():
+    data = request.get_json() or {}
+    branch_name = data.get('branch_name')
+    create = data.get('create', False)
+
+    branch_exists = branch_name in git_client.repo.branches
+
+    try:
+        git_client.switch_branch(branch_name, create)
+        if create and not branch_exists:
+            message = f"Created and switched to branch '{branch_name}'"
+        else:
+            message = f"Switched to branch '{branch_name}'"
+
+        return jsonify({
+            "success": True,
+            "message": message,
+            "status_data": git_status_data()
+        }), 200
+
+    except Exception as e:
+        # If switch_branch fails (e.g., merge conflicts, git lock), we catch it here
+        return jsonify({
+            "success": False,
+            "message": f"Failed to switch to {branch_name}: {str(e)}",
+            "status_data": git_status_data()
+        }), 500
+
+def git_status_data():
+    git_client.current_branch
+    result = {}
+    result['branch'] = git_client.current_branch
+    #result['is_dirty'] = git_client.is_dirty()
+    result['untracked'] = git_client.git_untracked()
+    result['unstaged'] = git_client.git_unstaged()
+    result['staged'] = git_client.git_staged()
+    result['committed'] = git_client.git_committed()
+    result['unstaged_diff'] = git_client.git_unstaged_diff()
+    result['staged_diff'] = git_client.git_staged_diff()
+    result['committed_diff'] = git_client.git_committed_diff()
+    result['branches'] = git_client.git_branches()
+    result['log'] = git_client.git_log()
+    logger.debug(result)
+    return result

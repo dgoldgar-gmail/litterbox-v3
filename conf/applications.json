@@ -334,6 +334,11 @@
     "version_pattern": "^[0-9].[0-9]$",
     "docker": {
       "image": "192.168.50.15:5000/litterbox-v3",
+      "host_args": {
+        "ubuntu-one": [
+          "-v", "/opt/LITTERBOX/apps/photoprism:/app/photoprism"
+        ]
+      },
       "args": [
         "--add-host",
         "ubuntu-main:192.168.50.11",
@@ -351,6 +356,8 @@
         "$(getent group docker | cut -d: -f3)",
         "-e",
         "MODE=&getSchedulerMode(host)&",
+        "-e",
+        "SYNCH_PHOTOS=&getSyncPhotos(host)&",
         "-e",
         "BACKUP_DIR=/app/BACKUP",
         "-e",

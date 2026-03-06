@@ -142,9 +142,16 @@ def get_container_config(name):
 def build_run_command(config, desired_verison, user_context):
     docker_info=config['docker']
     docker_image=docker_info['image']
+
     container_specific_args=docker_info['args']
     container_specific_args = resolve_secrets(" ".join(container_specific_args))
     container_specific_args = resolve_functions(container_specific_args, user_context)
+
+    host_name = user_context['host']
+    host_specific_args=docker_info['host_args'][host_name]
+    logger.info(f"Host specific args: {host_specific_args}")
+    host_specific_args = resolve_secrets(" ".join(host_specific_args))
+    host_specific_args = resolve_functions(host_specific_args, user_context)
 
     common_args = [ "docker", "run", "-d", "--name", config['name'], "--network=host", "--privileged", "--restart=unless-stopped" ]
 
@@ -153,7 +160,7 @@ def build_run_command(config, desired_verison, user_context):
         entry_point_base = [ "--entrypoint", entrypoint[0]]
         common_args = common_args + entry_point_base
 
-    command_array=common_args+[container_specific_args]+[docker_image+":" + desired_verison]
+    command_array=common_args+[container_specific_args]+[host_specific_args]+[docker_image+":" + desired_verison]
 
     if 'entrypoint' in config and len(config['entrypoint']) > 1:
         command_array = command_array + config['entrypoint'][1:]
