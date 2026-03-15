@@ -29,6 +29,8 @@ class Configuration:
         self.UNKNOWN = "UNKNOWN"
         self.REGISTRY = "192.168.50.15:5000"
 
+        self.APP_MODE = os.environ.get("APP_MODE", "FULL")
+
         self.SSH_USER = os.environ.get("SSH_USER", "root")
 
         # Home Assistant
@@ -165,3 +167,7 @@ class Configuration:
                 logger.info(f"Backup created: {backup_file_path}")
             except Exception as e:
                 logger.info(f"Error creating backup of {file_path}: {e}")
+
+    def get_version(self):
+        with open("version.properties", "r") as f:
+            return f.read().split("=")[1].strip()

@@ -121,6 +121,10 @@ class ICloudClientLockManager:
         # Ensure the file exists on disk immediately
         self._persist()
 
+    def reload(self):
+        """Refreshes the internal locks dict from the disk file."""
+        self.locks = configuration.load_json_data(self.lock_file_path) or {}
+
     def _persist(self):
         """Helper to save to disk with error handling."""
         try:
@@ -163,6 +167,9 @@ class ICloudClientLockManager:
             return True
 
     def update_status(self, user, status: LockStatus, reason=None):
+
+        self.reload()
+
         old_status = self.locks.get(user, {}).get('status')
 
         self._ensure_user_entry(user)
@@ -215,6 +222,7 @@ class ICloudClientLockManager:
 
             self.update_status(user, LockStatus.LOCKED, "Login completed but authorization failed.")
             return "FAILED_AUTH", client
+
 
         except Exception as e:
             error_msg = f"Exception during auth: {str(e)}"

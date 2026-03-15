@@ -148,7 +148,10 @@ def build_run_command(config, desired_verison, user_context):
     container_specific_args = resolve_functions(container_specific_args, user_context)
 
     host_name = user_context['host']
-    host_specific_args=docker_info['host_args'][host_name]
+    host_specific_args = []
+    if 'host_args' in docker_info:
+        if host_name in docker_info['host_args']:
+            host_specific_args=docker_info['host_args'][host_name]
     logger.info(f"Host specific args: {host_specific_args}")
     host_specific_args = resolve_secrets(" ".join(host_specific_args))
     host_specific_args = resolve_functions(host_specific_args, user_context)

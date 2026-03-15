@@ -25,6 +25,7 @@ COPY static static
 COPY tasks tasks
 COPY templates templates
 COPY supervisord.conf supervisord.conf
+COPY version.properties version.properties
 
 RUN mkdir -p /root/.ssh /app/ansible/queue /app/ansible/results /app/logs && \
     chown -R root:root /app

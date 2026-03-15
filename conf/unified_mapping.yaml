@@ -234,7 +234,9 @@ hosts:
   - name: dgoldgar-ltmgx3r.internal.salesforce.com
     ip: 192.168.50.100
     type: mac
-    containers: []
+    containers:
+      - name: photoprism
+        release_notes: https://docs.photoprism.app/release-notes/
     mounts: []
     nvme_devices: []
   - name: raspberry-five
@@ -473,3 +475,4 @@ litterbox:
     - ubuntu-main
     - raspberry-pearl
     - raspberry-slate
+

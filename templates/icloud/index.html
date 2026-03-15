@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+{% block title %}iCloud Sessions{% endblock %}
+
+{% block content %}
+
+
+<h2>iCloud Sessions</h2>
+<div id="sessions" class="border border-light rounded p-4 container-fluid px-4">
+    <!-- TODO:  -->
+</div>
+
+<div class="modal fade" id="session-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="session-modal-title">Populate with JS</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="session-modal-body">
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="session-modal-submit">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let data = {{ sessions | tojson }};
+</script>
+
+<script src="{{ url_for('static', filename='icloud/icloud.js') }}"></script>
+
+{% endblock %}
