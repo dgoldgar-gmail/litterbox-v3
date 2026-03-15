@@ -1,6 +1,7 @@
 import logging
 import re
 import requests
+import socket
 import urllib3
 
 from config import Configuration
@@ -11,23 +12,25 @@ from flask import Blueprint, flash, render_template, redirect, request, url_for,
 configuration = Configuration()
 log_level_config_manager = LogLevelConfigManager()
 
-setup_bp = Blueprint('setup', __name__, template_folder='../../setup')
+logging_config_bp = Blueprint('logging_config', __name__, template_folder='../../logging_config')
 
 log_level_config_manager = LogLevelConfigManager()
 
 logger = logging.getLogger(__name__)
 logger.propagate = True
 
-@setup_bp.route('/logging_config')
-def logging_config():
+@logging_config_bp.route('/index')
+def index():
     all_loggers = log_level_config_manager.get_all_loggers()
-    return render_template('setup/logging.html',
+    return render_template('logging_config/index.html',
         loggers=all_loggers)
 
 
-@setup_bp.route('/update_loggers', methods=['PUT'])
+@logging_config_bp.route('/update_loggers', methods=['PUT'])
 def update_loggers():
     data = request.json
     log_level_config_manager.apply_logger_config(data)
     configuration.save_yaml_data(data, configuration.LOGGER_CONFIG)
     return {}
+
+

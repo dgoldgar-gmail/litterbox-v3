@@ -73,7 +73,7 @@ def resolve_secrets(text):
 
 def resolve_functions(text, user_context):
     """
-    text: "Mode for &host& is &getSchedulerMode(host)&"
+    text: "Mode for &host& is &get_scheduler_mode(host)&"
     user_context: {"host": "aws-prod"} # This comes from the UI/User selection
     """
     logger.info(f"resolve_functions -> {user_context}")
@@ -91,7 +91,7 @@ def resolve_functions(text, user_context):
         return match.group(0)
     return re.sub(pattern, mapper, text)
 
-def getSchedulerMode(hostname):
+def get_scheduler_mode(hostname):
     mapping=configuration.load_yaml_data(configuration.UNIFIED_MAPPING)
     roles=mapping['litterbox']
     logger.info(f"Roles: {roles}")
@@ -102,7 +102,7 @@ def getSchedulerMode(hostname):
     else:
         return configuration.UNKNOWN
 
-def getSyncPhotos(hostname):
+def get_sync_photos(hostname):
     mapping=configuration.load_yaml_data(configuration.UNIFIED_MAPPING)
     for host in mapping.get('hosts', []):
         if host.get('name') == hostname:
